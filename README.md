@@ -5,7 +5,7 @@ CSCI 5117, Fall 2025, [assignment description](https://canvas.umn.edu/courses/51
 ## App Info
 
 * Team Name: Devel's Advocate
-* App Name: TODO
+* App Name: Tr@ceRoute
 * App Link: <https://TODO.com/>
 
 ### Students
