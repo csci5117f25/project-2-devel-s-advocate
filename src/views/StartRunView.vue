@@ -42,11 +42,13 @@ import { ref } from 'vue'
   </div>
 
   <div id="desktop-view" class="hidden mt-32">
-    <div class="h-100 w-100 border border-black rounded-xl px-4 py-2">Mobile Phone Animation</div>
+    <div class="h-100 w-100 text-center border border-black rounded-xl px-4 py-2">
+      Mobile Phone Animation
+    </div>
     <div class="flex flex-col">
-      <h1 class="text-2xl text-center font-bold m-2">Oops!</h1>
+      <h1 class="text-3xl text-center font-bold m-2">Oops!</h1>
 
-      <p class="p-2 m-2">A new run can only be tracked on a mobile device.</p>
+      <h2 class="text-2xl p-2 m-2">A new run can only be tracked on a mobile device.</h2>
 
       <RouterLink
         :to="{ name: 'splashPage' }"

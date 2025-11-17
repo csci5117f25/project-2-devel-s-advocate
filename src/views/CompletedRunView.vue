@@ -1,95 +1,73 @@
 <script setup>
 import { useRoute } from 'vue-router'
-
-const route = useRoute()
-const id = route.params.id
 </script>
 
 <template>
-  <div>
-
-    <!-- layout for id:1  -->
-    <div v-if="id === '1'" class="layout-one flex flex-col">
-
-      <div class="flex flex-col items-center mt-32" id="row-1">
-        <div class="phone-animation text-center border border-black h-36 w-90 rounded-xl flex items-center justify-center mt-2">
-            Mobile Phone Animation
-        </div>
-
-        <div class="flex flex-col items-center">
-        <h1 class="text-2xl text-center font-bold p-4">Oops!</h1>
-        <h2 class="text-2xl text-center font-bold p-4">The stats of a new run can only be viewed on a mobile device.</h2>
-
-        <div class="return-home text-center border border-black h-10 w-32 rounded-xl flex items-center justify-center mt-2">
-          Return Home
-        </div>
-      </div>
-      </div>
-
-      
-
-
+  <div id="mobile-view" class="flex flex-col mt-32">
+    <div>
+      <h1 class="text-2xl text-center font-bold p-4">Congratulations!</h1>
     </div>
 
-    <!--  layout for id:2  -->
-    <div v-else-if="id === '2'" class="layout-two">
-      <!-- Put your Run #2 design here -->
-      <div class="flex flex-col items-center mt-32" id="row-1">
+    <div class="victory-animation text-center border border-black h-75 rounded-xl px-4 py-2 m-4">
+      Victory Animation
+    </div>
 
-        <div class="flex flex-col items-center gap-4 mt-2">
-          <h1 class="text-2xl text-center font-bold p-4">Congratulations!</h1>
+    <div class="comment-button text-center border border-black rounded-xl px-4 py-2 m-4">
+      Add an optional comment
+    </div>
 
-          <div class="vinctory-animation text-center border border-black h-36 w-90 rounded-xl flex items-center justify-center mt-2">
-            Victory Animation
-          </div>
-        </div>
+    <div class="text-center border border-black rounded-xl px-4 py-2 m-4">See your stats</div>
 
-        <div class="flex flex-col items-center gap-4 mt-2">
-          <div class="comment_button text-center border border-black h-10 w-32 flex justify-center items-center rounded-xl">
-          Add an optional comment
-          </div>
+    <div class="h-75 text-center border border-black rounded-xl px-4 py-2 m-4">
+      Map of User's Complete Route
+    </div>
 
-          <div class="stats_button text-center border border-black h-10 w-32 flex justify-center items-center rounded-xl">
-          See your stats
-          </div>
-        </div>
+    <div class="flex flex-row justify-between">
+      <div class="w-2/5 text-center border border-black rounded-xl px-4 py-2 mx-4 my-2">
+        0:00:00
+      </div>
 
-
-        <div class="map_button text-center border border-black h-36 w-90 rounded-xl flex items-center justify-center mt-2">
-          Map of User's Complete Route
-        </div>
-
-        <div class="flex flex-row gap-4 mt-2">
-          <div class="timer_indicator text-center border border-black h-10 w-32 rounded-xl flex items-center justify-center">
-            0:00:00
-          </div>
-
-          <div class="distance-indicator text-center border border-black h-10 w-32 rounded-xl flex items-center justify-center">
-            XX Miles
-          </div>
-        </div>
-        
-        <div class="flex flex-col items-center gap-4 mt-2">
-        <div class="return_button text-center border border-black h-10 w-32 flex justify-center items-center rounded-xl">
-          Return Home
-        </div>
-        </div>
-
+      <div class="w-2/5 text-center border border-black rounded-xl px-4 py-2 mx-4 my-2">
+        XX Miles
       </div>
     </div>
 
-    
-    <div v-else class="layout-default">
-      <h1 class="text-xl font-bold text-center mt-8">Unknown Run</h1>
-      <p class="text-center">This run ID does not exist.</p>
-    </div>
+    <RouterLink
+      :to="{ name: 'splashPage' }"
+      class="w-11/12 text-center border border-black rounded-xl px-4 py-2 mx-4 my-2"
+    >
+      Return Home
+    </RouterLink>
+  </div>
 
+  <div id="desktop-view" class="hidden mt-32">
+    <div class="h-100 w-100 text-center border border-black rounded-xl px-4 py-2">
+      Mobile Phone Animation
+    </div>
+    <div class="flex flex-col">
+      <h1 class="text-3xl text-center font-bold m-2">Oops!</h1>
+
+      <h2 class="text-2xl p-2 m-2">
+        The stats of a new run can only be viewed on a mobile device.
+      </h2>
+
+      <RouterLink
+        :to="{ name: 'splashPage' }"
+        class="text-center border border-black rounded-xl p-2 m-4"
+      >
+        Return Home
+      </RouterLink>
+    </div>
   </div>
 </template>
 
 <style scoped>
 @media (min-width: 1024px) {
-  #row-1 {
+  #mobile-view {
+    display: none;
+  }
+  #desktop-view {
+    display: flex;
     flex-direction: row;
     justify-content: space-around;
     align-items: center;

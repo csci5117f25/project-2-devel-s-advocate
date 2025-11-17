@@ -6,117 +6,87 @@ import { ref } from 'vue'
   <div class="flex flex-col mt-32">
     <div class="flex flex-col items-center" id="row-1">
       <div>
-        <h1 class="text-2xl text-center font-bold p-4">Welcome to Tr@ceRoute!</h1>
+        <h1 class="text-3xl text-center font-bold p-4">Welcome to Tr@ceRoute!</h1>
 
-        <h2 class="text-1xl text-center font-bold p-4">Mission statement</h2>
+        <h2 class="text-2xl text-center font-bold p-4">Mission statement</h2>
       </div>
 
-      <div class="running-animation text-center border border-black h-36 w-48 rounded-xl">
+      <div class="running-animation text-center border border-black h-60 w-72 rounded-xl">
         Running Animation
       </div>
     </div>
 
-    <div class="flex flex-col items-center mt-32" id="row-2">
-
+    <div class="flex flex-col items-center mt-8" id="row-2">
       <div>
-        <h1 class="text-2xl text-center font-bold p-4">Statement 1</h1>
+        <h2 class="text-2xl text-center font-bold p-4">Statement 1</h2>
       </div>
-      <div class="screenshot-1 text-center border border-black h-36 w-58 rounded-xl">
-        screenshot-1
+
+      <div class="screenshot text-center border border-black h-36 w-72 rounded-xl">
+        Screenshot 1
       </div>
     </div>
 
-
-
-    <div class="flex flex-col items-center mt-32" id="row-3">
+    <div class="flex flex-col items-center mt-8" id="row-3">
       <div>
-        <h1 class="text-2xl text-center font-bold p-4">Stetement 2</h1>
+        <h2 class="text-2xl text-center font-bold p-4">Statement 2</h2>
       </div>
 
-      <div class="screenshot-2 text-center border border-black h-36 w-58 rounded-xl">
-        screenshot-2
+      <div class="screenshot text-center border border-black h-36 w-72 rounded-xl">
+        Screenshot 2
       </div>
     </div>
 
-    <div class="flex flex-col items-center mt-32" id="row-4">
-
+    <div class="flex flex-col items-center mt-8" id="row-4">
       <div>
-        <h1 class="text-2xl text-center font-bold p-4">Statement 3</h1>
+        <h2 class="text-2xl text-center font-bold p-4">Statement 3</h2>
       </div>
 
-      <div class="screenshot- text-center border border-black h-36 w-58 rounded-xl">
-        screenshot-3
+      <div class="screenshot text-center border border-black h-36 w-72 rounded-xl">
+        Screenshot 3
       </div>
     </div>
 
-    <div class="flex flex-col items-center mt-32" id="row-5">
-      <div class="bigboxtext text-center border border-black h-36 w-90 flex justify-center items-center flex-col rounded-xl">
-        Join Today and Become...
+    <div
+      id="row-5"
+      class="flex flex-col items-center justify-center bg-blue-950 p-4 mt-10 bottom-0 z-1000 w-full"
+    >
+      <h2 class="text-white text-2xl p-4">Join Today and Become...</h2>
 
-        <div class="smallboxtext text-center border border-black h-16 w-38 rounded-xl">
+      <RouterLink :to="{ name: 'dashboard' }" class="font-bold bg-white rounded-xl px-4 py-2 m-4">
         Begin Your Journey Today!
-        </div>
-      </div>
-
-      
-
-
+      </RouterLink>
     </div>
   </div>
-  <!-- <h1 class="text-8xl text-center font-bold mt-32 p-4">Welcome to Tr@ceRoute!</h1>
-
-  <h2 class="text-4xl text-center mt-8 mb-12">A personal to-do list web application that ...</h2>
-
-  <div class="grid grid-cols-2 text-center">
-    <div>
-      <h1 class="bg-red-500 h-64 m-8 drop-shadow-xl/15 rounded-xl">Feature 1</h1>
-      <h1 class="bg-yellow-500 h-64 m-8 drop-shadow-xl/15 rounded-xl">
-        Screenshot of finished /todo/:id page
-      </h1>
-      <h1 class="bg-blue-500 h-64 m-8 drop-shadow-xl/15 rounded-xl">Feature 3</h1>
-    </div>
-
-    <div>
-      <h1 class="bg-orange-500 h-64 m-8 drop-shadow-xl/15 rounded-xl">
-        Screenshot of finished /todos page
-      </h1>
-      <h1 class="bg-green-500 h-64 m-8 drop-shadow-xl/15 rounded-xl">Feature 2</h1>
-      <h1 class="bg-purple-500 h-64 m-8 drop-shadow-xl/15 rounded-xl">
-        Screenshot of finished /done page
-      </h1>
-    </div>
-  </div>
-
-  <h2 class="text-2xl text-center mt-8 mb-16">Login so that you can start ... today!</h2> -->
 </template>
 
 <style scoped>
 @media (min-width: 1024px) {
   #row-1 {
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-evenly;
     align-items: center;
   }
   #row-2 {
     flex-direction: row-reverse;
-    justify-content: space-around;
+    justify-content: space-evenly;
     align-items: center;
   }
   #row-3 {
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-evenly;
     align-items: center;
   }
   #row-4 {
     flex-direction: row-reverse;
-    justify-content: space-around;
+    justify-content: space-evenly;
     align-items: center;
   }
-
   #row-5 {
     align-items: center;
   }
-
-
+  .screenshot {
+    height: calc(var(--spacing) * 48);
+    width: calc(var(--spacing) * 96);
+  }
 }
 </style>
