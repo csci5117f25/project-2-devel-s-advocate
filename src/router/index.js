@@ -30,13 +30,18 @@ const router = createRouter({
       meta: { title: 'Completed Run' },
     },
     { path: '/add-run', name: 'addRun', component: AddRunView, meta: { title: 'Add Run' } },
-    { path: '/404', name: 'notFound', component: NotFoundView, meta: { title: '404 Not Found' } },
+    {
+      path: '/:catchAll(.*)',
+      name: 'notFound',
+      component: NotFoundView,
+      meta: { title: 'Page Not Found' },
+    },
   ],
 })
 
 // Update the page title.
 router.beforeEach((to, from, next) => {
-  document.title = to.meta.title || 'Homework 2 App'
+  document.title = to.meta.title || 'Tr@ceRoute'
   next()
 })
 
