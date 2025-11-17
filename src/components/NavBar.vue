@@ -5,10 +5,10 @@ import { RouterLink } from 'vue-router'
 
 <template>
   <nav
-    class="flex justify-between items-center bg-blue-950 h-24 px-10 drop-shadow-xl/25 fixed top-0 z-1000 w-full"
+    class="flex justify-between items-center bg-blue-950 h-24 px-5 drop-shadow-xl/25 fixed top-0 z-1000 w-full"
   >
-    <RouterLink :to="{ name: 'dashboard' }" class="text-4xl text-white font-bold">
-      <font-awesome-icon icon="fa-house" /> Tr@ceRoute
+    <RouterLink :to="{ name: 'dashboard' }" class="text-3xl text-white font-bold">
+      Tr@ceRoute
     </RouterLink>
 
     <RouterLink :to="{ name: 'dashboard' }" class="font-bold bg-white rounded-xl px-4 py-2">

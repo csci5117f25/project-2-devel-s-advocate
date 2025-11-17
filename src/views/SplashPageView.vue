@@ -3,8 +3,8 @@ import { ref } from 'vue'
 </script>
 
 <template>
-  <div class="flex flex-col">
-    <div class="flex flex-col items-center mt-32" id="row-1">
+  <div class="flex flex-col mt-32">
+    <div class="flex flex-col items-center" id="row-1">
       <div>
         <h1 class="text-2xl text-center font-bold p-4">Welcome to Tr@ceRoute!</h1>
 
