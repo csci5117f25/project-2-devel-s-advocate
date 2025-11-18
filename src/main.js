@@ -18,11 +18,21 @@ import { fas } from '@fortawesome/free-solid-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 
+import { VueFire, VueFireAuth } from 'vuefire'
+import { firebaseApp } from './firebaseApp.js'
+
 library.add(fas, far, fab)
 
 const app = createApp(App)
 
 app.use(router)
+
+app.use(VueFire, {
+  firebaseApp,
+  modules: [
+    VueFireAuth()
+  ]
+})
 
 app.component('font-awesome-icon', FontAwesomeIcon)
 
