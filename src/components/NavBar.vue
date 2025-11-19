@@ -1,6 +1,10 @@
 <script setup>
-import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
+import { useAuth } from '@/assets/js/authHelper'
+import { useCurrentUser } from 'vuefire'
+
+const { login, logout } = useAuth()
+const user = useCurrentUser()
 </script>
 
 <template>
@@ -11,9 +15,12 @@ import { RouterLink } from 'vue-router'
       Tr@ceRoute
     </RouterLink>
 
-    <RouterLink :to="{ name: 'dashboard' }" class="font-bold bg-white rounded-xl px-4 py-2">
-      <font-awesome-icon icon="fa-user" /><slot class="text-blue-950"> Login</slot>
-    </RouterLink>
+    <button v-if="user" @click="logout" class="font-bold bg-white rounded-xl px-4 py-2">
+      <font-awesome-icon icon="fa-sign-out-alt" /><slot class="text-blue-950"> Logout</slot>
+    </button>
+    <button v-else @click="login" class="font-bold bg-white rounded-xl px-4 py-2">
+      <font-awesome-icon icon="fa-sign-in-alt" /><slot class="text-blue-950"> Login</slot>
+    </button>
   </nav>
 </template>
 
