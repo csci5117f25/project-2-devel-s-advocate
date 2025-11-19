@@ -1,7 +1,9 @@
 <script setup>
 import { ref } from 'vue'
+import { getUserData } from '@/assets/js/dbHelper'
 const sort_option = ref('')
 const chart_view = ref('')
+const user_data = getUserData()
 </script>
 
 <template>
@@ -35,7 +37,7 @@ const chart_view = ref('')
           Fastest Average Speed
         </div>
         <div class="text-center border border-black rounded-xl px-4 py-2 m-2">Total Sessions</div>
-        <div class="text-center border border-black rounded-xl px-4 py-2 m-2">Total Miles Run</div>
+        <div class="text-center border border-black rounded-xl px-4 py-2 m-2">{{ user_data?.stats?.totalMiles || 0 }} Miles Run</div>
       </div>
     </div>
 
