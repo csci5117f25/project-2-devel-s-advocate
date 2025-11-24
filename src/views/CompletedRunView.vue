@@ -1,5 +1,8 @@
 <script setup>
-import { useRoute } from 'vue-router'
+import { useRoute } from 'vue-router' 
+import {ref} from 'vue'
+import ConfettiComponent from '@/components/ConfettiComponent.vue';
+
 </script>
 
 <template>
@@ -9,11 +12,20 @@ import { useRoute } from 'vue-router'
     </div>
 
     <div class="victory-animation text-center border border-black h-75 rounded-xl px-4 py-2 m-4">
-      Victory Animation
+<ConfettiComponent>
+
+</ConfettiComponent>
     </div>
 
     <div class="comment-button text-center border border-black rounded-xl px-4 py-2 m-4">
-      Add an optional comment
+<button @click="commentFunction()"> Comment Here</button>
+        <input
+          type="text"
+          v-model="newTask"
+          class="w-half border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
+          placeholder="a task"
+          required
+        />
     </div>
 
     <div class="text-center border border-black rounded-xl px-4 py-2 m-4">See your stats</div>
