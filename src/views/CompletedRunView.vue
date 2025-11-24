@@ -11,10 +11,6 @@ import ConfettiComponent from '@/components/ConfettiComponent.vue';
       <ConfettiComponent text="Congratulations!"></ConfettiComponent>
     </div>
 
-    <div class="victory-animation text-center border border-black h-75 rounded-xl px-4 py-2 m-4">
-
-    </div>
-
     <div class="comment-button text-center border border-black rounded-xl px-4 py-2 m-4">
 <button> Comment Here</button>
         <input

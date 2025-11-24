@@ -1,5 +1,47 @@
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useCurrentUser } from 'vuefire'
+import { db } from '@/firebaseApp'
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
+
+const router = useRouter()
+const user = useCurrentUser()
+
+const date = ref('')
+const startTime = ref('')
+const endTime = ref('')
+const distance = ref('')
+const comment = ref('')
+
+const submitRun = async () => {
+  if (!user.value) return
+
+  if (!date.value || !startTime.value || !endTime.value || !distance.value) {
+    alert('Please fill in all required fields')
+    return
+  }
+
+  const start = new Date(`${date.value}T${startTime.value}`)
+  const end = new Date(`${date.value}T${endTime.value}`)
+  const durationMinutes = Math.round((end - start) / 60000)
+
+  await addDoc(
+    collection(db, 'runs'),
+    {
+      createdAt: serverTimestamp(),
+      startTime: start,
+      endTime: end,
+      duration: durationMinutes,
+      miles: Number(distance.value),
+      description: comment.value || '',
+      path: [],
+      userID: user.value.uid
+    }
+  )
+
+  router.push({ name: 'dashboard' })
+}
 </script>
 
 <template>
@@ -11,48 +53,37 @@ import { ref } from 'vue'
     </h2>
 
     <div id="form-container" class="flex flex-col border border-black rounded-xl px-4 py-2 m-4">
-      <div clas="flex flex-row">
+      <div class="flex flex-row">
         <label for="run-date">Date: </label>
-        <input type="date" id="run-date" class="border border-black rounded-xl p-1 m-1" required />
+        <input v-model="date" type="date" id="run-date" class="border border-black rounded-xl p-1 m-1" required />
       </div>
 
-      <div clas="flex flex-row">
-        <label for="run-duration">Duration (in minutes): </label>
-        <input
-          type="number"
-          id="run-duration"
-          class="w-2/5 border border-black rounded-xl p-1 m-1"
-          required
-        />
+      <div class="flex flex-row">
+        <label for="start-time">Start Time: </label>
+        <input v-model="startTime" type="time" id="start-time" class="border border-black rounded-xl p-1 m-1" required />
       </div>
 
-      <div clas="flex flex-row">
+      <div class="flex flex-row">
+        <label for="end-time">End Time: </label>
+        <input v-model="endTime" type="time" id="end-time" class="border border-black rounded-xl p-1 m-1" required />
+      </div>
+
+      <div class="flex flex-row">
         <label for="run-distance">Distance (in miles): </label>
-        <input
-          type="number"
-          id="run-distance"
-          class="w-1/2 border border-black rounded-xl p-1 m-1"
-          required
-        />
+        <input v-model="distance" type="number" id="run-distance" class="w-1/2 border border-black rounded-xl p-1 m-1" required />
       </div>
 
       <div class="flex flex-col my-2">
         <label for="comment">Comment (Optional): </label>
-        <textarea id="comment" class="border border-black rounded-xl p-1 m-1" rows="5"></textarea>
+        <textarea v-model="comment" id="comment" class="border border-black rounded-xl p-1 m-1" rows="5"></textarea>
       </div>
 
       <div class="flex flex-row">
-        <RouterLink
-          :to="{ name: 'dashboard' }"
-          class="w-11/12 text-center border border-black rounded-xl px-4 py-2 mx-4 my-2"
-        >
+        <button @click="submitRun" class="w-11/12 text-center border border-black rounded-xl px-4 py-2 mx-4 my-2">
           Submit
-        </RouterLink>
+        </button>
 
-        <RouterLink
-          :to="{ name: 'dashboard' }"
-          class="w-11/12 text-center border border-black rounded-xl px-4 py-2 mx-4 my-2"
-        >
+        <RouterLink :to="{ name: 'dashboard' }" class="w-11/12 text-center border border-black rounded-xl px-4 py-2 mx-4 my-2">
           Cancel
         </RouterLink>
       </div>
@@ -68,7 +99,6 @@ import { ref } from 'vue'
   #form-container {
     width: 50%;
   }
-  #run-duration,
   #run-distance {
     width: 20%;
   }
