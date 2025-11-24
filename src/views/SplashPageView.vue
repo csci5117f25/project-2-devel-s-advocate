@@ -12,7 +12,7 @@ const constraintsRef = ref(null)
       <div>
         <h1 class="text-3xl text-center font-bold p-4">Welcome to Tr@ceRoute!</h1>
 
-        <h2 class="text-2xl text-center font-bold p-4">Mission statement</h2>
+        <h2 class="text-2xl text-center font-bold p-4">Built for those who love to run fast and track their progress!</h2>
       </div>
 
       <div class="running-animation text-center border border-black h-60 w-72 rounded-xl" style="position: relative">
@@ -29,33 +29,33 @@ const constraintsRef = ref(null)
 
     <div class="flex flex-col items-center mt-8" id="row-2">
       <div>
-        <h2 class="text-2xl text-center font-bold p-4">Statement 1</h2>
+        <h2 class="text-2xl text-center font-bold p-4">Fun User Features</h2>
       </div>
 
       <div class="screenshot text-center border border-black h-36 w-72 rounded-xl">
-       <motion.img
+       <img
        src="../assets/images/image1.png" />
       </div>
     </div>
 
     <div class="flex flex-col items-center mt-8" id="row-3">
       <div>
-        <h2 class="text-2xl text-center font-bold p-4">Statement 2</h2>
+        <h2 class="text-2xl text-center font-bold p-4">Advanced Tracking so you can hit your goals!</h2>
       </div>
 
       <div class="screenshot text-center border border-black h-36 w-72 rounded-xl">
-        <motion.img
+        <img
         src="../assets/images/image2.png" />
       </div>
     </div>
 
     <div class="flex flex-col items-center mt-8" id="row-4">
       <div>
-        <h2 class="text-2xl text-center font-bold p-4">Statement 3</h2>
+        <h2 class="text-2xl text-center font-bold p-4">Add comments to your runs to keep track of your feelings!</h2>
       </div>
 
       <div class="screenshot text-center border border-black h-36 w-72 rounded-xl">
-        <motion.img
+        <img
         src="../assets/images/image3.png" />
       </div>
     </div>

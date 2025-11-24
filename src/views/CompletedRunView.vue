@@ -1,8 +1,33 @@
 <script setup>
-import { useRoute } from 'vue-router' 
 import {ref} from 'vue'
 import ConfettiComponent from '@/components/ConfettiComponent.vue';
+import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
+import { db } from '@/firebaseApp'
+import { useCurrentUser } from 'vuefire'
+import { useRoute } from 'vue-router';
 
+
+const route = useRoute()
+const runID = route.query.runID
+
+const user = useCurrentUser()
+const newComment = ref('')
+
+const addCommentToRun = async (runID) => {
+  if (!newComment.value.trim()) return
+  if (!user.value) return
+
+  await addDoc(
+    collection(db, `runs/${runID}/comments`),
+    {
+      userID: user.value.uid,
+      text: newComment.value,
+      createdAt: serverTimestamp()
+    }
+  )
+
+  newComment.value = ''
+}
 </script>
 
 <template>
@@ -15,7 +40,7 @@ import ConfettiComponent from '@/components/ConfettiComponent.vue';
 <button> Comment Here</button>
         <input
           type="text"
-          v-model="newComment"
+          v-model="addCommentToRun"
           class="w-half border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
           placeholder="a comment"
           required
