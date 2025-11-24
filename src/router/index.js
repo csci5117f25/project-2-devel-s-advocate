@@ -28,7 +28,7 @@ const router = createRouter({
       meta: { title: 'Start Run', requiresAuth: true },
     },
     {
-      path: '/completed-run/:id',
+      path: '/completed-run/:runID',
       name: 'completedRun',
       component: CompletedRunView,
       meta: { title: 'Completed Run', requiresAuth: true  },

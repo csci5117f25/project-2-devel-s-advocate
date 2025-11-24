@@ -1,30 +1,22 @@
 <script setup>
 import {ref} from 'vue'
 import ConfettiComponent from '@/components/ConfettiComponent.vue';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
+import { collection, doc, updateDoc, serverTimestamp } from 'firebase/firestore'
 import { db } from '@/firebaseApp'
 import { useCurrentUser } from 'vuefire'
 import { useRoute } from 'vue-router';
 
-
 const route = useRoute()
-const runID = route.query.runID
+const runID = route.params.runID
+const docRef = doc(db, 'runs', runID)
 
 const user = useCurrentUser()
 const newComment = ref('')
 
-const addCommentToRun = async (runID) => {
-  if (!newComment.value.trim()) return
-  if (!user.value) return
-
-  await addDoc(
-    collection(db, `runs/${runID}/comments`),
-    {
-      userID: user.value.uid,
-      text: newComment.value,
-      createdAt: serverTimestamp()
-    }
-  )
+const addCommentToRun = async () => {
+  await updateDoc(docRef, {
+      description: newComment.value
+    });
 
   newComment.value = ''
 }
@@ -37,14 +29,9 @@ const addCommentToRun = async (runID) => {
     </div>
 
     <div class="comment-button text-center border border-black rounded-xl px-4 py-2 m-4">
-<button> Comment Here</button>
-        <input
-          type="text"
-          v-model="addCommentToRun"
-          class="w-half border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
-          placeholder="a comment"
-          required
-        />
+      <button @click="addCommentToRun()">Submit Comment</button>
+      <input v-model="newComment" placeholder="Write a comment..." />
+
     </div>
 
     <div class="text-center border border-black rounded-xl px-4 py-2 m-4">See your stats</div>
