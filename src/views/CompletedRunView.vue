@@ -8,22 +8,20 @@ import ConfettiComponent from '@/components/ConfettiComponent.vue';
 <template>
   <div id="mobile-view" class="flex flex-col mt-32">
     <div>
-      <h1 class="text-2xl text-center font-bold p-4">Congratulations!</h1>
+      <ConfettiComponent text="Congratulations!"></ConfettiComponent>
     </div>
 
     <div class="victory-animation text-center border border-black h-75 rounded-xl px-4 py-2 m-4">
-<ConfettiComponent>
 
-</ConfettiComponent>
     </div>
 
     <div class="comment-button text-center border border-black rounded-xl px-4 py-2 m-4">
-<button @click="commentFunction()"> Comment Here</button>
+<button> Comment Here</button>
         <input
           type="text"
-          v-model="newTask"
+          v-model="newComment"
           class="w-half border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
-          placeholder="a task"
+          placeholder="a comment"
           required
         />
     </div>

@@ -1,9 +1,15 @@
 <script setup>
-    import { ref } from 'vue';
+    import { ref, defineProps } from 'vue';
     import ConfettiExplosion from 'vue-confetti-explosion';
 
     const showConfetti = ref(false);
-
+    const props = defineProps({
+  text: {
+    type: String,
+    required: true
+  }
+})
+console.log(props)
     const triggerConfetti = () => {
       showConfetti.value = true;
       setTimeout(() => {
@@ -14,5 +20,6 @@
 
 <template>
          <ConfettiExplosion v-if="showConfetti" />
-         <button @click="triggerConfetti">Celebrate!</button>
+         <button @click="triggerConfetti">        <h1 class="text-2xl text-center font-bold p-4">{{ props.text }}</h1>
+         </button>
 </template>

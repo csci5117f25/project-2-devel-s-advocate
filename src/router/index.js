@@ -28,6 +28,7 @@ const router = createRouter({
       name: 'completedRun',
       component: CompletedRunView,
       meta: { title: 'Completed Run' },
+      props: true
     },
     { path: '/add-run', name: 'addRun', component: AddRunView, meta: { title: 'Add Run' } },
     {
