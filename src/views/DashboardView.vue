@@ -163,7 +163,7 @@ const chartData = computed(() => {
           Fastest Average Speed: {{ userStats.fastestAvgSpeed }} mph
         </div>
         <div class="text-center border border-black rounded-xl px-4 py-2 m-2">Total Sessions: {{ runs.value?.length || 0 }}</div>
-        <div class="text-center border border-black rounded-xl px-4 py-2 m-2">{{ userStats.totalMiles }} Miles Run</div>
+        <div class="text-center border border-black rounded-xl px-4 py-2 m-2">{{ userStats.totalMiles }} Miles Ran</div>
       </div>
     </div>
 
