@@ -3,6 +3,7 @@ import { ref, computed, watch } from 'vue'
 import { useCollection, useCurrentUser } from 'vuefire'
 import { collection, query, where, doc, setDoc } from 'firebase/firestore'
 import { db } from '@/firebaseApp'
+import ChartComponent from '@/components/chartComponent.vue'
 
 const user = useCurrentUser()
 const sort_option = ref('date-desc') //have this as defualt
@@ -67,6 +68,7 @@ const userStats = computed(() => {
     totalTime += duration
     if (duration > longestRun) longestRun = duration
 
+    //calculating average speed in mph
     if (duration > 0) {
       const avgSpeed = miles / (duration / 60)
       if (avgSpeed > maxSpeed) maxSpeed = avgSpeed
@@ -97,6 +99,37 @@ watch(
   },
   { immediate: true, deep: true }
 )
+
+//chart
+const chartData = computed(() => {
+  if (!runs.value || runs.value.length === 0) return { labels: [], datasets: [] }
+
+  //mapping the date to miles
+  const dailyMap = {}
+  runs.value.forEach(run => {
+    const date = run.startTime?.toDate?.()?.toISOString().split('T')[0] || 'Unknown'
+    if (!dailyMap[date]) dailyMap[date] = 0
+    dailyMap[date] += run.miles || 0
+  })
+
+  //sorting dates
+  const labels = Object.keys(dailyMap).sort()
+  const data = labels.map(d => dailyMap[d])
+
+  return {
+    labels,
+    datasets: [
+      {
+        label: 'Miles Run',
+        data,
+        backgroundColor: 'rgb(243, 173, 157)',
+        borderColor: 'rgb(243, 173, 157)',
+        borderWidth: 1
+      }
+    ]
+  }
+})
+
 </script>
 
 <template>
@@ -145,7 +178,7 @@ watch(
           <option value="duration-asc">Duration (Shortest First)</option>
         </select>
 
-        <div id="sessions-list" class="h-75 border border-black rounded-xl px-4 py-2 m-2">
+        <div id="sessions-list" class="h-72 overflow-y-auto border border-black rounded-xl px-4 py-2 m-2">
           <div v-if="sortedRuns.length === 0" class="text-center text-gray-500">
             No runs yet
           </div>
@@ -164,12 +197,16 @@ watch(
       <div id="chart-container" class="border border-black rounded-xl px-4 py-2 m-2">
         <select v-model="chart_view" class="border border-black rounded-xl px-4 py-2 m-2">
           <option disabled hidden value="">Choose Chart View</option>
-          <option>A</option>
+          <option value="distance">Daily Miles Run</option>
           <option>B</option>
           <option>C</option>
         </select>
 
-        <div id="chart" class="h-75 border border-black rounded-xl px-4 py-2 m-2">Chart</div>
+        <ChartComponent
+          :labels="chartData.labels"
+          :datasets="chartData.datasets"
+          title="Daily Miles Run"
+        />
       </div>
     </div>
   </div>
