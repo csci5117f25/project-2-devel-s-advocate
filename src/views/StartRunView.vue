@@ -9,7 +9,7 @@ import RunMap from '@/components/RunMap.vue'
       <h1 class="text-2xl text-center font-bold">Start Run View</h1>
     </div>
 
-    <div class="h-75 border border-black rounded-xl px-4 py-2 m-4">
+    <div class="border border-black rounded-xl m-4" style="height: 400px;">
       <RunMap />
     </div>
 
