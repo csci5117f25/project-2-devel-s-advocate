@@ -1,19 +1,37 @@
 <script setup>
-import { useRoute } from 'vue-router'
+import {ref} from 'vue'
+import ConfettiComponent from '@/components/ConfettiComponent.vue';
+import { collection, doc, updateDoc, serverTimestamp } from 'firebase/firestore'
+import { db } from '@/firebaseApp'
+import { useCurrentUser } from 'vuefire'
+import { useRoute } from 'vue-router';
+
+const route = useRoute()
+const runID = route.params.runID
+const docRef = doc(db, 'runs', runID)
+
+const user = useCurrentUser()
+const newComment = ref('')
+
+const addCommentToRun = async () => {
+  await updateDoc(docRef, {
+      description: newComment.value
+    });
+
+  newComment.value = ''
+}
 </script>
 
 <template>
   <div id="mobile-view" class="flex flex-col mt-32">
     <div>
-      <h1 class="text-2xl text-center font-bold p-4">Congratulations!</h1>
-    </div>
-
-    <div class="victory-animation text-center border border-black h-75 rounded-xl px-4 py-2 m-4">
-      Victory Animation
+      <ConfettiComponent text="Congratulations!"></ConfettiComponent>
     </div>
 
     <div class="comment-button text-center border border-black rounded-xl px-4 py-2 m-4">
-      Add an optional comment
+      <button @click="addCommentToRun()">Submit Comment</button>
+      <input v-model="newComment" placeholder="Write a comment..." />
+
     </div>
 
     <div class="text-center border border-black rounded-xl px-4 py-2 m-4">See your stats</div>

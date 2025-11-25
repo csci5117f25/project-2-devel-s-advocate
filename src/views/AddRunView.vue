@@ -26,21 +26,19 @@ const submitRun = async () => {
   const end = new Date(`${date.value}T${endTime.value}`)
   const durationMinutes = Math.round((end - start) / 60000)
 
-  await addDoc(
-    collection(db, 'runs'),
-    {
-      createdAt: serverTimestamp(),
-      startTime: start,
-      endTime: end,
-      duration: durationMinutes,
-      miles: Number(distance.value),
-      description: comment.value || '',
-      path: [],
-      userID: user.value.uid
-    }
-  )
+  const docRef = await addDoc(collection(db, 'runs'), {
+    createdAt: serverTimestamp(),
+    startTime: start,
+    endTime: end,
+    duration: durationMinutes,
+    miles: Number(distance.value),
+    description: comment.value || '',
+    path: [],
+    userID: user.value.uid
+  })
 
-  router.push({ name: 'dashboard' })
+  const runID = docRef.id
+  router.push({ name: 'completedRun', params: { runID }})
 }
 </script>
 
