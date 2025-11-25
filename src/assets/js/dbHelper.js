@@ -91,3 +91,13 @@ export function getUserData() {
 
     return userData
 }
+
+// ──────────────────────────────────────────────────────────────
+// Saves run data
+// ──────────────────────────────────────────────────────────────
+export async function saveRun(runData) {
+  return await addDoc(collection(db, 'runs'), {
+    ...runData,
+    createdAt: new Date()
+  })
+}

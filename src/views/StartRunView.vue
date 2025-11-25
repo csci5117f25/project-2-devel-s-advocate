@@ -1,5 +1,6 @@
 <script setup>
 import { ref } from 'vue'
+import RunMap from '@/components/RunMap.vue'
 </script>
 
 <template>
@@ -9,7 +10,7 @@ import { ref } from 'vue'
     </div>
 
     <div class="h-75 border border-black rounded-xl px-4 py-2 m-4">
-      Map of User's Route (updated dynamically)
+      <RunMap />
     </div>
 
     <div class="flex flex-row justify-between">
