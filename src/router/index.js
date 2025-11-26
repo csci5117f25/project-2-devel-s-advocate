@@ -22,7 +22,7 @@ const router = createRouter({
       meta: { title: 'Dashboard' },
     },
     {
-      path: '/start-run/',
+      path: '/start-run',
       name: 'startRun',
       component: StartRunView,
       meta: { title: 'Start Run', requiresAuth: true },

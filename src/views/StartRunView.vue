@@ -26,7 +26,7 @@ import { ref } from 'vue'
       <div class="w-2/5 text-center border border-black rounded-xl px-4 py-2 mx-4 my-2">Start</div>
 
       <RouterLink
-        :to="{ name: 'completedRun', params: { id: 1 } }"
+        :to="{ name: 'completedRun', params: { runID: 1 } }"
         class="w-2/5 text-center border border-black rounded-xl px-4 py-2 mx-4 my-2"
       >
         Finish

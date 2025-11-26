@@ -4,6 +4,7 @@ import { useCollection, useCurrentUser } from 'vuefire'
 import { collection, query, where, doc, setDoc } from 'firebase/firestore'
 import { db } from '@/firebaseApp'
 import ChartComponent from '@/components/chartComponent.vue'
+import EditComponent from '@/components/EditComponent.vue'
 
 const user = useCurrentUser()
 const sort_option = ref('date-desc') //have this as defualt
@@ -188,7 +189,7 @@ const chartData = computed(() => {
               <p><strong>Distance:</strong> {{ run.miles || run.distance || '—' }} miles</p>
               <p><strong>Duration:</strong> {{ run.duration || '—' }} min</p>
               <p v-if="run.path?.length"><strong>Tracked Miles:</strong> {{ run.miles || run.distance || '—' }} miles</p>
-              <p v-if="run.description"><strong>Comment:</strong> {{ run.description }}</p>
+              <p v-if="run.description"><strong>Comment:</strong> {{ run.description }}</p> <EditComponent :runID="`${run.id}`"></EditComponent>
             </div>
           </div>
         </div>
