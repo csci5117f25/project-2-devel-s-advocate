@@ -1,13 +1,17 @@
 <script setup>
-import { ref, defineProps, nextTick } from 'vue';
+import { ref, defineProps, nextTick, defineEmits } from 'vue';
 import { useCollection } from 'vuefire';
 import { db } from '@/firebaseApp';
-import { collection, getDocs, where, updateDoc, query, doc } from 'firebase/firestore';
+import {  updateDoc, doc } from 'firebase/firestore';
 
 const props = defineProps({
-    runID: {String, required: true}
+  runID: { String, required: true }, 
+    description: {String, required: false}
 })
 
+
+
+const emit = defineEmits(["updated"]);
 console.log(props.runID)
 const docRef = doc(db, 'runs', props.runID)
 console.log(docRef)
@@ -36,9 +40,13 @@ const finishEditing = async () => {
         description: editText.value
     });
 
-    editText.value = ''
+
+  editText.value = ''
+    emit("updated", props.sessionID);
+  console.log("Todo updated:", editText.value);
 
 };
+
 
 
 </script>
@@ -46,17 +54,17 @@ const finishEditing = async () => {
 <template>
 
 <button :key="props.sessionID" v-if="!isEditing" @click="startEditing">
-Edit
+{{ props.description }}
 </button>
 
-<td v-else>
+<p v-else>
   <input
     ref="editableInput"
     v-model="editText"
     @blur="finishEditing"
     @keyup.enter="finishEditing"
   />
-</td>
+</p>
 </template>
 
 <style scoped>

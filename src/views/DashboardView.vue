@@ -189,7 +189,7 @@ const chartData = computed(() => {
               <p><strong>Distance:</strong> {{ run.miles || run.distance || '—' }} miles</p>
               <p><strong>Duration:</strong> {{ run.duration || '—' }} min</p>
               <p v-if="run.path?.length"><strong>Tracked Miles:</strong> {{ run.miles || run.distance || '—' }} miles</p>
-              <p v-if="run.description"><strong>Comment:</strong> {{ run.description }}</p> <EditComponent :runID="`${run.id}`"></EditComponent>
+              <p v-if="run.description"><strong>Comment:</strong> <EditComponent :runID="`${run.id}`" :description="`${run.description}`"></EditComponent></p> 
             </div>
           </div>
         </div>
