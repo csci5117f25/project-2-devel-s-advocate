@@ -5,6 +5,7 @@ import { collection, query, where, doc, setDoc } from 'firebase/firestore'
 import { db } from '@/firebaseApp'
 import ChartComponent from '@/components/chartComponent.vue'
 import EditComponent from '@/components/EditComponent.vue'
+import DeleteComponent from '@/components/DeleteComponent.vue'
 
 const user = useCurrentUser()
 const sort_option = ref('date-desc') //have this as defualt
@@ -184,7 +185,8 @@ const chartData = computed(() => {
             No runs yet
           </div>
           <div v-else class="flex flex-col space-y-2">
-            <div v-for="run in sortedRuns" :key="run.id" class="border border-black rounded-xl p-2">
+            <div v-for="run in sortedRuns" :key="run.id" @deleted="refreshRuns" class="border border-black rounded-xl p-2">
+              <DeleteComponent :runID="`${run.id}`"></DeleteComponent>
               <p><strong>Date:</strong> {{ run.startTime?.toDate()?.toLocaleDateString() || '—' }}</p>
               <p><strong>Distance:</strong> {{ run.miles || run.distance || '—' }} miles</p>
               <p><strong>Duration:</strong> {{ run.duration || '—' }} min</p>

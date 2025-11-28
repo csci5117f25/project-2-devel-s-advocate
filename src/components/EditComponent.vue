@@ -1,72 +1,84 @@
 <script setup>
-import { ref, defineProps, nextTick, defineEmits } from 'vue';
-import { useCollection } from 'vuefire';
-import { db } from '@/firebaseApp';
-import {  updateDoc, doc } from 'firebase/firestore';
+import { ref, defineProps, nextTick, defineEmits } from 'vue'
+import { db } from '@/firebaseApp'
+import { updateDoc, doc } from 'firebase/firestore'
 
 const props = defineProps({
-  runID: { String, required: true }, 
-    description: {String, required: false}
+  runID: { String, required: true },
+  description: { String, required: false },
 })
 
-
-
-const emit = defineEmits(["updated"]);
-console.log(props.runID)
+const emit = defineEmits(['updated'])
 const docRef = doc(db, 'runs', props.runID)
-console.log(docRef)
 
-// edit function 
-const isEditing = ref(false);
-const editText = ref("");
-const editableInput = ref(null);
+// edit function
+const isEditing = ref(false)
+const editText = ref('')
+const editableInput = ref(null)
 
 const startEditing = () => {
-  isEditing.value = true;
-  editText.value = docRef.value.description; 
+  isEditing.value = true
+
+  editText.value = props.description
 
   nextTick(() => {
-    editableInput.value?.focus();
-  });
-};
-
+    editableInput.value?.focus()
+  })
+}
+//save
 const finishEditing = async () => {
-    isEditing.value = false;
+  isEditing.value = false
 
-    if (!editText.value.trim()) return;
+  if (!editText.value.trim()) return
 
+  await updateDoc(docRef, {
+    description: editText.value,
+  })
 
-    await updateDoc(docRef, {
-        description: editText.value
-    });
-
-
+  emit('updated', props.runID)
+  console.log('description updated:', editText.value)
   editText.value = ''
-    emit("updated", props.sessionID);
-  console.log("Todo updated:", editText.value);
+}
 
+//cancel function 
+const cancelEditing = () => {
+  isEditing.value = false;
+  editText.value = "";
 };
-
-
-
 </script>
 
 <template>
+  <div class="flex items-center gap-3">
+    <template v-if="!isEditing">
+      <span class="flex-1 text-gray-800">
+        {{ props.description }}
+      </span>
 
-<button :key="props.sessionID" v-if="!isEditing" @click="startEditing">
-{{ props.description }}
-</button>
+      <button
+        @click="startEditing"
+      >
+        Edit
+      </button>
+    </template>
 
-<p v-else>
-  <input
-    ref="editableInput"
-    v-model="editText"
-    @blur="finishEditing"
-    @keyup.enter="finishEditing"
-  />
-</p>
+    <template v-else>
+      <input
+        ref="editableInput"
+        v-model="editText"
+        @keyup.enter="finishEditing"
+      />
+
+      <button
+        @click="finishEditing"
+      >
+        Save
+      </button>
+
+      <button
+        @click="cancelEditing"
+      >
+        Cancel
+      </button>
+    </template>
+  </div>
 </template>
-
-<style scoped>
-
-</style>

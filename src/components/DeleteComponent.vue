@@ -1,43 +1,29 @@
 <script setup>
-import {ref, emit} from 'vue';
-const emit = defineEmits(["toggle", "updated"]);
+import { defineEmits } from 'vue'
 
-const firestoreTodo = ref("");
-const firestoreCategory = ref(""); 
-const toggleDone = () => {
-  emit("toggle", props.sessionID);
-};
+import { db } from '@/firebaseApp'
+import { deleteDoc, doc } from 'firebase/firestore'
 
-const deleteTodo = async () => {
-  const todosRef = collection(db, "todos");
+import { useRouter } from 'vue-router'
 
-  const q = query(todosRef, where("sessionID", "==", props.sessionID));
-  const querySnapshot = await getDocs(q);
+const router = useRouter()
 
-  if (!querySnapshot.empty) {
-    const docSnap = querySnapshot.docs[0];  
-    const docID = docSnap.id;               
-    const ref = doc(db, "todos", docID);
-    const docData = docSnap.data();
+const props = defineProps({
+  runID: { String, required: true },
+})
 
-    firestoreTodo.value = docData.todo_item;
-    firestoreCategory.value = docData.category;
-    await deleteDoc(ref);
-    emit("deleted", props.sessionID);
-    console.log("Todo updated!");
-  } else {
-    console.warn("No todo found with sessionID:", props.sessionID);
-  }
-};
+const emit = defineEmits(['deleted'])
 
 
+const deleteRun = async () => {
+  const ref = doc(db, 'runs', props.runID)
+  await deleteDoc(ref)
+  emit('deleted', props.runID)
+  console.log('Todo delete!')
+  router.push('/dashboard')
+}
 </script>
 
 <template>
-
-
+  <button class="button" @click="deleteRun">Delete Run</button>
 </template>
-
-<style scoped>
-
-</style>
