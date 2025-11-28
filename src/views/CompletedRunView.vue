@@ -3,14 +3,11 @@ import {ref} from 'vue'
 import ConfettiComponent from '@/components/ConfettiComponent.vue';
 import { collection, doc, updateDoc, serverTimestamp } from 'firebase/firestore'
 import { db } from '@/firebaseApp'
-import { useCurrentUser } from 'vuefire'
 import { useRoute } from 'vue-router';
 
 const route = useRoute()
 const runID = route.params.runID
 const docRef = doc(db, 'runs', runID)
-
-const user = useCurrentUser()
 const newComment = ref('')
 
 const addCommentToRun = async () => {

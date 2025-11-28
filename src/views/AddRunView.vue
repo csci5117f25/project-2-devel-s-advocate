@@ -38,7 +38,7 @@ const submitRun = async () => {
   })
 
   const runID = docRef.id
-  router.push({ name: 'completedRun', params: { runID }})
+  router.push({ name: 'dashboard' })
 }
 </script>
 
