@@ -1,11 +1,15 @@
 @import 'tailwindcss';
 
 @theme {
-  --color-chinese-black: #11151c;
-  --color-yankee-blue: #212d40;
-  --color-medium-blue: #364156;
-  --color-fiusha: #7d4e57;
-  --color-peach: #d66853;
+  --color-cinder: #11151c;
+  --color-ebony-clay: #212d40;
+  --color-pickled-bluewood: #364156;
+  --color-rosy-finch: #7d4e57;
+  --color-orange-salmon: #d66853;
+}
+
+body {
+  background-color: var(--color-ebony-clay);
 }
 
 /* button {
