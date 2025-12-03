@@ -1,10 +1,23 @@
 <script setup>
-import { RouterLink } from 'vue-router'
-import { useAuth } from '@/assets/js/authHelper'
+import { RouterLink, useRouter } from 'vue-router'
 import { useCurrentUser } from 'vuefire'
+import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 
-const { login, logout } = useAuth()
+const router = useRouter()
 const user = useCurrentUser()
+
+const login = async () => {
+  const auth = getAuth()
+  const provider = new GoogleAuthProvider()
+  await signInWithPopup(auth, provider)
+  router.push({ name: 'dashboard' })
+}
+
+const logout = async () => {
+  const auth = getAuth()
+  await auth.signOut()
+  router.push({ name: 'splashPage' })
+}
 </script>
 
 <template>
@@ -16,12 +29,14 @@ const user = useCurrentUser()
     </RouterLink>
 
     <button v-if="user" @click="logout" class="font-bold bg-white rounded-xl px-4 py-2">
-      <font-awesome-icon icon="fa-sign-out-alt" /><slot class="text-blue-950"> Logout</slot>
+      <font-awesome-icon icon="fa-sign-out-alt" />
+      <span class="text-blue-950">Logout</span>
     </button>
+
     <button v-else @click="login" class="font-bold bg-white rounded-xl px-4 py-2">
-      <font-awesome-icon icon="fa-sign-in-alt" /><slot class="text-blue-950"> Login</slot>
+      <font-awesome-icon icon="fa-sign-in-alt" />
+      <span class="text-blue-950">Login</span>
     </button>
   </nav>
 </template>
 
-<style scoped></style>
