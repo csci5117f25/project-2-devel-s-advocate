@@ -1,5 +1,14 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, watchEffect } from 'vue'
+import { useCurrentUser } from 'vuefire'
+import { RouterLink } from 'vue-router'
+
+const user = useCurrentUser()
+const targetRoute = ref('splashPage')
+
+watchEffect(() => {
+  targetRoute.value = user.value ? 'dashboard' : 'splashPage'
+})
 </script>
 
 <template>
@@ -9,7 +18,7 @@ import { ref } from 'vue'
       <h2 class="text-2xl text-center p-4">404 Message</h2>
 
       <RouterLink
-        :to="{ name: 'splashPage' }"
+        :to="{ name: targetRoute }"
         class="w-11/12 text-center border border-black rounded-xl px-4 py-2 mx-4 my-2"
       >
         Return Home

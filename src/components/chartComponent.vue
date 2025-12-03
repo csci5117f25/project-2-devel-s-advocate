@@ -25,7 +25,7 @@ const initChart = () => {
   if (!chartRef.value) return
   if (chartInstance) chartInstance.destroy()
   chartInstance = new Chart(chartRef.value, {
-    type: 'bar',
+    type: 'line',
     data: { labels: props.labels, datasets: props.datasets },
     options: chartOptions
   })
