@@ -35,6 +35,8 @@ const sortedRuns = computed(() => {
         return (b.startTime?.toDate() || 0) - (a.startTime?.toDate() || 0)
       case 'distance-desc':
         return (b.miles || b.distance || 0) - (a.miles || a.distance || 0)
+      case 'distance-asc':
+        return (a.miles || a.distance || 0) - (b.miles || b.distance || 0)
       case 'duration-desc':
         return (b.duration || 0) - (a.duration || 0)
       case 'duration-asc':
@@ -50,6 +52,7 @@ const userStats = computed(() => {
   if (!runs.value || runs.value.length === 0) {
     return {
       totalMiles: 0,
+      averageSpeed: 0,
       fastestAvgSpeed: 0,
       totalRunningTime: 0,
       longestRun: 0,
@@ -76,9 +79,10 @@ const userStats = computed(() => {
       if (avgSpeed > maxSpeed) maxSpeed = avgSpeed
     }
   })
-
+  const overallAvgSpeed = totalTime > 0 ? totalMiles / (totalTime / 60) : 0
   return {
     totalMiles: parseFloat(totalMiles.toFixed(1)),
+    averageSpeed: parseFloat(overallAvgSpeed.toFixed(1)),
     fastestAvgSpeed: parseFloat(maxSpeed.toFixed(1)),
     totalRunningTime: totalTime,
     longestRun,
@@ -110,22 +114,36 @@ const chartData = computed(() => {
   const dailyMap = {}
   runs.value.forEach(run => {
     const date = run.startTime?.toDate?.()?.toISOString().split('T')[0] || 'Unknown'
-    if (!dailyMap[date]) dailyMap[date] = 0
-    dailyMap[date] += run.miles || 0
+    if (!dailyMap[date]) dailyMap[date] = { miles: 0, duration: 0 }
+    dailyMap[date].miles += run.miles || 0
+    dailyMap[date].duration += run.duration || 0
   })
 
   //sorting dates
   const labels = Object.keys(dailyMap).sort()
-  const data = labels.map(d => dailyMap[d])
+  //can pick chart based on the sortinf
+  let data = []
+  let label = ''
+  switch(chart_view.value) {
+    case 'distance':
+    default:
+      label = 'Miles Run'
+      data = labels.map(d => dailyMap[d].miles)
+      break
+    case 'time':
+      label = 'Time per Run (minutes)'
+      data = labels.map(d => dailyMap[d].duration)
+      break
+  }
 
   return {
     labels,
     datasets: [
       {
-        label: 'Miles Run',
+        label,
         data,
-        backgroundColor: 'rgb(243, 173, 157)',
-        borderColor: 'rgb(243, 173, 157)',
+        backgroundColor: '#d66853',
+        borderColor: '#d66853',
         borderWidth: 1
       }
     ]
@@ -137,7 +155,7 @@ const chartData = computed(() => {
 <template>
   <div class="flex flex-col mt-32">
     <div class="header m-2">
-      <h1 class="text-2xl text-center font-bold">Dashboard</h1>
+      <h1 class="text-2xl text-center font-bold">Welcome back, {{ user.displayName }}</h1>
     </div>
 
     <div class="flex flex-row justify-evenly m-2">
@@ -162,9 +180,9 @@ const chartData = computed(() => {
       </div>
       <div class="flex flex-row flex-wrap justify-around m-2" id="stats-container">
         <div class="text-center border border-black rounded-xl px-4 py-2 m-2">
-          Fastest Average Speed: {{ userStats.fastestAvgSpeed }} mph
+          Average Speed: {{ userStats.averageSpeed}} mph
         </div>
-        <div class="text-center border border-black rounded-xl px-4 py-2 m-2">Total Sessions: {{ runs.value?.length || 0 }}</div>
+        <div class="text-center border border-black rounded-xl px-4 py-2 m-2">Total Sessions: {{ userStats.totalRuns|| 0 }}</div>
         <div class="text-center border border-black rounded-xl px-4 py-2 m-2">{{ userStats.totalMiles }} Miles Ran</div>
       </div>
     </div>
@@ -176,6 +194,7 @@ const chartData = computed(() => {
           <option value="date-desc">Date (Newest First)</option>
           <option value="date-asc">Date (Oldest First)</option>
           <option value="distance-desc">Distance (Longest First)</option>
+          <option value="distance-asc">Distance (Shortest First)</option>
           <option value="duration-desc">Duration (Longest First)</option>
           <option value="duration-asc">Duration (Shortest First)</option>
         </select>
@@ -187,11 +206,11 @@ const chartData = computed(() => {
           <div v-else class="flex flex-col space-y-2">
             <div v-for="run in sortedRuns" :key="run.id" @deleted="refreshRuns" class="border border-black rounded-xl p-2">
               <DeleteComponent :runID="`${run.id}`"></DeleteComponent>
-              <p><strong>Date:</strong> {{ run.startTime?.toDate()?.toLocaleDateString() || '—' }}</p>
-              <p><strong>Distance:</strong> {{ run.miles || run.distance || '—' }} miles</p>
-              <p><strong>Duration:</strong> {{ run.duration || '—' }} min</p>
-              <p v-if="run.path?.length"><strong>Tracked Miles:</strong> {{ run.miles || run.distance || '—' }} miles</p>
-              <p v-if="run.description"><strong>Comment:</strong> <EditComponent :runID="`${run.id}`" :description="`${run.description}`"></EditComponent></p> 
+              <p><strong>Date:</strong> {{ run.startTime?.toDate()?.toLocaleDateString() || 0 }}</p>
+              <p><strong>Distance:</strong> {{ run.miles || run.distance || 0 }} miles</p>
+              <p><strong>Duration:</strong> {{ run.duration || 0 }} min</p>
+              <p v-if="run.path?.length"><strong>Tracked Miles:</strong> {{ run.miles || run.distance || 0 }} miles</p>
+              <p v-if="run.description"><strong>Comment:</strong> <EditComponent :runID="`${run.id}`" :description="`${run.description}`"></EditComponent></p>
             </div>
           </div>
         </div>
@@ -200,8 +219,8 @@ const chartData = computed(() => {
       <div id="chart-container" class="border border-black rounded-xl px-4 py-2 m-2">
         <select v-model="chart_view" class="border border-black rounded-xl px-4 py-2 m-2">
           <option disabled hidden value="">Choose Chart View</option>
-          <option value="distance">Daily Miles Run</option>
-          <option>B</option>
+          <option value="distance">Daily Miles Ran</option>
+          <option value="time">Time per run</option>
           <option>C</option>
         </select>
 
