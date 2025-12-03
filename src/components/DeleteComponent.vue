@@ -25,5 +25,7 @@ const deleteRun = async () => {
 </script>
 
 <template>
-  <button class="button" @click="deleteRun">Delete Run</button>
+  <button class="mt-2 pl-2 pr-2 bg-purple-600 text-white font-small py-2 rounded-xl 
+         shadow-sm hover:bg-indigo-700 active:bg-indigo-800 
+         transition-all" @click="deleteRun">Delete Run</button>
 </template>

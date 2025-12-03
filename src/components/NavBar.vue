@@ -28,12 +28,12 @@ const logout = async () => {
       Tr@ceRoute
     </RouterLink>
 
-    <button v-if="user" @click="logout" class="font-bold bg-white rounded-xl px-4 py-2">
+    <button v-if="user" @click="logout" class="font-bold bg-white rounded-xl px-4 py-2 button">
       <font-awesome-icon icon="fa-sign-out-alt" />
       <span class="text-blue-950">Logout</span>
     </button>
 
-    <button v-else @click="login" class="font-bold bg-white rounded-xl px-4 py-2">
+    <button v-else @click="login" class="font-bold bg-white rounded-xl px-4 py-2 button">
       <font-awesome-icon icon="fa-sign-in-alt" />
       <span class="text-blue-950">Login</span>
     </button>
