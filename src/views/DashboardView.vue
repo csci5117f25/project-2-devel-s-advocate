@@ -155,7 +155,7 @@ const chartData = computed(() => {
 <template>
   <div class="flex flex-col mt-32">
     <div class="header m-2">
-      <h1 class="text-2xl text-center font-bold">Welcome back, {{ user.displayName }}</h1>
+      <h1 class="text-2xl text-center font-bold">Welcome Back, {{ user.displayName }}</h1>
     </div>
 
     <div class="flex flex-row justify-evenly m-2">
