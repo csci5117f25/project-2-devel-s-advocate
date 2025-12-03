@@ -56,6 +56,9 @@ const cancelEditing = () => {
 
       <button
         @click="startEditing"
+        class="mt-2 pl-2 pr-2 bg-purple-600 text-white font-small py-2 rounded-xl 
+         shadow-sm hover:bg-indigo-700 active:bg-indigo-800 
+         transition-all"
       >
         Edit
       </button>
@@ -69,6 +72,9 @@ const cancelEditing = () => {
       />
 
       <button
+      class="mt-2 pl-2 pr-2 bg-purple-600 text-white font-small py-2 rounded-xl 
+         shadow-sm hover:bg-indigo-700 active:bg-indigo-800 
+         transition-all"
         @click="finishEditing"
       >
         Save
@@ -76,6 +82,9 @@ const cancelEditing = () => {
 
       <button
         @click="cancelEditing"
+        class="mt-2 pl-2 pr-2 bg-purple-600 text-white font-small py-2 rounded-xl 
+         shadow-sm hover:bg-indigo-700 active:bg-indigo-800 
+         transition-all"
       >
         Cancel
       </button>

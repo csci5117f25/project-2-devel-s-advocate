@@ -1,9 +1,9 @@
 <script setup>
-import {ref} from 'vue'
-import ConfettiComponent from '@/components/ConfettiComponent.vue';
+import { ref } from 'vue'
+import ConfettiComponent from '@/components/ConfettiComponent.vue'
 import { collection, doc, updateDoc, serverTimestamp } from 'firebase/firestore'
 import { db } from '@/firebaseApp'
-import { useRoute } from 'vue-router';
+import { useRoute } from 'vue-router'
 
 const route = useRoute()
 const runID = route.params.runID
@@ -12,8 +12,8 @@ const newComment = ref('')
 
 const addCommentToRun = async () => {
   await updateDoc(docRef, {
-      description: newComment.value
-    });
+    description: newComment.value,
+  })
 
   newComment.value = ''
 }
@@ -26,9 +26,23 @@ const addCommentToRun = async () => {
     </div>
 
     <div class="comment-button text-center border border-black rounded-xl px-4 py-2 m-4">
-      <button @click="addCommentToRun()">Submit Comment</button>
-      <input v-model="newComment" placeholder="Write a comment..." />
+<textarea
+  v-model="newComment"
+  placeholder="Write a comment about your run!"
+  rows="4"
+  class="w-full border border-gray-300 rounded-xl px-3 py-2 text-sm 
+         focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
+         resize-none whitespace-pre-wrap"
+></textarea>
 
+      <button
+        @click="addCommentToRun()"
+        class="mt-2 pl-2 pr-2 bg-purple-600 text-white font-small py-2 rounded-xl 
+         shadow-sm hover:bg-indigo-700 active:bg-indigo-800 
+         transition-all"
+         >
+        Submit Comment
+      </button>
     </div>
 
     <div class="text-center border border-black rounded-xl px-4 py-2 m-4">See your stats</div>
@@ -48,10 +62,10 @@ const addCommentToRun = async () => {
     </div>
 
     <RouterLink
-      :to="{ name: 'splashPage' }"
+      :to="{ name: 'dashboard' }"
       class="w-11/12 text-center border border-black rounded-xl px-4 py-2 mx-4 my-2"
     >
-      Return Home
+      Return to Dashboard
     </RouterLink>
   </div>
 
