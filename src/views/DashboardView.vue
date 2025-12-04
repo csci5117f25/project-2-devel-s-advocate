@@ -150,7 +150,7 @@ const chartData = computed(() => {
   <div class="flex flex-col mt-32">
     <div class="header m-2">
       <h1 class="text-3xl text-orange-salmon text-center font-bold">
-        Welcome Back, {{ user.displayName }}!
+        Welcome, {{ user.displayName }}!
       </h1>
     </div>
 
@@ -202,13 +202,13 @@ const chartData = computed(() => {
 
         <div
           id="sessions-list"
-          class="h-72 overflow-y-auto border border-black rounded-xl px-4 py-2 m-2"
+          class="h-72 overflow-y-auto rounded-xl px-4 py-2"
         >
           <div v-if="sortedRuns.length === 0" class="text-center text-cinder">
             No sessions have been tracked yet
           </div>
           <div v-else class="flex flex-col space-y-2">
-            <div v-for="run in sortedRuns" :key="run.id" @deleted="refreshRuns" class="border border-black rounded-xl p-2">
+            <div v-for="run in sortedRuns" :key="run.id" @deleted="refreshRuns" class="bg-neutral-primary-soft block p-2 border border-gray-200 rounded-xl shadow-xs">
               <router-link :to="`/completed-run/${run.id}`" class="mt-2 pl-2 pr-2 bg-purple-600 text-white font-small py-2 rounded-xl 
          shadow-sm hover:bg-indigo-700 active:bg-indigo-800 
          transition-all">

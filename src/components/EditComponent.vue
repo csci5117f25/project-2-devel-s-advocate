@@ -6,6 +6,9 @@ import { updateDoc, doc } from 'firebase/firestore'
 const props = defineProps({
   runID: { String, required: true },
   description: { String, required: false },
+  date: { Date, required: false },
+  duration: { Number, required: false },
+  distance: {String, required: false}
 })
 
 const emit = defineEmits(['updated'])

@@ -6,10 +6,13 @@
   --color-pickled-bluewood: #364156;
   --color-rosy-finch: #7d4e57;
   --color-orange-salmon: #d66853;
+  --color-white: #f4f3ef;
+  --color-border: #C8C8C1;
 }
 
 body {
   background-color: var(--color-ebony-clay);
+  border-color: var(--color-border);
 }
 
 /* button {
