@@ -38,7 +38,7 @@ const submitRun = async () => {
     miles: Number(distance.value),
     description: comment.value || '',
     path: [],
-    userID: user.value.uid
+    userID: user.value.uid,
   })
 
   const runID = docRef.id
@@ -48,44 +48,82 @@ const submitRun = async () => {
 
 <template>
   <div id="add-run-view" class="flex flex-col">
-    <h1 class="text-2xl text-center font-bold mt-32">Manually Add Run</h1>
+    <h1 class="text-2xl text-center text-orange-salmon font-bold mt-32">Manually Add Run</h1>
 
-    <h2 class="text-center m-4">
+    <h2 class="text-center text-white m-4">
       Input the data about your run session below. Rough estimates are okay.
     </h2>
 
-    <div id="form-container" class="flex flex-col border border-black rounded-xl px-4 py-2 m-4">
+    <div
+      id="form-container"
+      class="flex flex-col border-6 border-orange-salmon bg-white rounded-xl px-4 py-2 m-4"
+    >
       <div class="flex flex-row">
         <label for="run-date">Date: </label>
-        <input v-model="date" type="date" id="run-date" class="border border-black rounded-xl p-1 m-1" required />
+        <input
+          v-model="date"
+          type="date"
+          id="run-date"
+          class="border border-black rounded-xl p-1 m-1"
+          required
+        />
       </div>
 
       <div class="flex flex-row">
         <label for="start-time">Start Time: </label>
-        <input v-model="startTime" type="time" id="start-time" class="border border-black rounded-xl p-1 m-1" required />
+        <input
+          v-model="startTime"
+          type="time"
+          id="start-time"
+          class="border border-black rounded-xl p-1 m-1"
+          required
+        />
       </div>
 
       <div class="flex flex-row">
         <label for="end-time">End Time: </label>
-        <input v-model="endTime" type="time" id="end-time" class="border border-black rounded-xl p-1 m-1" required />
+        <input
+          v-model="endTime"
+          type="time"
+          id="end-time"
+          class="border border-black rounded-xl p-1 m-1"
+          required
+        />
       </div>
 
       <div class="flex flex-row">
         <label for="run-distance">Distance (in miles): </label>
-        <input v-model="distance" type="number" id="run-distance" class="w-1/2 border border-black rounded-xl p-1 m-1" required />
+        <input
+          v-model="distance"
+          type="number"
+          id="run-distance"
+          class="w-1/2 border border-black rounded-xl p-1 m-1"
+          required
+        />
       </div>
 
       <div class="flex flex-col my-2">
         <label for="comment">Comment (Optional): </label>
-        <textarea v-model="comment" id="comment" class="border border-black rounded-xl p-1 m-1" rows="5"></textarea>
+        <textarea
+          v-model="comment"
+          id="comment"
+          class="border border-black rounded-xl p-1 m-1"
+          rows="5"
+        ></textarea>
       </div>
 
       <div class="flex flex-row">
-        <button @click="submitRun" class="w-11/12 text-center border border-black rounded-xl px-4 py-2 mx-4 my-2">
+        <button
+          @click="submitRun"
+          class="w-11/12 text-center border border-black rounded-xl px-4 py-2 mx-4 my-2"
+        >
           Submit
         </button>
 
-        <RouterLink :to="{ name: 'dashboard' }" class="w-11/12 text-center border border-black rounded-xl px-4 py-2 mx-4 my-2">
+        <RouterLink
+          :to="{ name: 'dashboard' }"
+          class="w-11/12 text-center border border-black rounded-xl px-4 py-2 mx-4 my-2"
+        >
           Cancel
         </RouterLink>
       </div>
