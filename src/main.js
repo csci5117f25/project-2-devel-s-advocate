@@ -21,11 +21,21 @@ import { fab } from '@fortawesome/free-brands-svg-icons'
 import { VueFire, VueFireAuth } from 'vuefire'
 import { firebaseApp } from './firebaseApp.js'
 
+
+
 library.add(fas, far, fab)
 
 const app = createApp(App)
 
 app.use(router)
+
+// Persistent storage for run tracking
+import { createPinia } from 'pinia'
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+const pinia = createPinia()
+pinia.use(piniaPluginPersistedstate)
+
+app.use(pinia)
 
 app.use(VueFire, {
   firebaseApp,

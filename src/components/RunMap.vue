@@ -1,302 +1,216 @@
 <template>
-  <div class="relative w-full h-full">
-    <div v-if="!apiKey" class="p-4 bg-red-100 text-red-700">
-      Google Maps API key is missing!
-    </div>
-    <div v-else ref="mapContainer" class="w-full h-full rounded-lg shadow-lg border-2 border-red-500"></div>
-
-    <!-- Loading overlay -->
-    <div v-if="isLoadingLocation" class="absolute inset-0 bg-white bg-opacity-80 flex items-center justify-center rounded-lg">
-      <div class="text-center">
-        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-2"></div>
-        <p class="text-sm text-gray-600">Getting your location...</p>
-      </div>
-    </div>
-
-    <!-- Error overlay -->
-    <div v-if="locationError && !userLocation" class="absolute inset-0 bg-white bg-opacity-90 flex items-center justify-center rounded-lg">
-      <div class="text-center p-4">
-        <div class="text-red-500 mb-2">📍</div>
-        <p class="text-sm text-gray-700 mb-4">{{ locationError }}</p>
-        <div class="space-x-2">
-          <button @click="getUserLocation" class="px-4 py-2 bg-blue-600 text-white rounded text-sm hover:bg-blue-700">
-            Try Again
-          </button>
-          <button @click="location.reload()" class="px-4 py-2 bg-gray-600 text-white rounded text-sm hover:bg-gray-700">
-            Refresh Page
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
+    <div id="map" ref="mapRef"></div>
 </template>
 
 <script setup>
-/* global google */
-import { ref, computed, watch, onMounted, nextTick } from 'vue'
-import { decode } from '@googlemaps/polyline-codec'
+import { ref, onMounted, onUnmounted } from 'vue'
 
-const props = defineProps({
-  polyline: { type: String, default: '' }
-})
+const mapRef = ref(null)
+const isTracking = ref(false)
+const loading = ref(true)
+const track = ref([]) //Raw GPS points
+const simplifiedTrack = ref([]) // Simplified for display
+let map = null
+let polyline = null
+let watchId = null
+let lastUpdate = 0
+const UPDATE_INTERVAL = 4000    // Update map every 4 seconds
+const SIMPLIFY_TOLERANCE = 0.000015  // Tolarance for simplify-js
 
-const userLocation = ref(null)
-const isLoadingLocation = ref(true)
-const locationError = ref(null)
+// Distance in meters
+const distance = ref(0)
 
-const apiKey = import.meta.env.VITE_MAPS_API_KEY
-const center = ref({ lat: 40, lng: -100 })
-const zoom = ref(4)
-const mapInstance = ref(null)
-const mapContainer = ref(null)
-const userLocationMarker = ref(null)
-const routePolyline = ref(null)
-
-const decodedPath = computed(() => {
-  if (!props.polyline) return []
-  const decoded = decode(props.polyline)
-  return decoded.map(([lat, lng]) => ({ lat, lng }))
-})
-
+// ────────────────────────────────────────────────────────────────
+// Load Google Maps + simplify-js
+// ────────────────────────────────────────────────────────────────
 onMounted(async () => {
-  if (!apiKey) {
-    locationError.value = 'Google Maps API key is missing'
-    isLoadingLocation.value = false
-    return
-  }
-
-  try {
-    if (typeof google === 'undefined') {
-      await new Promise((resolve, reject) => {
-        const script = document.createElement('script')
-        script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&v=weekly`
-        script.async = true
-        script.defer = true
-        script.onload = resolve
-        script.onerror = reject
-        document.head.appendChild(script)
-      })
-    }
-
-    await nextTick()
-    
-    if (mapContainer.value) {
-      initializeMap()
-    } else {
-      locationError.value = 'Map container not found'
-      isLoadingLocation.value = false
-    }
-  } catch {
-    locationError.value = 'Failed to load Google Maps'
-    isLoadingLocation.value = false
-  }
+  await loadGoogleMaps()
+  await loadSimplifyJs()
+  initMap()
+  loading.value = false
 })
 
-function initializeMap() {
-  const mapOptions = {
-    center: center.value,
-    zoom: zoom.value,
-    disableDefaultUI: true,
-    zoomControl: false,
-    mapTypeControl: false,
-    scaleControl: false,
-    streetViewControl: false,
-    rotateControl: false,
-    fullscreenControl: false,
-    clickableIcons: false,
-    gestureHandling: 'greedy',
-    keyboardShortcuts: false,
-    styles: [
-      {
-        featureType: 'poi',
-        stylers: [{ visibility: 'off' }]
-      }
-    ]
-  }
-
-  mapInstance.value = new google.maps.Map(mapContainer.value, mapOptions)
-  getUserLocation()
-  updateMapElements()
+function loadGoogleMaps() {
+  return new Promise((resolve) => {
+    if (window.google?.maps) return resolve()
+    
+    const script = document.createElement('script')
+    script.src = `https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=geometry`
+    script.onload = resolve
+    document.head.appendChild(script)
+  })
 }
 
-function getUserLocation() {
-  if (!navigator.geolocation) {
-    locationError.value = 'Geolocation is not supported'
-    isLoadingLocation.value = false
-    return
-  }
+function loadSimplifyJs() {
+  return new Promise((resolve) => {
+    if (window.simplify) return resolve()
+    
+    const script = document.createElement('script')
+    script.src = 'https://unpkg.com/simplify-js@1.2.4/simplify.js'
+    script.onload = resolve
+    document.head.appendChild(script)
+  })
+}
 
-  if (window.location.protocol !== 'https:' && window.location.hostname !== 'localhost') {
-    locationError.value = 'Location services require HTTPS'
-    isLoadingLocation.value = false
-    return
-  }
+// ────────────────────────────────────────────────────────────────
+// Initialize Google Maps
+// ────────────────────────────────────────────────────────────────
+function initMap() {
+  map = new google.maps.Map(mapRef.value, {
+    zoom: 16,
+    center: { lat: 37.7749, lng: -122.4194 },
+    mapTypeId: 'terrain',
+    disableDefaultUI: false,
+    gestureHandling: 'greedy'
+  })
 
-  if (navigator.permissions) {
-    navigator.permissions.query({ name: 'geolocation' }).then((result) => {
-      if (result.state === 'denied') {
-        locationError.value = 'Location permission denied'
-        isLoadingLocation.value = false
-        return
-      }
-      requestLocation()
-    }).catch(() => {
-      requestLocation()
-    })
+  polyline = new google.maps.Polyline({
+    geodesic: true,
+    strokeColor: '#FF3B30',
+    strokeOpacity: 1.0,
+    strokeWeight: 5
+  })
+  polyline.setMap(map)
+}
+
+// ────────────────────────────────────────────────────────────────
+// Start / Stop tracking
+// ────────────────────────────────────────────────────────────────
+function toggleTracking() {
+  if (isTracking.value) {
+    stopTracking()
   } else {
-    requestLocation()
+    startTracking()
   }
 }
 
-function requestLocation() {
-  if (userLocation.value) {
-    isLoadingLocation.value = false
+async function startTracking() {
+  if (!navigator.geolocation) {
+    alert('Geolocation not supported')
     return
   }
 
-  isLoadingLocation.value = true
-  locationError.value = null
+  isTracking.value = true
+  track.value = []
+  simplifiedTrack.value = []
+  distance.value = 0
+  lastUpdate = 0
 
-  // Get current position once
-  // Then do continuous tracking
-  navigator.geolocation.getCurrentPosition(
-    (position) => {
-      handleLocationSuccess(position)
-      startContinuousTracking()
-    },
-    () => {
-      startContinuousTracking()
-    },
+  watchId = navigator.geolocation.watchPosition(
+    onPositionUpdate,
+    (err) => console.error('GPS Error:', err),
     {
       enableHighAccuracy: true,
       timeout: 10000,
-      maximumAge: 30000
+      maximumAge: 0
     }
   )
+
+  // Move map to user
+  navigator.geolocation.getCurrentPosition(pos => {
+    const { latitude, lng: longitude } = pos.coords
+    map.setCenter({ lat: latitude, lng: longitude })
+    map.setZoom(18)
+  })
 }
 
-function startContinuousTracking() {
-  const locationTimeout = setTimeout(() => {
-    if (isLoadingLocation.value) {
-      locationError.value = 'Location tracking timed out'
-      isLoadingLocation.value = false
-    }
-  }, 30000)
-
-  navigator.geolocation.watchPosition(
-    (position) => {
-      clearTimeout(locationTimeout)
-      handleLocationSuccess(position)
-    },
-    () => {
-      clearTimeout(locationTimeout)
-      if (isLoadingLocation.value) {
-        isLoadingLocation.value = false
-        locationError.value = 'Unable to track location'
-      }
-    },
-    {
-      enableHighAccuracy: true,
-      timeout: 30000,
-      maximumAge: 30000
-    }
-  )
-}
-
-function handleLocationSuccess(position) {
-  console.log('Location obtained:', position)
-  const location = {
-    lat: position.coords.latitude,
-    lng: position.coords.longitude
+function stopTracking() {
+  if (watchId) {
+    navigator.geolocation.clearWatch(watchId)
+    watchId = null
   }
-  userLocation.value = location
-  center.value = location
-  zoom.value = 18
-  isLoadingLocation.value = false
-  updateMapElements()
+  isTracking.value = false
+  updatePolyline() // final update
 }
 
-function updateMapElements() {
-  if (!mapInstance.value) return
+// ────────────────────────────────────────────────────────────────
+// Handle new GPS point
+// ────────────────────────────────────────────────────────────────
+function onPositionUpdate(position) {
+  const { latitude, longitude, accuracy } = position.coords
 
-  // Update map center and zoom
-  mapInstance.value.setCenter(center.value)
-  mapInstance.value.setZoom(zoom.value)
-
-  // Update user location marker
-  if (userLocation.value) {
-    if (userLocationMarker.value) {
-      userLocationMarker.value.setPosition(userLocation.value)
-    } else {
-      userLocationMarker.value = new google.maps.Marker({
-        position: userLocation.value,
-        map: mapInstance.value,
-        icon: {
-          path: 'M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z',
-          fillColor: '#4285F4',
-          fillOpacity: 1,
-          strokeColor: '#ffffff',
-          strokeWeight: 2,
-          scale: 1.5,
-          anchor: new google.maps.Point(12, 22)
-        }
-      })
-    }
+  const point = {
+    lat: latitude,
+    lng: longitude,
+    timestamp: position.timestamp,
+    accuracy
   }
 
-  // Update route polyline
-  if (decodedPath.value.length > 0) {
-    if (routePolyline.value) {
-      routePolyline.value.setPath(decodedPath.value)
-    } else {
-      routePolyline.value = new google.maps.Polyline({
-        path: decodedPath.value,
-        geodesic: true,
-        strokeColor: '#3B82F6',
-        strokeOpacity: 1,
-        strokeWeight: 6,
-        map: mapInstance.value
-      })
-    }
-    fitBounds()
+  track.value.push(point)
+
+  // Calculate distance (only if we have previous point)
+  if (track.value.length > 1) {
+    const prev = track.value[track.value.length - 2]
+    const meters = google.maps.geometry.spherical.computeDistanceBetween(
+      new google.maps.LatLng(prev.lat, prev.lng),
+      new google.maps.LatLng(latitude, longitude)
+    )
+    distance.value += meters
+  }
+
+  // Throttled map update
+  const now = Date.now()
+  if (now - lastUpdate > UPDATE_INTERVAL) {
+    updatePolyline()
+    lastUpdate = now
   }
 }
 
-function fitBounds() {
-  if (!mapInstance.value || decodedPath.value.length === 0) return
-  
-  //include route in bounds
-  const bounds = new google.maps.LatLngBounds()
-  decodedPath.value.forEach(point => bounds.extend(point))
-  
-  //include user location
-  if (userLocation.value) {
-    bounds.extend(userLocation.value)
-  }
-  
-  mapInstance.value.fitBounds(bounds)
+// ────────────────────────────────────────────────────────────────
+// Simplify + update polyline
+// ────────────────────────────────────────────────────────────────
+function updatePolyline() {
+  if (!window.simplify || track.value.length < 2) return
+
+  const pointsForSimplify = track.value.map(p => ({ x: p.lat, y: p.lng }))
+  const simplified = window.simplify(pointsForSimplify, SIMPLIFY_TOLERANCE, true)
+
+  simplifiedTrack.value = simplified.map(p => ({ lat: p.x, lng: p.y }))
+  polyline.setPath(simplifiedTrack.value)
 }
 
-watch(decodedPath, () => {
-  if (mapInstance.value) updateMapElements()
+function formatDistance(meters) {
+  if (meters >= 1000) {
+    return (meters / 1000).toFixed(2) + ' km'
+  }
+  return meters.toFixed(0) + ' m'
+}
+
+onUnmounted(() => {
+  if (watchId) navigator.geolocation.clearWatch(watchId)
 })
 </script>
 
-<style>
-.h-full { height: 400px; }
-.gm-style .gmnoprint,
-.gm-style .gm-style-cc,
-.gm-bundled-control,
-.gm-fullscreen-control,
-.gmnoprint {
-  display: none !important;
+<style scoped>
+.runner {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-/* Loading spinner animation */
-@keyframes spin {
-  to { transform: rotate(360deg); }
+#map {
+  flex: 1;
 }
-.animate-spin {
-  animation: spin 1s linear infinite;
+
+.controls {
+  padding: 15px;
+  background: white;
+  text-align: center;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+}
+
+button {
+  padding: 12px 30px;
+  font-size: 18px;
+  background: #FF3B30;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+}
+
+.stats {
+  margin-top: 10px;
+  font-size: 16px;
 }
 </style>
