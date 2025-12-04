@@ -1,10 +1,23 @@
 <script setup>
-import { RouterLink } from 'vue-router'
-import { useAuth } from '@/assets/js/authHelper'
+import { RouterLink, useRouter } from 'vue-router'
 import { useCurrentUser } from 'vuefire'
+import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 
-const { login, logout } = useAuth()
+const router = useRouter()
 const user = useCurrentUser()
+
+const login = async () => {
+  const auth = getAuth()
+  const provider = new GoogleAuthProvider()
+  await signInWithPopup(auth, provider)
+  router.push({ name: 'dashboard' })
+}
+
+const logout = async () => {
+  const auth = getAuth()
+  await auth.signOut()
+  router.push({ name: 'splashPage' })
+}
 </script>
 
 <template>

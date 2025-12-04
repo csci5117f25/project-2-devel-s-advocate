@@ -10,12 +10,22 @@ import NotFoundView from '../views/NotFoundView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    { path: '/', name: 'splashPage', component: SplashPageView, meta: { title: 'Splash Page' } },
+    {
+      path: '/',
+      name: 'splashPage',
+      component: SplashPageView,
+      beforeEnter: async () => {
+        const { getCurrentUser } = await import('vuefire')
+        const user = await getCurrentUser()
+        if (user) return { name: 'dashboard' }
+      },
+      meta: { title: 'Splash Page' },
+    },
     {
       path: '/dashboard',
       name: 'dashboard',
       component: DashboardView,
-      meta: { title: 'Dashboard' },
+      meta: { title: 'Dashboard', requiresAuth: true },
     },
     {
       path: '/start-run',
@@ -48,14 +58,17 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   document.title = to.meta.title || 'Tr@ceRoute'
 
-  if (to.meta.requiresAuth) {
-    const auth = getAuth()
-    const currentUser = auth.currentUser
+  const auth = getAuth()
+  const currentUser = auth.currentUser
 
-    if (!currentUser) {
-      alert('You need to log in to access this page.')
-      return next({ name: 'splashPage' })
-    }
+  // If user logs in and tries to go to splash, redirect to dashboard
+  if (to.name === 'splashPage' && currentUser) {
+    return next({ name: 'dashboard' })
+  }
+
+  if (to.meta.requiresAuth && !currentUser) {
+    alert('You need to log in to access this page.')
+    return next({ name: 'splashPage' })
   }
 
   next()
