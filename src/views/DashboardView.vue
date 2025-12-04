@@ -13,12 +13,7 @@ const chart_view = ref('')
 
 //get runs for current user
 const runsQuery = computed(() => {
-  return user.value
-    ? query(
-        collection(db, 'runs'),
-        where('userID', '==', user.value.uid)
-      )
-    : null
+  return user.value ? query(collection(db, 'runs'), where('userID', '==', user.value.uid)) : null
 })
 
 const runs = useCollection(runsQuery)
@@ -56,7 +51,7 @@ const userStats = computed(() => {
       fastestAvgSpeed: 0,
       totalRunningTime: 0,
       longestRun: 0,
-      totalRuns: 0
+      totalRuns: 0,
     }
   }
 
@@ -65,7 +60,7 @@ const userStats = computed(() => {
   let totalTime = 0
   let longestRun = 0
 
-  runs.value.forEach(run => {
+  runs.value.forEach((run) => {
     const miles = run.miles || run.distance || 0
     const duration = run.duration || 0
 
@@ -86,7 +81,7 @@ const userStats = computed(() => {
     fastestAvgSpeed: parseFloat(maxSpeed.toFixed(1)),
     totalRunningTime: totalTime,
     longestRun,
-    totalRuns: runs.value.length
+    totalRuns: runs.value.length,
   }
 })
 
@@ -103,7 +98,7 @@ watch(
       console.error('Error updating user stats:', err)
     }
   },
-  { immediate: true, deep: true }
+  { immediate: true, deep: true },
 )
 
 //chart
@@ -112,7 +107,7 @@ const chartData = computed(() => {
 
   //mapping the date to miles
   const dailyMap = {}
-  runs.value.forEach(run => {
+  runs.value.forEach((run) => {
     const date = run.startTime?.toDate?.()?.toISOString().split('T')[0] || 'Unknown'
     if (!dailyMap[date]) dailyMap[date] = { miles: 0, duration: 0 }
     dailyMap[date].miles += run.miles || 0
@@ -124,15 +119,15 @@ const chartData = computed(() => {
   //can pick chart based on the sortinf
   let data = []
   let label = ''
-  switch(chart_view.value) {
+  switch (chart_view.value) {
     case 'distance':
     default:
       label = 'Miles Run'
-      data = labels.map(d => dailyMap[d].miles)
+      data = labels.map((d) => dailyMap[d].miles)
       break
     case 'time':
       label = 'Time per Run (minutes)'
-      data = labels.map(d => dailyMap[d].duration)
+      data = labels.map((d) => dailyMap[d].duration)
       break
   }
 
@@ -144,51 +139,57 @@ const chartData = computed(() => {
         data,
         backgroundColor: '#d66853',
         borderColor: '#d66853',
-        borderWidth: 1
-      }
-    ]
+        borderWidth: 1,
+      },
+    ],
   }
 })
-
 </script>
 
 <template>
   <div class="flex flex-col mt-32">
     <div class="header m-2">
-      <h1 class="text-2xl text-center font-bold">Welcome Back, {{ user.displayName }}</h1>
+      <h1 class="text-3xl text-orange-salmon text-center font-bold">
+        Welcome Back, {{ user.displayName }}!
+      </h1>
     </div>
 
     <div class="flex flex-row justify-evenly m-2">
-      <RouterLink
-        :to="{ name: 'startRun' }"
-        class="font-bold border border-black rounded-xl px-4 py-2"
-      >
-        Start Run
+      <RouterLink :to="{ name: 'startRun' }" class="font-bold bg-white rounded-xl px-4 py-2">
+        <font-awesome-icon icon="fa-play" /> Start Run
       </RouterLink>
 
-      <RouterLink
-        :to="{ name: 'addRun' }"
-        class="font-bold border border-black rounded-xl px-4 py-2"
-      >
-        Add Run
+      <RouterLink :to="{ name: 'addRun' }" class="font-bold bg-white rounded-xl px-4 py-2">
+        <font-awesome-icon icon="fa-plus" /> Add Run
       </RouterLink>
     </div>
 
     <div class="flex flex-col items-center">
-      <div class="font-bold text-center w-3/4 border border-black rounded-xl px-4 py-2 m-2">
-        Your Stats
-      </div>
-      <div class="flex flex-row flex-wrap justify-around m-2" id="stats-container">
-        <div class="text-center border border-black rounded-xl px-4 py-2 m-2">
-          Average Speed: {{ userStats.averageSpeed}} mph
+      <div class="font-bold text-center w-7/8 bg-white rounded-xl px-4 py-2 m-2">Your Stats</div>
+      <div
+        class="flex flex-row bg-white rounded-xl not-first:justify-around m-2"
+        id="stats-container"
+      >
+        <div class="flex flex-col text-center text-white bg-rosy-finch rounded-xl px-4 py-2 m-2">
+          <p>Avg Speed</p>
+          <p>{{ userStats.averageSpeed }} MPH</p>
         </div>
-        <div class="text-center border border-black rounded-xl px-4 py-2 m-2">Total Sessions: {{ userStats.totalRuns|| 0 }}</div>
-        <div class="text-center border border-black rounded-xl px-4 py-2 m-2">{{ userStats.totalMiles }} Miles Ran</div>
+        <div class="flex flex-col text-center text-white bg-rosy-finch rounded-xl px-4 py-2 m-2">
+          <p>Total Runs</p>
+          <p>{{ userStats.totalRuns || 0 }}</p>
+        </div>
+        <div class="flex flex-col text-center text-white bg-rosy-finch rounded-xl px-4 py-2 m-2">
+          <p>Total Miles</p>
+          <p>{{ userStats.totalMiles }}</p>
+        </div>
       </div>
     </div>
 
     <div class="flex flex-col" id="sessions-and-chart-container">
-      <div id="sessions-container" class="border border-black rounded-xl px-4 py-2 m-2">
+      <div
+        id="sessions-container"
+        class="border-6 border-orange-salmon bg-white rounded-xl px-4 py-2 m-2"
+      >
         <select v-model="sort_option" class="border border-black rounded-xl px-4 py-2 m-2">
           <option disabled hidden value="">Sort Sessions By</option>
           <option value="date-desc">Date (Newest First)</option>
@@ -199,9 +200,12 @@ const chartData = computed(() => {
           <option value="duration-asc">Duration (Shortest First)</option>
         </select>
 
-        <div id="sessions-list" class="h-72 overflow-y-auto border border-black rounded-xl px-4 py-2 m-2">
-          <div v-if="sortedRuns.length === 0" class="text-center text-gray-500">
-            No runs yet
+        <div
+          id="sessions-list"
+          class="h-72 overflow-y-auto border border-black rounded-xl px-4 py-2 m-2"
+        >
+          <div v-if="sortedRuns.length === 0" class="text-center text-cinder">
+            No sessions have been tracked yet
           </div>
           <div v-else class="flex flex-col space-y-2">
             <div v-for="run in sortedRuns" :key="run.id" @deleted="refreshRuns" class="border border-black rounded-xl p-2">
@@ -214,14 +218,25 @@ const chartData = computed(() => {
               <p><strong>Date:</strong> {{ run.startTime?.toDate()?.toLocaleDateString() || 0 }}</p>
               <p><strong>Distance:</strong> {{ run.miles || run.distance || 0 }} miles</p>
               <p><strong>Duration:</strong> {{ run.duration || 0 }} min</p>
-              <p v-if="run.path?.length"><strong>Tracked Miles:</strong> {{ run.miles || run.distance || 0 }} miles</p>
-              <p v-if="run.description"><strong>Comment:</strong> <EditComponent :runID="`${run.id}`" :description="`${run.description}`"></EditComponent></p>
+              <p v-if="run.path?.length">
+                <strong>Tracked Miles:</strong> {{ run.miles || run.distance || 0 }} miles
+              </p>
+              <p v-if="run.description">
+                <strong>Comment:</strong>
+                <EditComponent
+                  :runID="`${run.id}`"
+                  :description="`${run.description}`"
+                ></EditComponent>
+              </p>
             </div>
           </div>
         </div>
       </div>
 
-      <div id="chart-container" class="border border-black rounded-xl px-4 py-2 m-2">
+      <div
+        id="chart-container"
+        class="border-6 border-orange-salmon bg-white rounded-xl px-4 py-2 m-2"
+      >
         <select v-model="chart_view" class="border border-black rounded-xl px-4 py-2 m-2">
           <option disabled hidden value="">Choose Chart View</option>
           <option value="distance">Daily Miles Ran</option>

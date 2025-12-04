@@ -1,55 +1,70 @@
 @import 'tailwindcss';
 
-/* 
-color hex codes
-['#11151C',
-'#212D40',
-'#364156',
-'#7D4E57']
-
-*/
-.button {
-    padding: 1em 1em;
-    margin: 0.9em;
-    border: none;
-    border-radius: 5px;
-    letter-spacing: 3px;
-    text-transform: lowercase;
-    cursor: pointer;
-    color: rgb(169, 141, 252);
-    background-color: hsla(310, 100%, 37%, 0.2);
-    transition: all 1000ms;
-    font-size: 11px;
-    position: relative;
-    overflow: hidden;
+@theme {
+  --color-cinder: #11151c;
+  --color-ebony-clay: #212d40;
+  --color-pickled-bluewood: #364156;
+  --color-rosy-finch: #7d4e57;
+  --color-orange-salmon: #d66853;
 }
 
-.button:hover {
-    transform: scale(1.1);
-    outline: 2px solid hsla(310, 100%, 37%, 0.2);
-    box-shadow: 4px 5px 17px -4px rgb(169, 141, 252);
-    -webkit-animation: glow 0.5s ease-in-out infinite alternate;
-    -moz-animation: glow 0.5s ease-in-out infinite alternate;
-    animation: glow 0.5s ease-in-out infinite alternate;
+body {
+  background-color: var(--color-ebony-clay);
 }
 
+/* button {
+  padding: 1em 1em;
+  margin: 0.9em;
+  border: none;
+  border-radius: 5px;
+  letter-spacing: 3px;
+  text-transform: lowercase;
+  cursor: pointer;
+  color: rgb(169, 141, 252);
+  background-color: hsla(310, 100%, 37%, 0.2);
+  transition: all 1000ms;
+  font-size: 11px;
+  position: relative;
+  overflow: hidden;
+}
 
+button:hover {
+  transform: scale(1.1);
+  outline: 2px solid hsla(310, 100%, 37%, 0.2);
+  box-shadow: 4px 5px 17px -4px rgb(169, 141, 252);
+  -webkit-animation: glow 0.5s ease-in-out infinite alternate;
+  -moz-animation: glow 0.5s ease-in-out infinite alternate;
+  animation: glow 0.5s ease-in-out infinite alternate;
+}
 
 .glow {
-    color: rgb(169, 141, 252);
-    text-align: center;
-    -webkit-animation: glow 1s ease-in-out infinite alternate;
-    -moz-animation: glow 1s ease-in-out infinite alternate;
-    animation: glow 1s ease-in-out infinite alternate;
+  color: rgb(169, 141, 252);
+  text-align: center;
+  -webkit-animation: glow 1s ease-in-out infinite alternate;
+  -moz-animation: glow 1s ease-in-out infinite alternate;
+  animation: glow 1s ease-in-out infinite alternate;
 }
 
 @-webkit-keyframes glow {
-    from {
-        text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073, 0 0 70px #e60073;
-    }
+  from {
+    text-shadow:
+      0 0 10px #fff,
+      0 0 20px #fff,
+      0 0 30px #e60073,
+      0 0 40px #e60073,
+      0 0 50px #e60073,
+      0 0 60px #e60073,
+      0 0 70px #e60073;
+  }
 
-    to {
-        text-shadow: 0 0 20px #fff, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
-    }
-}
-
+  to {
+    text-shadow:
+      0 0 20px #fff,
+      0 0 30px #ff4da6,
+      0 0 40px #ff4da6,
+      0 0 50px #ff4da6,
+      0 0 60px #ff4da6,
+      0 0 70px #ff4da6,
+      0 0 80px #ff4da6;
+  }
+} */
