@@ -9,7 +9,7 @@ import DeleteComponent from '@/components/DeleteComponent.vue'
 
 const user = useCurrentUser()
 const sort_option = ref('date-desc') //have this as defualt
-const chart_view = ref('')
+const chart_view = ref('distance')
 
 //get runs for current user
 const runsQuery = computed(() => {
@@ -164,28 +164,28 @@ const chartData = computed(() => {
       </RouterLink>
     </div>
 
-    <div class="flex flex-col items-center">
-      <div class="font-bold text-center w-7/8 bg-white rounded-xl px-4 py-2 m-2">Your Stats</div>
+    <div class="flex flex-row justify-center m-2" id="stats-container">
       <div
-        class="flex flex-row bg-white rounded-xl not-first:justify-around m-2"
-        id="stats-container"
+        class="stat flex flex-col text-center border-6 border-orange-salmon bg-white rounded-xl px-4 py-2 m-2"
       >
-        <div class="flex flex-col text-center text-white bg-rosy-finch rounded-xl px-4 py-2 m-2">
-          <p>Avg Speed</p>
-          <p>{{ userStats.averageSpeed }} MPH</p>
-        </div>
-        <div class="flex flex-col text-center text-white bg-rosy-finch rounded-xl px-4 py-2 m-2">
-          <p>Total Runs</p>
-          <p>{{ userStats.totalRuns || 0 }}</p>
-        </div>
-        <div class="flex flex-col text-center text-white bg-rosy-finch rounded-xl px-4 py-2 m-2">
-          <p>Total Miles</p>
-          <p>{{ userStats.totalMiles }}</p>
-        </div>
+        <p class="font-bold">Avg Speed</p>
+        <p>{{ userStats.averageSpeed }} MPH</p>
+      </div>
+      <div
+        class="stat flex flex-col text-center border-6 border-orange-salmon bg-white rounded-xl px-4 py-2 m-2"
+      >
+        <p class="font-bold">Total Runs</p>
+        <p>{{ userStats.totalRuns || 0 }}</p>
+      </div>
+      <div
+        class="stat flex flex-col text-center border-6 border-orange-salmon bg-white rounded-xl px-4 py-2 m-2"
+      >
+        <p class="font-bold">Total Miles</p>
+        <p>{{ userStats.totalMiles }}</p>
       </div>
     </div>
 
-    <div class="flex flex-col" id="sessions-and-chart-container">
+    <div class="flex flex-col m-2" id="sessions-and-chart-container">
       <div
         id="sessions-container"
         class="border-6 border-orange-salmon bg-white rounded-xl px-4 py-2 m-2"
@@ -257,15 +257,20 @@ const chartData = computed(() => {
 <style scoped>
 @media (min-width: 1024px) {
   #stats-container {
-    width: 50%;
     flex-direction: row;
     justify-content: space-around;
     flex-wrap: wrap;
+    margin: calc(var(--spacing) * 6);
+  }
+
+  .stat {
+    width: 20%;
   }
 
   #sessions-and-chart-container {
     flex-direction: row;
     justify-content: space-evenly;
+    margin: calc(var(--spacing) * 6);
   }
 
   #sessions-container,

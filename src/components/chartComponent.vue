@@ -37,5 +37,5 @@ watch([() => props.labels, () => props.datasets], () => initChart(), { deep: tru
 </script>
 
 <template>
-  <canvas ref="chartRef" style="height:180px; width:100%"></canvas>
+  <canvas ref="chartRef" style="height:200px; width:100%"></canvas>
 </template>
