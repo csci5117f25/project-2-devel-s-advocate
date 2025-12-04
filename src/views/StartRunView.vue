@@ -26,7 +26,7 @@ const finishAndSave = async () => {
   stopTracking()
   
   if (!user.value) {
-    alert('You must be logged in to save runs')
+    alert('You must be logged in to save runs! How did you get here?')
     return
   }
 
@@ -59,6 +59,12 @@ function formatDistance(meters) {
   //convert to miles
   const miles = meters * 0.000621371
   return miles.toFixed(2) + ' mi'
+}
+
+function cancel() {
+  store.reset()
+  stopTracking()
+  router.push({ name: 'splashPage' })
 }
 
 onMounted(async () => {
@@ -139,13 +145,13 @@ function initMap(position = null) {
         {{ tracking ? 'Stop' : 'Start' }}
       </div>
     </div>
-
-    <RouterLink
-      :to="{ name: 'splashPage' }"
+    
+    <div
+      @click="cancel"
       class="w-11/12 text-center border border-black rounded-xl px-4 py-2 mx-4 my-2"
     >
       Cancel
-    </RouterLink>
+    </div>
   </div>
 
   <div id="desktop-view" class="hidden mt-32">
