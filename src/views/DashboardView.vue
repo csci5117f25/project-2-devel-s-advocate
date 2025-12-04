@@ -150,7 +150,7 @@ const chartData = computed(() => {
   <div class="flex flex-col mt-32">
     <div class="header m-2">
       <h1 class="text-3xl text-orange-salmon text-center font-bold">
-        Welcome Back, {{ user.displayName }}!
+        Welcome, {{ user.displayName }}!
       </h1>
     </div>
 
