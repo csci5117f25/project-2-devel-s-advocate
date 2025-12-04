@@ -9,7 +9,7 @@ import DeleteComponent from '@/components/DeleteComponent.vue'
 
 const user = useCurrentUser()
 const sort_option = ref('date-desc') //have this as defualt
-const chart_view = ref('')
+const chart_view = ref('distance')
 
 //get runs for current user
 const runsQuery = computed(() => {
@@ -209,8 +209,8 @@ const chartData = computed(() => {
           </div>
           <div v-else class="flex flex-col space-y-2">
             <div v-for="run in sortedRuns" :key="run.id" @deleted="refreshRuns" class="border border-black rounded-xl p-2">
-              <router-link :to="`/completed-run/${run.id}`" class="mt-2 pl-2 pr-2 bg-purple-600 text-white font-small py-2 rounded-xl 
-         shadow-sm hover:bg-indigo-700 active:bg-indigo-800 
+              <router-link :to="`/completed-run/${run.id}`" class="mt-2 pl-2 pr-2 bg-purple-600 text-white font-small py-2 rounded-xl
+         shadow-sm hover:bg-indigo-700 active:bg-indigo-800
          transition-all">
                 View Your Run!
               </router-link>
