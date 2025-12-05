@@ -56,7 +56,7 @@ const submitRun = async () => {
 
     <div
       id="form-container"
-      class="flex flex-col border-6 border-orange-salmon bg-white rounded-xl px-4 py-2 m-4"
+      class="flex flex-col border-6 border-orange-salmon bg-off-white rounded-xl px-4 py-2 m-4"
     >
       <div class="flex flex-row">
         <label for="run-date">Date: </label>

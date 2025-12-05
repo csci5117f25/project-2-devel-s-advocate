@@ -22,7 +22,7 @@ const logout = async () => {
 
 <template>
   <nav
-    class="flex justify-between items-center bg-white h-24 px-5 drop-shadow-xl/25 fixed top-0 z-1000 w-full"
+    class="flex justify-between items-center bg-off-white h-24 px-5 drop-shadow-xl/25 fixed top-0 z-1000 w-full"
   >
     <RouterLink :to="{ name: 'dashboard' }">
       <img src="../assets/images/traceroute_logo.png" alt="tr@ceroute" />
@@ -31,14 +31,14 @@ const logout = async () => {
     <button
       v-if="user"
       @click="logout"
-      class="border border-black font-bold bg-white rounded-xl px-4 py-2 cursor-pointer"
+      class="border border-black font-bold bg-off-white rounded-xl px-4 py-2 cursor-pointer"
     >
       <font-awesome-icon icon="fa-sign-out-alt" /><slot class="text-blue-950"> Logout</slot>
     </button>
     <button
       v-else
       @click="login"
-      class="border border-black font-bold bg-white rounded-xl px-4 py-2 cursor-pointer"
+      class="border border-black font-bold bg-off-white rounded-xl px-4 py-2 cursor-pointer"
     >
       <font-awesome-icon icon="fa-sign-in-alt" /><slot class="text-blue-950"> Login</slot>
     </button>

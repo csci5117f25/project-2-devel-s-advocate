@@ -155,30 +155,30 @@ const chartData = computed(() => {
     </div>
 
     <div class="flex flex-row justify-evenly m-2">
-      <RouterLink :to="{ name: 'startRun' }" class="font-bold bg-white rounded-xl px-4 py-2">
+      <RouterLink :to="{ name: 'startRun' }" class="font-bold bg-off-white rounded-xl px-4 py-2">
         <font-awesome-icon icon="fa-play" /> Start Run
       </RouterLink>
 
-      <RouterLink :to="{ name: 'addRun' }" class="font-bold bg-white rounded-xl px-4 py-2">
+      <RouterLink :to="{ name: 'addRun' }" class="font-bold bg-off-white rounded-xl px-4 py-2">
         <font-awesome-icon icon="fa-plus" /> Add Run
       </RouterLink>
     </div>
 
     <div class="flex flex-row justify-center m-2" id="stats-container">
       <div
-        class="stat flex flex-col text-center border-6 border-orange-salmon bg-white rounded-xl px-4 py-2 m-2"
+        class="stat flex flex-col text-center border-6 border-orange-salmon bg-off-white rounded-xl px-4 py-2 m-2"
       >
         <p class="font-bold">Avg Speed</p>
         <p>{{ userStats.averageSpeed }} MPH</p>
       </div>
       <div
-        class="stat flex flex-col text-center border-6 border-orange-salmon bg-white rounded-xl px-4 py-2 m-2"
+        class="stat flex flex-col text-center border-6 border-orange-salmon bg-off-white rounded-xl px-4 py-2 m-2"
       >
         <p class="font-bold">Total Runs</p>
         <p>{{ userStats.totalRuns || 0 }}</p>
       </div>
       <div
-        class="stat flex flex-col text-center border-6 border-orange-salmon bg-white rounded-xl px-4 py-2 m-2"
+        class="stat flex flex-col text-center border-6 border-orange-salmon bg-off-white rounded-xl px-4 py-2 m-2"
       >
         <p class="font-bold">Total Miles</p>
         <p>{{ userStats.totalMiles }}</p>
@@ -188,7 +188,7 @@ const chartData = computed(() => {
     <div class="flex flex-col m-2" id="sessions-and-chart-container">
       <div
         id="sessions-container"
-        class="border-6 border-orange-salmon bg-white rounded-xl px-4 py-2 m-2"
+        class="border-6 border-orange-salmon bg-off-white rounded-xl px-4 py-2 m-2"
       >
         <select v-model="sort_option" class="border border-black rounded-xl px-4 py-2 m-2">
           <option disabled hidden value="">Sort Sessions By</option>
@@ -208,10 +208,16 @@ const chartData = computed(() => {
             No sessions have been tracked yet
           </div>
           <div v-else class="flex flex-col space-y-2">
-            <div v-for="run in sortedRuns" :key="run.id" @deleted="refreshRuns" class="border border-black rounded-xl p-2">
-              <router-link :to="`/completed-run/${run.id}`" class="mt-2 pl-2 pr-2 bg-purple-600 text-white font-small py-2 rounded-xl
-         shadow-sm hover:bg-indigo-700 active:bg-indigo-800
-         transition-all">
+            <div
+              v-for="run in sortedRuns"
+              :key="run.id"
+              @deleted="refreshRuns"
+              class="border border-black rounded-xl p-2"
+            >
+              <router-link
+                :to="`/completed-run/${run.id}`"
+                class="mt-2 pl-2 pr-2 bg-purple-600 text-white font-small py-2 rounded-xl shadow-sm hover:bg-indigo-700 active:bg-indigo-800 transition-all"
+              >
                 View Your Run!
               </router-link>
               <DeleteComponent :runID="`${run.id}`"></DeleteComponent>
@@ -235,7 +241,7 @@ const chartData = computed(() => {
 
       <div
         id="chart-container"
-        class="border-6 border-orange-salmon bg-white rounded-xl px-4 py-2 m-2"
+        class="border-6 border-orange-salmon bg-off-white rounded-xl px-4 py-2 m-2"
       >
         <select v-model="chart_view" class="border border-black rounded-xl px-4 py-2 m-2">
           <option disabled hidden value="">Choose Chart View</option>

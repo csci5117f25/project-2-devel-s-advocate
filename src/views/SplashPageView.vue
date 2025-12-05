@@ -67,7 +67,7 @@ const constraintsRef = ref(null)
 
       <RouterLink
         :to="{ name: 'dashboard' }"
-        class="font-bold bg-white text-cinder rounded-xl px-4 py-2 m-4"
+        class="font-bold bg-off-white text-cinder rounded-xl px-4 py-2 m-4"
       >
         Begin Your Journey Today!
       </RouterLink>
