@@ -48,56 +48,58 @@ const submitRun = async () => {
 
 <template>
   <div id="add-run-view" class="flex flex-col">
-    <h1 class="text-2xl text-center text-orange-salmon font-bold mt-32">Manually Add Run</h1>
+    <h1 class="text-2xl text-center text-orange-salmon font-bold mt-32 drop-shadow-xl/50">
+      Manually Add Run
+    </h1>
 
-    <h2 class="text-center text-white m-4">
+    <h2 class="text-center text-white m-4 drop-shadow-xl/50">
       Input the data about your run session below. Rough estimates are okay.
     </h2>
 
     <div
       id="form-container"
-      class="flex flex-col border-6 border-orange-salmon bg-off-white rounded-xl px-4 py-2 m-4"
+      class="flex flex-col border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-4 drop-shadow-xl/50"
     >
-      <div class="flex flex-row">
+      <div class="flex flex-row items-center">
         <label for="run-date">Date: </label>
         <input
           v-model="date"
           type="date"
           id="run-date"
-          class="border border-black rounded-xl p-1 m-1"
+          class="border-2 border-orange-salmon rounded-xl p-1 m-2"
           required
         />
       </div>
 
-      <div class="flex flex-row">
+      <div class="flex flex-row items-center">
         <label for="start-time">Start Time: </label>
         <input
           v-model="startTime"
           type="time"
           id="start-time"
-          class="border border-black rounded-xl p-1 m-1"
+          class="border-2 border-orange-salmon rounded-xl p-1 m-2"
           required
         />
       </div>
 
-      <div class="flex flex-row">
+      <div class="flex flex-row items-center">
         <label for="end-time">End Time: </label>
         <input
           v-model="endTime"
           type="time"
           id="end-time"
-          class="border border-black rounded-xl p-1 m-1"
+          class="border-2 border-orange-salmon rounded-xl p-1 m-2"
           required
         />
       </div>
 
-      <div class="flex flex-row">
+      <div class="flex flex-row items-center">
         <label for="run-distance">Distance (in miles): </label>
         <input
           v-model="distance"
           type="number"
           id="run-distance"
-          class="w-1/2 border border-black rounded-xl p-1 m-1"
+          class="w-1/4 border-2 border-orange-salmon rounded-xl p-1 m-2"
           required
         />
       </div>
@@ -107,22 +109,22 @@ const submitRun = async () => {
         <textarea
           v-model="comment"
           id="comment"
-          class="border border-black rounded-xl p-1 m-1"
+          class="border-2 border-orange-salmon rounded-xl p-1 my-2"
           rows="5"
         ></textarea>
       </div>
 
-      <div class="flex flex-row">
+      <div class="flex flex-row justify-center">
         <button
           @click="submitRun"
-          class="w-11/12 text-center border border-black rounded-xl px-4 py-2 mx-4 my-2"
+          class="text-center border-2 border-orange-salmon rounded-xl px-4 py-2 mx-4 my-2 cursor-pointer"
         >
           Submit
         </button>
 
         <RouterLink
           :to="{ name: 'dashboard' }"
-          class="w-11/12 text-center border border-black rounded-xl px-4 py-2 mx-4 my-2"
+          class="text-center border-2 border-orange-salmon rounded-xl px-4 py-2 mx-4 my-2 cursor-pointer"
         >
           Cancel
         </RouterLink>
@@ -140,7 +142,12 @@ const submitRun = async () => {
     width: 50%;
   }
   #run-distance {
-    width: 20%;
+    width: 15%;
   }
+}
+/* Changes the icon to a light color suitable for dark backgrounds. */
+input[type='date'],
+input[type='time'] {
+  color-scheme: dark;
 }
 </style>
