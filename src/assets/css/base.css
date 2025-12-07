@@ -6,13 +6,40 @@
   --color-pickled-bluewood: #364156;
   --color-rosy-finch: #7d4e57;
   --color-orange-salmon: #d66853;
+  --color-off-white: #f4f3ef;
   --color-white: #f4f3ef;
   --color-border: #C8C8C1;
 }
 
+
 body {
-  background-color: var(--color-ebony-clay);
-  border-color: var(--color-border);
+  /* background-color: var(--color-ebony-clay); */
+  background: linear-gradient(
+    135deg,
+    var(--color-cinder),
+    var(--color-ebony-clay),
+    var(--color-pickled-bluewood),
+    var(--color-rosy-finch)
+  );
+  background-size: 300% 300%;
+  animation: gradientShift 10s ease infinite;
+  min-height: 100vh;
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  /* color: var(--color-off-white); */
+}
+
+/* An animation/keyframing for changing the gradient on the main background. */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 /* button {

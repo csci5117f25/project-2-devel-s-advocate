@@ -29,11 +29,27 @@ const logout = async () => {
 
 <template>
   <nav
-    class="flex justify-between items-center bg-white h-24 px-5 drop-shadow-xl/25 fixed top-0 z-1000 w-full"
+    class="flex justify-between items-center bg-off-white h-24 px-5 drop-shadow-xl/25 fixed top-0 z-1000 w-full"
   >
     <RouterLink :to="{ name: 'dashboard' }">
       <img src="../assets/images/traceroute_logo.png" alt="tr@ceroute" />
     </RouterLink>
+
+    <template v-if="user">
+      <div class="flex flex-row">
+        <RouterLink
+          :to="{ name: 'startRun' }"
+          class="border border-black font-bold bg-off-white rounded-xl px-4 py-2"
+        >
+          <font-awesome-icon icon="fa-play" /> Start
+        </RouterLink>
+
+        <RouterLink
+          :to="{ name: 'addRun' }"
+          class="border border-black font-bold bg-off-white rounded-xl px-4 py-2"
+        >
+          <font-awesome-icon icon="fa-plus" /> Add
+        </RouterLink>
 
     <div class="hidden md:flex space-x-4 items-center">
 

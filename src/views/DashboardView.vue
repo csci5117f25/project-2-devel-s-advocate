@@ -3,13 +3,16 @@ import { ref, computed, watch } from 'vue'
 import { useCollection, useCurrentUser } from 'vuefire'
 import { collection, query, where, doc, setDoc } from 'firebase/firestore'
 import { db } from '@/firebaseApp'
-import ChartComponent from '@/components/chartComponent.vue'
+import ChartComponent from '@/components/ChartComponent.vue'
 import EditComponent from '@/components/EditComponent.vue'
 import DeleteComponent from '@/components/DeleteComponent.vue'
 
 const user = useCurrentUser()
-const sort_option = ref('date-desc') //have this as defualt
+const filter_option = ref('all') // Have this as default
+const sort_option = ref('date-desc') // Have this as default
 const chart_view = ref('distance')
+// TODO: Melody, comment the above line out and uncomment the following line.
+// const chart_view = ref('chart-general')
 
 //get runs for current user
 const runsQuery = computed(() => {
@@ -147,71 +150,111 @@ const chartData = computed(() => {
 </script>
 
 <template>
-  <div class="flex flex-col mt-32">
+  <div class="flex flex-col mt-32 drop-shadow-xl/50">
     <div class="header m-2">
       <h1 class="text-3xl text-orange-salmon text-center font-bold">
         Welcome, {{ user.displayName }}!
+        <!-- Welcome! -->
       </h1>
     </div>
 
-    <div class="flex flex-row justify-evenly m-2">
-      <RouterLink :to="{ name: 'startRun' }" class="font-bold bg-white rounded-xl px-4 py-2">
+    <!-- <div class="flex flex-row justify-evenly m-2">
+      <RouterLink :to="{ name: 'startRun' }" class="font-bold bg-off-white rounded-xl px-4 py-2">
         <font-awesome-icon icon="fa-play" /> Start Run
       </RouterLink>
 
-      <RouterLink :to="{ name: 'addRun' }" class="font-bold bg-white rounded-xl px-4 py-2">
+      <RouterLink :to="{ name: 'addRun' }" class="font-bold bg-off-white rounded-xl px-4 py-2">
         <font-awesome-icon icon="fa-plus" /> Add Run
       </RouterLink>
-    </div>
+    </div> -->
 
-    <div class="flex flex-row justify-center m-2" id="stats-container">
+    <div class="flex flex-row flex-wrap justify-around m-2" id="stats-container">
       <div
-        class="stat flex flex-col text-center border-6 border-orange-salmon bg-white rounded-xl px-4 py-2 m-2"
+        class="stat w-2/5 flex flex-col text-center bg-orange-salmon border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-2"
+      >
+        <p>Total Miles <font-awesome-icon icon="fa-shoe-prints" /></p>
+        <p class="font-bold text-2xl">{{ userStats.totalMiles }}</p>
+      </div>
+
+      <!-- <div
+        class="stat flex flex-col text-center border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-2"
       >
         <p class="font-bold">Avg Speed</p>
         <p>{{ userStats.averageSpeed }} MPH</p>
+      </div> -->
+      <div
+        class="stat w-2/5 flex flex-col text-center bg-orange-salmon border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-2"
+      >
+        <p>Walks <font-awesome-icon icon="fa-person-walking" /></p>
+        <p class="font-bold text-2xl">{{ userStats.totalWalks || 0 }}</p>
       </div>
       <div
-        class="stat flex flex-col text-center border-6 border-orange-salmon bg-white rounded-xl px-4 py-2 m-2"
+        class="stat w-2/5 flex flex-col text-center bg-orange-salmon border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-2"
       >
-        <p class="font-bold">Total Runs</p>
-        <p>{{ userStats.totalRuns || 0 }}</p>
+        <p>Runs <font-awesome-icon icon="fa-person-running" /></p>
+        <p class="font-bold text-2xl">{{ userStats.totalRuns || 0 }}</p>
       </div>
       <div
-        class="stat flex flex-col text-center border-6 border-orange-salmon bg-white rounded-xl px-4 py-2 m-2"
+        class="stat w-2/5 flex flex-col text-center bg-orange-salmon border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-2"
       >
-        <p class="font-bold">Total Miles</p>
-        <p>{{ userStats.totalMiles }}</p>
+        <p>Bike Rides <font-awesome-icon icon="fa-person-biking" /></p>
+        <p class="font-bold text-2xl">{{ userStats.totalBikeRides || 0 }}</p>
       </div>
     </div>
 
     <div class="flex flex-col m-2" id="sessions-and-chart-container">
       <div
         id="sessions-container"
-        class="border-6 border-orange-salmon bg-white rounded-xl px-4 py-2 m-2"
+        class="border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-2"
       >
-        <select v-model="sort_option" class="border border-black rounded-xl px-4 py-2 m-2">
-          <option disabled hidden value="">Sort Sessions By</option>
-          <option value="date-desc">Date (Newest First)</option>
-          <option value="date-asc">Date (Oldest First)</option>
-          <option value="distance-desc">Distance (Longest First)</option>
-          <option value="distance-asc">Distance (Shortest First)</option>
-          <option value="duration-desc">Duration (Longest First)</option>
-          <option value="duration-asc">Duration (Shortest First)</option>
-        </select>
+        <div class="flex flex-col">
+          <div class="flex items-center px-2 py-2">
+            <label for="filter-option">List:</label>
+            <select
+              v-model="filter_option"
+              id="filter-option"
+              class="bg-orange-salmon rounded-xl px-4 py-2 m-2"
+            >
+              <option value="all">All Sessions</option>
+              <option value="walks-only">Walks Only</option>
+              <option value="runs-only">Runs Only</option>
+              <option value="bike-rides-only">Bike Rides Only</option>
+            </select>
+          </div>
 
-        <div
-          id="sessions-list"
-          class="h-72 overflow-y-auto rounded-xl px-4 py-2"
-        >
-          <div v-if="sortedRuns.length === 0" class="text-center text-cinder">
+          <div class="flex items-center px-2 py-2">
+            <label for="sort-option">Sort By:</label>
+            <select
+              v-model="sort_option"
+              id="sort-option"
+              class="bg-orange-salmon rounded-xl px-4 py-2 m-2"
+            >
+              <option value="date-desc">Date (Newest First)</option>
+              <option value="date-asc">Date (Oldest First)</option>
+              <option value="distance-desc">Distance (Longest First)</option>
+              <option value="distance-asc">Distance (Shortest First)</option>
+              <option value="duration-desc">Duration (Longest First)</option>
+              <option value="duration-asc">Duration (Shortest First)</option>
+            </select>
+          </div>
+        </div>
+
+        <div id="sessions-list" class="max-h-72 overflow-y-auto rounded-xl m-2">
+          <div v-if="sortedRuns.length === 0" class="text-center text-off-white">
             No sessions have been tracked yet
           </div>
           <div v-else class="flex flex-col space-y-2">
-            <div v-for="run in sortedRuns" :key="run.id" @deleted="refreshRuns" class="bg-neutral-primary-soft block p-2 border border-gray-200 rounded-xl shadow-xs">
-              <router-link :to="`/completed-run/${run.id}`" class="mt-2 pl-2 pr-2 bg-purple-600 text-white font-small py-2 rounded-xl 
-         shadow-sm hover:bg-indigo-700 active:bg-indigo-800 
-         transition-all">
+            <p class="text-center">Tracked Sessions</p>
+            <div
+              v-for="run in sortedRuns"
+              :key="run.id"
+              @deleted="refreshRuns"
+              class="border-2 border-orange-salmon rounded-xl p-2"
+            >
+              <router-link
+                :to="`/completed-run/${run.id}`"
+                class="mt-2 pl-2 pr-2 bg-purple-600 text-white font-small py-2 rounded-xl shadow-sm hover:bg-indigo-700 active:bg-indigo-800 transition-all"
+              >
                 View Your Run!
               </router-link>
               <DeleteComponent :runID="`${run.id}`"></DeleteComponent>
@@ -235,14 +278,30 @@ const chartData = computed(() => {
 
       <div
         id="chart-container"
-        class="border-6 border-orange-salmon bg-white rounded-xl px-4 py-2 m-2"
+        class="border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-2"
       >
-        <select v-model="chart_view" class="border border-black rounded-xl px-4 py-2 m-2">
-          <option disabled hidden value="">Choose Chart View</option>
-          <option value="distance">Daily Miles Ran</option>
-          <option value="time">Time per run</option>
-          <option>C</option>
-        </select>
+        <div class="flex flex-col">
+          <select v-model="chart_view" class="bg-orange-salmon rounded-xl px-4 py-2 m-2">
+            <option value="distance">Daily Miles Ran</option>
+            <option value="time">Time per run</option>
+          </select>
+          <!-- TODO: Melody, uncomment the following code and comment out
+               the above <select> element.  -->
+          <!-- <div class="flex items-center">
+            <label for="chart-view">Show Miles</label>
+            <select
+              v-model="chart_view"
+              id="chart-view"
+              class="border-2 border-orange-salmon rounded-xl px-4 py-2 m-2"
+            >
+              <option class="text-cinder" value="chart-general">Traveled</option>
+              <option class="text-cinder" value="chart-walking">Walked</option>
+              <option class="text-cinder" value="chart-running">Ran</option>
+              <option class="text-cinder" value="chart-biking">Biked</option>
+            </select>
+            <p>Over Time</p>
+          </div> -->
+        </div>
 
         <ChartComponent
           :labels="chartData.labels"
@@ -264,7 +323,7 @@ const chartData = computed(() => {
   }
 
   .stat {
-    width: 20%;
+    width: 15%;
   }
 
   #sessions-and-chart-container {
@@ -278,9 +337,12 @@ const chartData = computed(() => {
     width: 40%;
   }
 
-  #sessions-list,
+  /* #sessions-list,*/
   #chart {
     height: calc(var(--spacing) * 100);
   }
+}
+option:hover {
+  color: --color-cinder;
 }
 </style>

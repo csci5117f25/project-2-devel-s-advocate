@@ -43,41 +43,33 @@ const finishEditing = async () => {
   editText.value = ''
 }
 
-//cancel function 
+//cancel function
 const cancelEditing = () => {
-  isEditing.value = false;
-  editText.value = "";
-};
+  isEditing.value = false
+  editText.value = ''
+}
 </script>
 
 <template>
   <div class="flex items-center gap-3">
     <template v-if="!isEditing">
-      <span class="flex-1 text-gray-800">
+      <span class="flex-1 text-off-white">
         {{ props.description }}
       </span>
 
       <button
         @click="startEditing"
-        class="mt-2 pl-2 pr-2 bg-purple-600 text-white font-small py-2 rounded-xl 
-         shadow-sm hover:bg-indigo-700 active:bg-indigo-800 
-         transition-all"
+        class="mt-2 pl-2 pr-2 bg-purple-600 text-white font-small py-2 rounded-xl shadow-sm hover:bg-indigo-700 active:bg-indigo-800 transition-all"
       >
         Edit
       </button>
     </template>
 
     <template v-else>
-      <input
-        ref="editableInput"
-        v-model="editText"
-        @keyup.enter="finishEditing"
-      />
+      <input ref="editableInput" v-model="editText" @keyup.enter="finishEditing" />
 
       <button
-      class="mt-2 pl-2 pr-2 bg-purple-600 text-white font-small py-2 rounded-xl 
-         shadow-sm hover:bg-indigo-700 active:bg-indigo-800 
-         transition-all"
+        class="mt-2 pl-2 pr-2 bg-purple-600 text-white font-small py-2 rounded-xl shadow-sm hover:bg-indigo-700 active:bg-indigo-800 transition-all"
         @click="finishEditing"
       >
         Save
@@ -85,9 +77,7 @@ const cancelEditing = () => {
 
       <button
         @click="cancelEditing"
-        class="mt-2 pl-2 pr-2 bg-purple-600 text-white font-small py-2 rounded-xl 
-         shadow-sm hover:bg-indigo-700 active:bg-indigo-800 
-         transition-all"
+        class="mt-2 pl-2 pr-2 bg-purple-600 text-white font-small py-2 rounded-xl shadow-sm hover:bg-indigo-700 active:bg-indigo-800 transition-all"
       >
         Cancel
       </button>
