@@ -35,7 +35,6 @@ const logout = async () => {
       <img src="../assets/images/traceroute_logo.png" alt="tr@ceroute" />
     </RouterLink>
 
-    <template v-if="user">
       <div class="flex flex-row">
         <RouterLink
           :to="{ name: 'startRun' }"
@@ -51,15 +50,6 @@ const logout = async () => {
           <font-awesome-icon icon="fa-plus" /> Add
         </RouterLink>
 
-    <div class="hidden md:flex space-x-4 items-center">
-
-        <RouterLink :to="{ name: 'addRun' }">
-          Add Run
-    </RouterLink>
-
-        <RouterLink :to="{ name: 'startRun' }">
-          Start Run
-    </RouterLink>
           <button
         v-if="user"
         @click="logout"
