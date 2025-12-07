@@ -63,11 +63,11 @@ const constraintsRef = ref(null)
       id="row-5"
       class="flex flex-col text-center items-center justify-center p-4 mt-10 bottom-0 z-1000 w-full"
     >
-      <h2 class="text-white text-2xl p-4">Join today and become part of our running family!</h2>
+      <h2 class="text-2xl p-4">Join today and become part of our running family!</h2>
 
       <RouterLink
         :to="{ name: 'dashboard' }"
-        class="font-bold border-2 border-orange-salmon rounded-xl px-4 py-2 m-4"
+        class="font-bold bg-orange-salmon border-2 border-orange-salmon rounded-xl px-4 py-2 m-4"
       >
         Begin Your Journey Today!
       </RouterLink>

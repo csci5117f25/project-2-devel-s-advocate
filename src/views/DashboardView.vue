@@ -154,6 +154,7 @@ const chartData = computed(() => {
     <div class="header m-2">
       <h1 class="text-3xl text-orange-salmon text-center font-bold">
         Welcome, {{ user.displayName }}!
+        <!-- Welcome! -->
       </h1>
     </div>
 
@@ -169,7 +170,7 @@ const chartData = computed(() => {
 
     <div class="flex flex-row flex-wrap justify-around m-2" id="stats-container">
       <div
-        class="stat w-2/5 flex flex-col text-center border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-2"
+        class="stat w-2/5 flex flex-col text-center bg-orange-salmon border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-2"
       >
         <p>Total Miles <font-awesome-icon icon="fa-shoe-prints" /></p>
         <p class="font-bold text-2xl">{{ userStats.totalMiles }}</p>
@@ -182,19 +183,19 @@ const chartData = computed(() => {
         <p>{{ userStats.averageSpeed }} MPH</p>
       </div> -->
       <div
-        class="stat w-2/5 flex flex-col text-center border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-2"
+        class="stat w-2/5 flex flex-col text-center bg-orange-salmon border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-2"
       >
         <p>Walks <font-awesome-icon icon="fa-person-walking" /></p>
         <p class="font-bold text-2xl">{{ userStats.totalWalks || 0 }}</p>
       </div>
       <div
-        class="stat w-2/5 flex flex-col text-center border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-2"
+        class="stat w-2/5 flex flex-col text-center bg-orange-salmon border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-2"
       >
         <p>Runs <font-awesome-icon icon="fa-person-running" /></p>
         <p class="font-bold text-2xl">{{ userStats.totalRuns || 0 }}</p>
       </div>
       <div
-        class="stat w-2/5 flex flex-col text-center border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-2"
+        class="stat w-2/5 flex flex-col text-center bg-orange-salmon border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-2"
       >
         <p>Bike Rides <font-awesome-icon icon="fa-person-biking" /></p>
         <p class="font-bold text-2xl">{{ userStats.totalBikeRides || 0 }}</p>
@@ -212,12 +213,12 @@ const chartData = computed(() => {
             <select
               v-model="filter_option"
               id="filter-option"
-              class="border-2 border-orange-salmon rounded-xl px-4 py-2 m-2"
+              class="bg-orange-salmon rounded-xl px-4 py-2 m-2"
             >
-              <option class="text-cinder" value="all">All Sessions</option>
-              <option class="text-cinder" value="walks-only">Walks Only</option>
-              <option class="text-cinder" value="runs-only">Runs Only</option>
-              <option class="text-cinder" value="bike-rides-only">Bike Rides Only</option>
+              <option value="all">All Sessions</option>
+              <option value="walks-only">Walks Only</option>
+              <option value="runs-only">Runs Only</option>
+              <option value="bike-rides-only">Bike Rides Only</option>
             </select>
           </div>
 
@@ -226,19 +227,19 @@ const chartData = computed(() => {
             <select
               v-model="sort_option"
               id="sort-option"
-              class="border-2 border-orange-salmon rounded-xl px-4 py-2 m-2"
+              class="bg-orange-salmon rounded-xl px-4 py-2 m-2"
             >
-              <option class="text-cinder" value="date-desc">Date (Newest First)</option>
-              <option class="text-cinder" value="date-asc">Date (Oldest First)</option>
-              <option class="text-cinder" value="distance-desc">Distance (Longest First)</option>
-              <option class="text-cinder" value="distance-asc">Distance (Shortest First)</option>
-              <option class="text-cinder" value="duration-desc">Duration (Longest First)</option>
-              <option class="text-cinder" value="duration-asc">Duration (Shortest First)</option>
+              <option value="date-desc">Date (Newest First)</option>
+              <option value="date-asc">Date (Oldest First)</option>
+              <option value="distance-desc">Distance (Longest First)</option>
+              <option value="distance-asc">Distance (Shortest First)</option>
+              <option value="duration-desc">Duration (Longest First)</option>
+              <option value="duration-asc">Duration (Shortest First)</option>
             </select>
           </div>
         </div>
 
-        <div id="sessions-list" class="h-72 overflow-y-auto rounded-xl m-2">
+        <div id="sessions-list" class="max-h-72 overflow-y-auto rounded-xl m-2">
           <div v-if="sortedRuns.length === 0" class="text-center text-off-white">
             No sessions have been tracked yet
           </div>
@@ -280,12 +281,9 @@ const chartData = computed(() => {
         class="border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-2"
       >
         <div class="flex flex-col">
-          <select
-            v-model="chart_view"
-            class="border-2 border-orange-salmon rounded-xl px-4 py-2 m-2"
-          >
-            <option class="text-cinder" value="distance">Daily Miles Ran</option>
-            <option class="text-cinder" value="time">Time per run</option>
+          <select v-model="chart_view" class="bg-orange-salmon rounded-xl px-4 py-2 m-2">
+            <option value="distance">Daily Miles Ran</option>
+            <option value="time">Time per run</option>
           </select>
           <!-- TODO: Melody, uncomment the following code and comment out
                the above <select> element.  -->
@@ -339,7 +337,7 @@ const chartData = computed(() => {
     width: 40%;
   }
 
-  #sessions-list,
+  /* #sessions-list,*/
   #chart {
     height: calc(var(--spacing) * 100);
   }

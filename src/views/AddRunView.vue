@@ -49,10 +49,10 @@ const submitRun = async () => {
 
 <template>
   <div id="add-run-view" class="flex flex-col drop-shadow-xl/50">
-    <h1 class="text-2xl text-center text-orange-salmon font-bold mt-32">Manually Add Run</h1>
+    <h1 class="text-3xl text-center text-orange-salmon font-bold mt-32">Manually Add Session</h1>
 
-    <h2 class="text-center text-white m-4">
-      Input the data about your run session below. Rough estimates are okay.
+    <h2 class="text-center text-off-white m-4">
+      Input the data about your exercise session below. Rough estimates are okay.
     </h2>
 
     <div
@@ -65,7 +65,7 @@ const submitRun = async () => {
           v-model="date"
           type="date"
           id="run-date"
-          class="border-2 border-orange-salmon rounded-xl p-1 m-2"
+          class="bg-orange-salmon border-2 border-orange-salmon rounded-xl p-1 m-2"
           required
         />
       </div>
@@ -75,11 +75,13 @@ const submitRun = async () => {
         <select
           v-model="exerciseType"
           id="exercise-type"
-          class="border-2 border-orange-salmon rounded-xl p-1 m-2"
+          class="bg-orange-salmon border-2 border-orange-salmon rounded-xl p-1 m-2"
+          required
         >
-          <option class="text-cinder" value="type-walk">Walk</option>
-          <option class="text-cinder" value="type-run">Run</option>
-          <option class="text-cinder" value="type-bike-ride">Bike Ride</option>
+          <option disabled selected hidden value="">Select Option</option>
+          <option value="type-walk">Walk</option>
+          <option value="type-run">Run</option>
+          <option value="type-bike-ride">Bike Ride</option>
         </select>
       </div>
 
@@ -89,7 +91,7 @@ const submitRun = async () => {
           v-model="startTime"
           type="time"
           id="start-time"
-          class="border-2 border-orange-salmon rounded-xl p-1 m-2"
+          class="bg-orange-salmon border-2 border-orange-salmon rounded-xl p-1 m-2"
           required
         />
       </div>
@@ -100,7 +102,7 @@ const submitRun = async () => {
           v-model="endTime"
           type="time"
           id="end-time"
-          class="border-2 border-orange-salmon rounded-xl p-1 m-2"
+          class="bg-orange-salmon border-2 border-orange-salmon rounded-xl p-1 m-2"
           required
         />
       </div>
@@ -111,17 +113,19 @@ const submitRun = async () => {
           v-model="distance"
           type="number"
           id="run-distance"
-          class="w-1/4 border-2 border-orange-salmon rounded-xl p-1 m-2"
+          class="w-1/4 bg-orange-salmon border-2 border-orange-salmon rounded-xl p-1 m-2"
+          placeholder="#"
           required
         />
       </div>
 
       <div class="flex flex-col my-2">
-        <label for="comment">Comment (Optional): </label>
+        <label for="comment">Comment: </label>
         <textarea
           v-model="comment"
+          placeholder="Add an optional comment about your session!"
           id="comment"
-          class="border-2 border-orange-salmon rounded-xl p-1 my-2"
+          class="border-2 border-orange-salmon rounded-xl p-2 my-2 focus:ring-2 focus:ring-off-white focus:border-off-white"
           rows="3"
         ></textarea>
       </div>
@@ -129,14 +133,14 @@ const submitRun = async () => {
       <div class="flex flex-row justify-center">
         <button
           @click="submitRun"
-          class="text-center border-2 border-orange-salmon rounded-xl px-4 py-2 mx-4 my-2 cursor-pointer"
+          class="text-center text-orange-salmon bg-off-white rounded-xl px-4 py-2 mx-4 my-2 cursor-pointer"
         >
           Submit
         </button>
 
         <RouterLink
           :to="{ name: 'dashboard' }"
-          class="text-center border-2 border-orange-salmon rounded-xl px-4 py-2 mx-4 my-2 cursor-pointer"
+          class="text-center text-orange-salmon bg-off-white rounded-xl px-4 py-2 mx-4 my-2 cursor-pointer"
         >
           Cancel
         </RouterLink>
