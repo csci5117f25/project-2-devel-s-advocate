@@ -9,6 +9,7 @@ const router = useRouter()
 const user = useCurrentUser()
 
 const date = ref('')
+const exerciseType = ref('')
 const startTime = ref('')
 const endTime = ref('')
 const distance = ref('')
@@ -47,82 +48,99 @@ const submitRun = async () => {
 </script>
 
 <template>
-  <div id="add-run-view" class="flex flex-col">
-    <h1 class="text-2xl text-center text-orange-salmon font-bold mt-32">Manually Add Run</h1>
+  <div id="add-run-view" class="flex flex-col drop-shadow-xl/50">
+    <h1 class="text-3xl text-center text-orange-salmon font-bold mt-32">Manually Add Session</h1>
 
-    <h2 class="text-center text-white m-4">
-      Input the data about your run session below. Rough estimates are okay.
+    <h2 class="text-center text-off-white m-4">
+      Input the data about your exercise session below. Rough estimates are okay.
     </h2>
 
     <div
       id="form-container"
-      class="flex flex-col border-6 border-orange-salmon bg-white rounded-xl px-4 py-2 m-4"
+      class="flex flex-col border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-4"
     >
-      <div class="flex flex-row">
+      <div class="flex flex-row items-center">
         <label for="run-date">Date: </label>
         <input
           v-model="date"
           type="date"
           id="run-date"
-          class="border border-black rounded-xl p-1 m-1"
+          class="bg-orange-salmon border-2 border-orange-salmon rounded-xl p-1 m-2"
           required
         />
       </div>
 
-      <div class="flex flex-row">
+      <div class="flex flex-row items-center">
+        <label for="exercise-type">Exercise Type: </label>
+        <select
+          v-model="exerciseType"
+          id="exercise-type"
+          class="bg-orange-salmon border-2 border-orange-salmon rounded-xl p-1 m-2"
+          required
+        >
+          <option disabled selected hidden value="">Select Option</option>
+          <option value="type-walk">Walk</option>
+          <option value="type-run">Run</option>
+          <option value="type-bike-ride">Bike Ride</option>
+        </select>
+      </div>
+
+      <div class="flex flex-row items-center">
         <label for="start-time">Start Time: </label>
         <input
           v-model="startTime"
           type="time"
           id="start-time"
-          class="border border-black rounded-xl p-1 m-1"
+          class="bg-orange-salmon border-2 border-orange-salmon rounded-xl p-1 m-2"
           required
         />
       </div>
 
-      <div class="flex flex-row">
+      <div class="flex flex-row items-center">
         <label for="end-time">End Time: </label>
         <input
           v-model="endTime"
           type="time"
           id="end-time"
-          class="border border-black rounded-xl p-1 m-1"
+          class="bg-orange-salmon border-2 border-orange-salmon rounded-xl p-1 m-2"
           required
         />
       </div>
 
-      <div class="flex flex-row">
+      <div class="flex flex-row items-center">
         <label for="run-distance">Distance (in miles): </label>
         <input
           v-model="distance"
           type="number"
           id="run-distance"
-          class="w-1/2 border border-black rounded-xl p-1 m-1"
+          class="w-1/4 bg-orange-salmon border-2 border-orange-salmon rounded-xl p-1 m-2"
+          placeholder="#"
           required
         />
       </div>
 
       <div class="flex flex-col my-2">
-        <label for="comment">Comment (Optional): </label>
+        <label for="comment">Comment: </label>
         <textarea
           v-model="comment"
+          placeholder="Add an optional comment about your session!"
           id="comment"
-          class="border border-black rounded-xl p-1 m-1"
-          rows="5"
+          class="border-2 border-orange-salmon rounded-xl p-2 my-2 focus:ring-2 focus:ring-off-white focus:border-off-white"
+          rows="3"
         ></textarea>
       </div>
 
-      <div class="flex flex-row">
+      <div class="flex flex-row justify-center">
         <button
           @click="submitRun"
-          class="w-11/12 text-center border border-black rounded-xl px-4 py-2 mx-4 my-2"
+          class="text-center text-orange-salmon bg-off-white rounded-xl px-4 py-2 mx-4 my-2 cursor-pointer"
         >
           Submit
         </button>
 
         <RouterLink
           :to="{ name: 'dashboard' }"
-          class="w-11/12 text-center border border-black rounded-xl px-4 py-2 mx-4 my-2"
+          class="text-center text-orange-salmon bg-off-white rounded-xl px-4 py-2 mx-4 my-2 cursor-pointer"
         >
           Cancel
         </RouterLink>
@@ -140,7 +158,12 @@ const submitRun = async () => {
     width: 50%;
   }
   #run-distance {
-    width: 20%;
+    width: 15%;
   }
+}
+/* Changes the icon to a light color suitable for dark backgrounds. */
+input[type='date'],
+input[type='time'] {
+  color-scheme: dark;
 }
 </style>

@@ -2,11 +2,12 @@
 import { ref, watch, defineProps, onMounted } from 'vue'
 import { Chart, registerables } from 'chart.js'
 Chart.register(...registerables)
+Chart.defaults.color = '#f4f3ef'
 
 const props = defineProps({
   labels: { type: Array, default: () => [] },
   datasets: { type: Array, default: () => [] },
-  title: { type: String, default: 'Chart' }
+  title: { type: String, default: 'Chart' },
 })
 
 const chartRef = ref(null)
@@ -16,9 +17,12 @@ const chartOptions = {
   responsive: true,
   plugins: {
     legend: { display: true, position: 'top' },
-    title: { display: true, text: props.title }
+    title: { display: true, text: props.title },
   },
-  scales: { y: { beginAtZero: true } }
+  scales: {
+    x: { grid: { color: '#f4f3ef' } },
+    y: { beginAtZero: true, grid: { color: '#f4f3ef' } },
+  },
 }
 
 const initChart = () => {
@@ -27,7 +31,7 @@ const initChart = () => {
   chartInstance = new Chart(chartRef.value, {
     type: 'line',
     data: { labels: props.labels, datasets: props.datasets },
-    options: chartOptions
+    options: chartOptions,
   })
 }
 
@@ -37,5 +41,5 @@ watch([() => props.labels, () => props.datasets], () => initChart(), { deep: tru
 </script>
 
 <template>
-  <canvas ref="chartRef" style="height:200px; width:100%"></canvas>
+  <canvas ref="chartRef" style="height: 200px; width: 100%"></canvas>
 </template>
