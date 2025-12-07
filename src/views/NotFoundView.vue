@@ -19,13 +19,13 @@ watchEffect(() => {
 
       <RouterLink
         :to="{ name: targetRoute }"
-        class="w-11/12 text-center border border-white rounded-xl px-4 py-2 mx-4 my-2"
+        class="w-11/12 text-center border-2 border-orange-salmon rounded-xl px-4 py-2 mx-4 my-2"
       >
         Return Home
       </RouterLink>
     </div>
 
-    <div id="tired-animation" class="text-center border border-white h-75 rounded-xl m-4">
+    <div id="tired-animation" class="text-center border-6 border-orange-salmon h-75 rounded-xl m-4">
       Tired Animation
     </div>
   </div>

@@ -28,20 +28,39 @@ const logout = async () => {
       <img src="../assets/images/traceroute_logo.png" alt="tr@ceroute" />
     </RouterLink>
 
-    <button
-      v-if="user"
-      @click="logout"
-      class="border border-black font-bold bg-off-white rounded-xl px-4 py-2 cursor-pointer"
-    >
-      <font-awesome-icon icon="fa-sign-out-alt" /><slot class="text-blue-950"> Logout</slot>
-    </button>
-    <button
-      v-else
-      @click="login"
-      class="border border-black font-bold bg-off-white rounded-xl px-4 py-2 cursor-pointer"
-    >
-      <font-awesome-icon icon="fa-sign-in-alt" /><slot class="text-blue-950"> Login</slot>
-    </button>
+    <template v-if="user">
+      <div class="flex flex-row">
+        <RouterLink
+          :to="{ name: 'startRun' }"
+          class="border border-black font-bold bg-off-white rounded-xl px-4 py-2"
+        >
+          <font-awesome-icon icon="fa-play" /> Start
+        </RouterLink>
+
+        <RouterLink
+          :to="{ name: 'addRun' }"
+          class="border border-black font-bold bg-off-white rounded-xl px-4 py-2"
+        >
+          <font-awesome-icon icon="fa-plus" /> Add
+        </RouterLink>
+
+        <button
+          @click="logout"
+          class="border border-black font-bold bg-off-white rounded-xl px-4 py-2 cursor-pointer"
+        >
+          <font-awesome-icon icon="fa-sign-out-alt" /> Logout
+        </button>
+      </div>
+    </template>
+
+    <template v-else>
+      <button
+        @click="login"
+        class="border border-black font-bold bg-off-white rounded-xl px-4 py-2 cursor-pointer"
+      >
+        <font-awesome-icon icon="fa-sign-in-alt" /> Login
+      </button>
+    </template>
   </nav>
 </template>
 

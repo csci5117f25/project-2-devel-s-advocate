@@ -9,6 +9,7 @@ const router = useRouter()
 const user = useCurrentUser()
 
 const date = ref('')
+const exerciseType = ref('')
 const startTime = ref('')
 const endTime = ref('')
 const distance = ref('')
@@ -47,18 +48,16 @@ const submitRun = async () => {
 </script>
 
 <template>
-  <div id="add-run-view" class="flex flex-col">
-    <h1 class="text-2xl text-center text-orange-salmon font-bold mt-32 drop-shadow-xl/50">
-      Manually Add Run
-    </h1>
+  <div id="add-run-view" class="flex flex-col drop-shadow-xl/50">
+    <h1 class="text-2xl text-center text-orange-salmon font-bold mt-32">Manually Add Run</h1>
 
-    <h2 class="text-center text-white m-4 drop-shadow-xl/50">
+    <h2 class="text-center text-white m-4">
       Input the data about your run session below. Rough estimates are okay.
     </h2>
 
     <div
       id="form-container"
-      class="flex flex-col border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-4 drop-shadow-xl/50"
+      class="flex flex-col border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-4"
     >
       <div class="flex flex-row items-center">
         <label for="run-date">Date: </label>
@@ -69,6 +68,19 @@ const submitRun = async () => {
           class="border-2 border-orange-salmon rounded-xl p-1 m-2"
           required
         />
+      </div>
+
+      <div class="flex flex-row items-center">
+        <label for="exercise-type">Exercise Type: </label>
+        <select
+          v-model="exerciseType"
+          id="exercise-type"
+          class="border-2 border-orange-salmon rounded-xl p-1 m-2"
+        >
+          <option class="text-cinder" value="type-walk">Walk</option>
+          <option class="text-cinder" value="type-run">Run</option>
+          <option class="text-cinder" value="type-bike-ride">Bike Ride</option>
+        </select>
       </div>
 
       <div class="flex flex-row items-center">
@@ -110,7 +122,7 @@ const submitRun = async () => {
           v-model="comment"
           id="comment"
           class="border-2 border-orange-salmon rounded-xl p-1 my-2"
-          rows="5"
+          rows="3"
         ></textarea>
       </div>
 

@@ -5,7 +5,7 @@ const constraintsRef = ref(null)
 </script>
 
 <template>
-  <div class="flex flex-col mt-32 m-12 text-white">
+  <div class="flex flex-col mt-32 m-12 text-off-white drop-shadow-xl/50">
     <div class="flex flex-col items-center" id="row-1">
       <div class="half-width">
         <h1 class="text-3xl text-center text-orange-salmon font-bold p-4">Welcome!</h1>
@@ -16,7 +16,7 @@ const constraintsRef = ref(null)
       </div>
 
       <div
-        class="half-width running-animation text-center border border-white rounded-xl"
+        class="half-width running-animation text-center border-6 border-orange-salmon rounded-xl"
         style="position: relative"
       >
         <div ref="constraintsRef" class="constraints">
@@ -30,7 +30,7 @@ const constraintsRef = ref(null)
         <h2 class="text-2xl text-center font-bold p-4">Fun User Features</h2>
       </div>
 
-      <div class="half-width screenshot text-center border border-black rounded-xl">
+      <div class="half-width screenshot text-center border-6 border-orange-salmon rounded-xl">
         <img src="../assets/images/image1.png" class="rounded-xl" />
       </div>
     </div>
@@ -42,7 +42,7 @@ const constraintsRef = ref(null)
         </h2>
       </div>
 
-      <div class="half-width screenshot text-center border border-black rounded-xl">
+      <div class="half-width screenshot text-center border-6 border-orange-salmon rounded-xl">
         <img src="../assets/images/image2.png" class="rounded-xl" />
       </div>
     </div>
@@ -54,7 +54,7 @@ const constraintsRef = ref(null)
         </h2>
       </div>
 
-      <div class="half-width screenshot text-center border border-black rounded-xl">
+      <div class="half-width screenshot text-center border-6 border-orange-salmon rounded-xl">
         <img src="../assets/images/image3.png" class="rounded-xl" />
       </div>
     </div>
@@ -67,7 +67,7 @@ const constraintsRef = ref(null)
 
       <RouterLink
         :to="{ name: 'dashboard' }"
-        class="font-bold bg-off-white text-cinder rounded-xl px-4 py-2 m-4"
+        class="font-bold border-2 border-orange-salmon rounded-xl px-4 py-2 m-4"
       >
         Begin Your Journey Today!
       </RouterLink>
