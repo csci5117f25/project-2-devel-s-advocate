@@ -258,19 +258,16 @@ const chartData = computed(() => {
                 View Your Run!
               </router-link>
               <DeleteComponent :runID="`${run.id}`"></DeleteComponent>
-              <p><strong>Date:</strong> {{ run.startTime?.toDate()?.toLocaleDateString() || 0 }}</p>
-              <p><strong>Distance:</strong> {{ run.miles || run.distance || 0 }} miles</p>
-              <p><strong>Duration:</strong> {{ run.duration || 0 }} min</p>
-              <p v-if="run.path?.length">
-                <strong>Tracked Miles:</strong> {{ run.miles || run.distance || 0 }} miles
-              </p>
-              <p v-if="run.description">
-                <strong>Comment:</strong>
-                <EditComponent
-                  :runID="`${run.id}`"
-                  :description="`${run.description}`"
-                ></EditComponent>
-              </p>
+     <EditComponent
+  :runID="run.id"
+  :description="run.description"
+  :distance="run.miles"
+  :duration="run.duration"
+  :startTime="run.startTime"
+  :endTime="run.endTime"
+  :createdAt="run.createdAt"
+  @updated="refreshData"
+/>
             </div>
           </div>
         </div>
