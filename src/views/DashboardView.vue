@@ -6,6 +6,7 @@ import { db } from '@/firebaseApp'
 import ChartComponent from '@/components/ChartComponent.vue'
 import EditComponent from '@/components/EditComponent.vue'
 import DeleteComponent from '@/components/DeleteComponent.vue'
+import HeatMapComponent from '@/components/HeatMapComponent.vue'
 
 const user = useCurrentUser()
 const filter_option = ref('all') // Have this as default
@@ -309,6 +310,9 @@ const chartData = computed(() => {
           title="Daily Miles Run"
         />
       </div>
+      <!-- <div>
+        <HeatMapComponent :runs="runs" style="height: 400px;" />
+      </div> -->
     </div>
   </div>
 </template>
