@@ -5,7 +5,7 @@ CSCI 5117, Fall 2025, [assignment description](https://canvas.umn.edu/courses/51
 ## App Info
 
 * Team Name: Devel's Advocate
-* App Name: TODO
+* App Name: Tr@ceRoute
 * App Link: <https://TODO.com/>
 
 ### Students
@@ -72,3 +72,10 @@ relied on external code, expertise, or anything else, please disclose that
 here:**
 
 ...
+
+
+\. "$HOME/.nvm/nvm.sh"
+nvm install --lts
+nvm use --lts
+npm install
+npm run dev
