@@ -27,6 +27,13 @@ const app = createApp(App)
 
 app.use(router)
 
+import { createPinia } from 'pinia'
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+const pinia = createPinia()
+pinia.use(piniaPluginPersistedstate)
+app.use(pinia)
+
+
 app.use(VueFire, {
   firebaseApp,
   modules: [

@@ -1,5 +1,5 @@
 // Script to contain helper functions for Firestore DB operations
-import { collection, doc, query, where, orderBy, limit, getDoc, setDoc } from 'firebase/firestore'
+import { collection, doc, query, where, orderBy, limit, getDoc, setDoc, addDoc, serverTimestamp } from 'firebase/firestore'
 import { useFirestore, useCollection, useDocument, useCurrentUser } from 'vuefire'
 import { computed, ref, watch } from 'vue'
 //Use this one for when you don't need reactive data
@@ -9,7 +9,7 @@ import { db as firebaseDb } from '@/firebaseApp'
 const db = useFirestore()
 
 // ──────────────────────────────────────────────────────────────
-// 1. return all user runs, ordered by start time desc, max 50
+// return all user runs, ordered by start time desc, max 50
 // ──────────────────────────────────────────────────────────────
 export function useUserRuns(userId, max = 50) {
     if (!userId) return computed(() => [])
@@ -90,4 +90,15 @@ export function getUserData() {
     }, { immediate: true })
 
     return userData
+}
+
+// ──────────────────────────────────────────────────────────────
+// Saves run data
+// ──────────────────────────────────────────────────────────────
+export async function saveRun(runData) {
+  const docRef = await addDoc(collection(db, 'runs'), {
+    ...runData,
+    createdAt: serverTimestamp()
+  })
+  return docRef.id
 }
