@@ -1,16 +1,20 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import ConfettiComponent from '@/components/ConfettiComponent.vue'
 import { collection, doc, updateDoc, serverTimestamp } from 'firebase/firestore'
 import { db } from '@/firebaseApp'
 import { useRoute, useRouter } from 'vue-router'
+import { useDocument } from 'vuefire'
 
 const route = useRoute()
 const router = useRouter()
 const runID = route.params.runID
 const docRef = doc(db, 'runs', runID)
+const runData = useDocument(docRef)
 const exerciseType = ref('')
 const newComment = ref('')
+const mapRef = ref(null)
+const map = ref(null)
 
 // TODO: Melody: Update this so that the type of the run and optional comment
 // is added.
@@ -22,6 +26,67 @@ const addCommentToRun = async () => {
   newComment.value = ''
   router.push('/dashboard')
 }
+
+function loadGoogleMaps() {
+  return new Promise((resolve) => {
+    if (window.google?.maps) 
+      return resolve()
+
+    const script = document.createElement('script')
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${import.meta.env.VITE_MAPS_API_KEY}&libraries=geometry`
+    script.async = true
+    script.onload = resolve
+    document.head.appendChild(script)
+  })
+}
+
+function initMap() {
+  if (!mapRef.value) return
+
+  // Default center, will be overridden if path exists
+  const center = { lat: 44.9738, lng: -93.2277 }
+  
+  map.value = new window.google.maps.Map(mapRef.value, {
+    zoom: 16,
+    center: center,
+    mapTypeId: 'terrain',
+    gestureHandling: 'greedy',
+    disableDefaultUI: true,
+    styles: [
+      {
+        featureType: 'poi',
+        elementType: 'labels',
+        stylers: [{ visibility: 'off' }]
+      }
+    ]
+  })
+
+  // Draw route if it exists
+  console.log('Considering route on map:', runData)
+  if (runData.value?.path && runData.value.path.length > 0) {
+    console.log('Drawing route on map:', runData.value.path)
+    const polyline = new window.google.maps.Polyline({
+      path: runData.value.path,
+      geodesic: true,
+      strokeColor: '#FF3B30',
+      strokeOpacity: 1.0,
+      strokeWeight: 5,
+    })
+    polyline.setMap(map.value)
+
+    // Center map on the route
+    const bounds = new window.google.maps.LatLngBounds()
+    runData.value.path.forEach(point => {
+      bounds.extend(point)
+    })
+    map.value.fitBounds(bounds)
+  }
+}
+
+onMounted(async () => {
+  await loadGoogleMaps()
+  initMap()
+})
 </script>
 
 <template>
@@ -34,14 +99,14 @@ const addCommentToRun = async () => {
       Victory Animation
     </div>
 
-    <div class="h-75 text-center border-6 border-orange-salmon rounded-xl px-4 py-2 m-4">
-      Map of User's Complete Route
+    <div class="h-75 text-center border-6 border-orange-salmon rounded-xl px-4 py-2 m-4" style="height: 400px;">
+      <div id="map" ref="mapRef" style="height: 100%;"></div>
     </div>
 
     <div class="flex flex-row justify-between">
-      <div class="w-2/5 text-center bg-orange-salmon rounded-xl px-4 py-2 mx-4 my-2">0:00:00</div>
+      <div class="w-2/5 text-center bg-orange-salmon rounded-xl px-4 py-2 mx-4 my-2">{{ runData?.duration || 0 }} minutes</div>
 
-      <div class="w-2/5 text-center bg-orange-salmon rounded-xl px-4 py-2 mx-4 my-2">XX Miles</div>
+      <div class="w-2/5 text-center bg-orange-salmon rounded-xl px-4 py-2 mx-4 my-2">{{ runData?.miles || 0 }} miles</div>
     </div>
 
     <div
@@ -66,7 +131,7 @@ const addCommentToRun = async () => {
       <div class="flex flex-col my-2">
         <label for="comment">Comment: </label>
         <textarea
-          v-model="comment"
+          v-model="newComment"
           placeholder="Add an optional comment about your session!"
           id="comment"
           class="border-2 border-orange-salmon rounded-xl p-2 my-2 focus:ring-2 focus:ring-off-white focus:border-off-white"
