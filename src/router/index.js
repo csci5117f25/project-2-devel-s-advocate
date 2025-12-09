@@ -54,24 +54,17 @@ const router = createRouter({
   ],
 })
 
-// Update the page title.
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   document.title = to.meta.title || 'Tr@ceRoute'
 
-  const auth = getAuth()
-  const currentUser = auth.currentUser
+  const { getCurrentUser } = await import('vuefire')
+  const user = await getCurrentUser()
 
-  // If user logs in and tries to go to splash, redirect to dashboard
-  if (to.name === 'splashPage' && currentUser) {
-    return next({ name: 'dashboard' })
-  }
-
-  if (to.meta.requiresAuth && !currentUser) {
+  if (to.meta.requiresAuth && !user) {
     alert('You need to log in to access this page.')
     return next({ name: 'splashPage' })
   }
 
   next()
 })
-
 export default router
