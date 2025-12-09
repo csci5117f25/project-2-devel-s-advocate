@@ -96,8 +96,12 @@ onMounted(async () => {
       <ConfettiComponent text="Congratulations!"></ConfettiComponent>
     </div>
 
-    <div class="h-75 text-center border-6 border-orange-salmon rounded-xl px-4 py-2 m-4">
+    <!-- <div class="h-75 text-center border-6 border-orange-salmon rounded-xl px-4 py-2 m-4">
       Victory Animation
+    </div> -->
+
+    <div id="tired-animation">
+      <img src="../assets/gifs/victory_animation.gif" class="h-75" />
     </div>
 
     <div class="h-75 text-center border-6 border-orange-salmon rounded-xl px-4 py-2 m-4" style="height: 400px;">
