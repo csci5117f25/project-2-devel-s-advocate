@@ -1,17 +1,28 @@
 <script setup>
+import { RouterLink, useRouter } from 'vue-router'
+import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import { motion } from 'motion-v'
 import { ref } from 'vue'
 const constraintsRef = ref(null)
+
+const router = useRouter()
+
+const login = async () => {
+  const auth = getAuth()
+  const provider = new GoogleAuthProvider()
+  await signInWithPopup(auth, provider)
+  router.push({ name: 'dashboard' })
+}
 </script>
 
 <template>
-  <div class="flex flex-col mt-32 m-12 text-off-white drop-shadow-xl/50">
+  <div class="flex flex-col items-center mt-32 m-12 text-off-white drop-shadow-xl/50">
     <div class="flex flex-col items-center" id="row-1">
       <div class="half-width">
         <h1 class="text-3xl text-center text-orange-salmon font-bold p-4">Welcome!</h1>
 
         <h2 class="text-2xl text-center font-bold p-4">
-          Built for those who love to run fast and track their progress!
+          Built for those who love to exercise and track their progress!
         </h2>
       </div>
 
@@ -22,6 +33,18 @@ const constraintsRef = ref(null)
         <div ref="constraintsRef" class="constraints">
           <motion.div drag :dragConstraints="constraintsRef" :dragElastic="0.2" class="box" />
         </div>
+      </div>
+    </div>
+
+    <div id="animation-set" class="flex flex-row justify-between mt-12">
+      <div class="animation">
+        <img src="../assets/gifs/walking_animation.gif" class="h-60" />
+      </div>
+      <div class="animation">
+        <img src="../assets/gifs/running_animation.gif" class="h-60" />
+      </div>
+      <div class="animation">
+        <img src="../assets/gifs/biking_animation.gif" class="h-75" />
       </div>
     </div>
 
@@ -65,12 +88,12 @@ const constraintsRef = ref(null)
     >
       <h2 class="text-2xl p-4">Join today and become part of our running family!</h2>
 
-      <RouterLink
-        :to="{ name: 'dashboard' }"
-        class="font-bold bg-orange-salmon border-2 border-orange-salmon rounded-xl px-4 py-2 m-4"
+      <button
+        @click="login"
+        class="px-4 py-2 cursor-pointer rounded-xl bg-off-white text-center text-orange-salmon"
       >
         Begin Your Journey Today!
-      </RouterLink>
+      </button>
     </div>
   </div>
 </template>
@@ -103,6 +126,9 @@ const constraintsRef = ref(null)
   .half-width {
     width: 50%;
     margin: calc(var(--spacing) * 8);
+  }
+  .animation {
+    margin-inline: calc(var(--spacing) * 4);
   }
 }
 .constraints {

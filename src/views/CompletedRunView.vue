@@ -30,8 +30,7 @@ const addCommentToRun = async () => {
 
 function loadGoogleMaps() {
   return new Promise((resolve) => {
-    if (window.google?.maps)
-      return resolve()
+    if (window.google?.maps) return resolve()
 
     const script = document.createElement('script')
     script.src = `https://maps.googleapis.com/maps/api/js?key=${import.meta.env.VITE_MAPS_API_KEY}&libraries=geometry`
@@ -57,9 +56,9 @@ function initMap() {
       {
         featureType: 'poi',
         elementType: 'labels',
-        stylers: [{ visibility: 'off' }]
-      }
-    ]
+        stylers: [{ visibility: 'off' }],
+      },
+    ],
   })
 
   // Draw route if it exists
@@ -77,7 +76,7 @@ function initMap() {
 
     // Center map on the route
     const bounds = new window.google.maps.LatLngBounds()
-    runData.value.path.forEach(point => {
+    runData.value.path.forEach((point) => {
       bounds.extend(point)
     })
     map.value.fitBounds(bounds)
@@ -100,18 +99,27 @@ onMounted(async () => {
       Victory Animation
     </div> -->
 
-    <div id="tired-animation">
+    <div id="tired-animation" class="my-6">
       <img src="../assets/gifs/victory_animation.gif" class="h-75" />
     </div>
 
-    <div class="h-75 text-center border-6 border-orange-salmon rounded-xl px-4 py-2 m-4" style="height: 400px;">
-      <div id="map" ref="mapRef" style="height: 100%;"></div>
-    </div>
+    <!--<div class="h-75 text-center border-6 border-orange-salmon rounded-xl px-4 py-2 m-4" style="height: 400px;"> -->
+    <div
+      id="map"
+      class="border-6 border-orange-salmon rounded-xl m-4"
+      ref="mapRef"
+      style="height: 400px"
+    ></div>
+    <!-- </div> -->
 
     <div class="flex flex-row justify-between">
-      <div class="w-2/5 text-center bg-orange-salmon rounded-xl px-4 py-2 mx-4 my-2">{{ runData?.duration || 0 }} minutes</div>
+      <div class="w-2/5 text-center bg-orange-salmon rounded-xl px-4 py-2 mx-4 my-2">
+        {{ runData?.duration || 0 }} minutes
+      </div>
 
-      <div class="w-2/5 text-center bg-orange-salmon rounded-xl px-4 py-2 mx-4 my-2">{{ runData?.miles || 0 }} miles</div>
+      <div class="w-2/5 text-center bg-orange-salmon rounded-xl px-4 py-2 mx-4 my-2">
+        {{ runData?.miles || 0 }} miles
+      </div>
     </div>
 
     <div
