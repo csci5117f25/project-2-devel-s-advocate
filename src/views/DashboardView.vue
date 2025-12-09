@@ -4,8 +4,7 @@ import { useCollection, useCurrentUser } from 'vuefire'
 import { collection, query, where, doc, setDoc } from 'firebase/firestore'
 import { db } from '@/firebaseApp'
 import ChartComponent from '@/components/ChartComponent.vue'
-import EditComponent from '@/components/EditComponent.vue'
-import DeleteComponent from '@/components/DeleteComponent.vue'
+import DashboardComponent from '@/components/DashboardComponent.vue'
 import HeatMapComponent from '@/components/HeatMapComponent.vue'
 
 const user = useCurrentUser()
@@ -19,6 +18,10 @@ const runsQuery = computed(() => {
 })
 
 const runs = useCollection(runsQuery)
+
+const refreshData = (runID) => {
+  return user.value ? query(collection(db, 'runs'), where('runID', '==', runID)) : null
+}
 
 //sort runs by
 const filteredRuns = computed(() => {
@@ -271,14 +274,8 @@ const chartData = computed(() => {
               @deleted="refreshRuns"
               class="border-2 border-orange-salmon rounded-xl p-2"
             >
-              <router-link
-                :to="`/completed-run/${run.id}`"
-                class="mt-2 pl-2 pr-2 bg-purple-600 text-white font-small py-2 rounded-xl shadow-sm hover:bg-indigo-700 active:bg-indigo-800 transition-all"
-              >
-                View Your Run!
-              </router-link>
-              <DeleteComponent :runID="`${run.id}`"></DeleteComponent>
-     <EditComponent
+
+     <DashboardComponent
   :runID="run.id"
   :description="run.description"
   :distance="run.miles"
@@ -286,7 +283,7 @@ const chartData = computed(() => {
   :startTime="run.startTime"
   :endTime="run.endTime"
   :createdAt="run.createdAt"
-  @updated="refreshData"
+  @updated="refreshData(run.id)"
 />
             </div>
           </div>
