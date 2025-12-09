@@ -21,6 +21,7 @@ const map = ref(null)
 const addCommentToRun = async () => {
   await updateDoc(docRef, {
     description: newComment.value,
+    exerciseType: exerciseType.value,
   })
 
   newComment.value = ''
@@ -29,7 +30,7 @@ const addCommentToRun = async () => {
 
 function loadGoogleMaps() {
   return new Promise((resolve) => {
-    if (window.google?.maps) 
+    if (window.google?.maps)
       return resolve()
 
     const script = document.createElement('script')
@@ -45,7 +46,7 @@ function initMap() {
 
   // Default center, will be overridden if path exists
   const center = { lat: 44.9738, lng: -93.2277 }
-  
+
   map.value = new window.google.maps.Map(mapRef.value, {
     zoom: 16,
     center: center,

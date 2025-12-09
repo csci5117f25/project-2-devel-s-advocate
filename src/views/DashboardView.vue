@@ -11,9 +11,7 @@ import HeatMapComponent from '@/components/HeatMapComponent.vue'
 const user = useCurrentUser()
 const filter_option = ref('all') // Have this as default
 const sort_option = ref('date-desc') // Have this as default
-const chart_view = ref('distance')
-// TODO: Melody, comment the above line out and uncomment the following line.
-// const chart_view = ref('chart-general')
+const chart_view = ref('chart-general')
 
 //get runs for current user
 const runsQuery = computed(() => {
@@ -23,10 +21,26 @@ const runsQuery = computed(() => {
 const runs = useCollection(runsQuery)
 
 //sort runs by
-const sortedRuns = computed(() => {
+const filteredRuns = computed(() => {
   if (!runs.value) return []
 
-  return [...runs.value].sort((a, b) => {
+  switch (filter_option.value) {
+    case 'walks-only':
+      return runs.value.filter(r => r.exerciseType === 'type-walk')
+    case 'runs-only':
+      return runs.value.filter(r => r.exerciseType === 'type-run')
+    case 'bike-rides-only':
+      return runs.value.filter(r => r.exerciseType === 'type-bike-ride')
+    case 'all':
+    default:
+      return runs.value
+  }
+})
+
+const sortedRuns = computed(() => {
+  if (!filteredRuns.value) return []
+
+  return [...filteredRuns.value].sort((a, b) => {
     switch (sort_option.value) {
       case 'date-asc':
         return (a.startTime?.toDate() || 0) - (b.startTime?.toDate() || 0)
@@ -56,6 +70,8 @@ const userStats = computed(() => {
       totalRunningTime: 0,
       longestRun: 0,
       totalRuns: 0,
+      totalWalks: 0,
+      totalBikeRides: 0,
     }
   }
 
@@ -72,7 +88,6 @@ const userStats = computed(() => {
     totalTime += duration
     if (duration > longestRun) longestRun = duration
 
-    //calculating average speed in mph
     if (duration > 0) {
       const avgSpeed = miles / (duration / 60)
       if (avgSpeed > maxSpeed) maxSpeed = avgSpeed
@@ -85,16 +100,17 @@ const userStats = computed(() => {
     fastestAvgSpeed: parseFloat(maxSpeed.toFixed(1)),
     totalRunningTime: totalTime,
     longestRun,
-    totalRuns: runs.value.length,
+    totalRuns: runs.value.filter(r => r.exerciseType === 'type-run').length,
+    totalWalks: runs.value.filter(r => r.exerciseType === 'type-walk').length,
+    totalBikeRides: runs.value.filter(r => r.exerciseType === 'type-bike-ride').length,
   }
 })
 
-//update user stats in Firestore whenever stats change
+// update stats in Firestore
 watch(
   userStats,
   async (newStats) => {
     if (!user.value) return
-
     const statsDocRef = doc(db, 'users', user.value.uid, 'private', 'stats')
     try {
       await setDoc(statsDocRef, newStats, { merge: true })
@@ -102,38 +118,41 @@ watch(
       console.error('Error updating user stats:', err)
     }
   },
-  { immediate: true, deep: true },
+  { immediate: true, deep: true }
 )
 
-//chart
+// chart data
 const chartData = computed(() => {
   if (!runs.value || runs.value.length === 0) return { labels: [], datasets: [] }
 
-  //mapping the date to miles
+  let filteredChartRuns = runs.value
+  switch(chart_view.value) {
+    case 'chart-walking':
+      filteredChartRuns = runs.value.filter(r => r.exerciseType === 'type-walk')
+      break
+    case 'chart-running':
+      filteredChartRuns = runs.value.filter(r => r.exerciseType === 'type-run')
+      break
+    case 'chart-biking':
+      filteredChartRuns = runs.value.filter(r => r.exerciseType === 'type-bike-ride')
+      break
+    default:
+      break
+  }
+
   const dailyMap = {}
-  runs.value.forEach((run) => {
+  filteredChartRuns.forEach(run => {
     const date = run.startTime?.toDate?.()?.toISOString().split('T')[0] || 'Unknown'
     if (!dailyMap[date]) dailyMap[date] = { miles: 0, duration: 0 }
     dailyMap[date].miles += run.miles || 0
     dailyMap[date].duration += run.duration || 0
   })
 
-  //sorting dates
   const labels = Object.keys(dailyMap).sort()
-  //can pick chart based on the sortinf
   let data = []
-  let label = ''
-  switch (chart_view.value) {
-    case 'distance':
-    default:
-      label = 'Miles Run'
-      data = labels.map((d) => dailyMap[d].miles)
-      break
-    case 'time':
-      label = 'Time per Run (minutes)'
-      data = labels.map((d) => dailyMap[d].duration)
-      break
-  }
+  let label = chart_view.value === 'time' ? 'Time per Run (minutes)' : 'Miles'
+
+  data = labels.map(d => chart_view.value === 'time' ? dailyMap[d].duration : dailyMap[d].miles)
 
   return {
     labels,
@@ -278,14 +297,12 @@ const chartData = computed(() => {
         id="chart-container"
         class="border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-2"
       >
-        <div class="flex flex-col">
+        <!--<div class="flex flex-col">
           <select v-model="chart_view" class="bg-orange-salmon rounded-xl px-4 py-2 m-2">
             <option value="distance">Daily Miles Ran</option>
             <option value="time">Time per run</option>
-          </select>
-          <!-- TODO: Melody, uncomment the following code and comment out
-               the above <select> element.  -->
-          <!-- <div class="flex items-center">
+          </select>-->
+          <div class="flex items-center">
             <label for="chart-view">Show Miles</label>
             <select
               v-model="chart_view"
@@ -298,8 +315,7 @@ const chartData = computed(() => {
               <option class="text-cinder" value="chart-biking">Biked</option>
             </select>
             <p>Over Time</p>
-          </div> -->
-        </div>
+          </div>
 
         <ChartComponent
           :labels="chartData.labels"
@@ -307,9 +323,9 @@ const chartData = computed(() => {
           title="Daily Miles Run"
         />
       </div>
-      <!-- <div>
+      <div>
         <HeatMapComponent :runs="runs" style="height: 400px;" />
-      </div> -->
+      </div>
     </div>
   </div>
 </template>
