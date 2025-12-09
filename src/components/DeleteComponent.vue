@@ -19,13 +19,11 @@ const deleteRun = async () => {
   const ref = doc(db, 'runs', props.runID)
   await deleteDoc(ref)
   emit('deleted', props.runID)
-  console.log('Todo delete!')
+  console.log('run delete!')
   router.push('/dashboard')
 }
 </script>
 
 <template>
-  <button class="mt-2 pl-2 pr-2 bg-purple-600 text-white font-small py-2 rounded-xl 
-         shadow-sm hover:bg-indigo-700 active:bg-indigo-800 
-         transition-all" @click="deleteRun">Delete Run</button>
+  <button class="bg-orange-salmon rounded-xl px-4 py-2" @click="deleteRun">Delete</button>
 </template>
