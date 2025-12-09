@@ -320,9 +320,9 @@ const chartData = computed(() => {
           title="Daily Miles Run"
         />
       </div>
-      <div>
+      <!--<div>
         <HeatMapComponent :runs="runs" style="height: 400px;" />
-      </div>
+      </div>-->
     </div>
   </div>
 </template>
