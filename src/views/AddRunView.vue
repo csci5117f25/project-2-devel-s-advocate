@@ -18,7 +18,7 @@ const comment = ref('')
 const submitRun = async () => {
   if (!user.value) return
 
-  if (!date.value || !startTime.value || !endTime.value || !distance.value) {
+  if (!date.value || !startTime.value || !endTime.value || !distance.value || !exerciseType.value) {
     alert('Please fill in all required fields')
     return
   }
@@ -31,19 +31,31 @@ const submitRun = async () => {
     return
   }
 
-  const docRef = await addDoc(collection(db, 'runs'), {
-    createdAt: serverTimestamp(),
-    startTime: start,
-    endTime: end,
-    duration: durationMinutes,
-    miles: Number(distance.value),
-    description: comment.value || '',
-    path: [],
-    userID: user.value.uid,
-  })
+  try {
+    await addDoc(collection(db, 'runs'), {
+      createdAt: serverTimestamp(),
+      startTime: start,
+      endTime: end,
+      duration: durationMinutes,
+      miles: Number(distance.value),
+      description: comment.value || '',
+      path: [],
+      exerciseType: exerciseType.value,
+      userID: user.value.uid,
+    })
 
-  const runID = docRef.id
-  router.push({ name: 'dashboard' })
+    date.value = ''
+    exerciseType.value = ''
+    startTime.value = ''
+    endTime.value = ''
+    distance.value = ''
+    comment.value = ''
+
+    router.push({ name: 'dashboard' })
+  } catch (err) {
+    console.error('Error adding run:', err)
+    alert('There was an error adding your run. Please try again.')
+  }
 }
 </script>
 
