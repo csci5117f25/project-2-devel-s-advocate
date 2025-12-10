@@ -39,7 +39,7 @@ const logout = async () => {
     <button class="flex items-center" @click="toggleMenu">
       <font-awesome-icon
         :icon="menuOpen ? 'fa-times' : 'fa-bars'"
-        class="text-3xl cursor-pointer"
+        class="text-3xl text-orange-salmon cursor-pointer"
       />
     </button>
   </nav>
@@ -53,13 +53,13 @@ const logout = async () => {
       <RouterLink
         :to="{ name: 'startRun' }"
         class="px-4 py-2 cursor-pointer text-right text-2xl text-orange-salmon"
-        ><font-awesome-icon icon="fa-play" /> Start Run
+        ><font-awesome-icon icon="fa-play" /> Start Session
       </RouterLink>
 
       <RouterLink
         :to="{ name: 'addRun' }"
         class="px-4 py-2 cursor-pointer text-right text-2xl text-orange-salmon"
-        ><font-awesome-icon icon="fa-plus" /> Add Run
+        ><font-awesome-icon icon="fa-plus" /> Add Session
       </RouterLink>
 
       <button

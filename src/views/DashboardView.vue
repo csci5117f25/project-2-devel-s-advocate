@@ -29,11 +29,11 @@ const filteredRuns = computed(() => {
 
   switch (filter_option.value) {
     case 'walks-only':
-      return runs.value.filter(r => r.exerciseType === 'type-walk')
+      return runs.value.filter((r) => r.exerciseType === 'type-walk')
     case 'runs-only':
-      return runs.value.filter(r => r.exerciseType === 'type-run')
+      return runs.value.filter((r) => r.exerciseType === 'type-run')
     case 'bike-rides-only':
-      return runs.value.filter(r => r.exerciseType === 'type-bike-ride')
+      return runs.value.filter((r) => r.exerciseType === 'type-bike-ride')
     case 'all':
     default:
       return runs.value
@@ -103,9 +103,9 @@ const userStats = computed(() => {
     fastestAvgSpeed: parseFloat(maxSpeed.toFixed(1)),
     totalRunningTime: totalTime,
     longestRun,
-    totalRuns: runs.value.filter(r => r.exerciseType === 'type-run').length,
-    totalWalks: runs.value.filter(r => r.exerciseType === 'type-walk').length,
-    totalBikeRides: runs.value.filter(r => r.exerciseType === 'type-bike-ride').length,
+    totalRuns: runs.value.filter((r) => r.exerciseType === 'type-run').length,
+    totalWalks: runs.value.filter((r) => r.exerciseType === 'type-walk').length,
+    totalBikeRides: runs.value.filter((r) => r.exerciseType === 'type-bike-ride').length,
   }
 })
 
@@ -121,7 +121,7 @@ watch(
       console.error('Error updating user stats:', err)
     }
   },
-  { immediate: true, deep: true }
+  { immediate: true, deep: true },
 )
 
 // chart data
@@ -129,22 +129,22 @@ const chartData = computed(() => {
   if (!runs.value || runs.value.length === 0) return { labels: [], datasets: [] }
 
   let filteredChartRuns = runs.value
-  switch(chart_view.value) {
+  switch (chart_view.value) {
     case 'chart-walking':
-      filteredChartRuns = runs.value.filter(r => r.exerciseType === 'type-walk')
+      filteredChartRuns = runs.value.filter((r) => r.exerciseType === 'type-walk')
       break
     case 'chart-running':
-      filteredChartRuns = runs.value.filter(r => r.exerciseType === 'type-run')
+      filteredChartRuns = runs.value.filter((r) => r.exerciseType === 'type-run')
       break
     case 'chart-biking':
-      filteredChartRuns = runs.value.filter(r => r.exerciseType === 'type-bike-ride')
+      filteredChartRuns = runs.value.filter((r) => r.exerciseType === 'type-bike-ride')
       break
     default:
       break
   }
 
   const dailyMap = {}
-  filteredChartRuns.forEach(run => {
+  filteredChartRuns.forEach((run) => {
     const date = run.startTime?.toDate?.()?.toISOString().split('T')[0] || 'Unknown'
     if (!dailyMap[date]) dailyMap[date] = { miles: 0, duration: 0 }
     dailyMap[date].miles += run.miles || 0
@@ -155,7 +155,7 @@ const chartData = computed(() => {
   let data = []
   let label = chart_view.value === 'time' ? 'Time per Run (minutes)' : 'Miles'
 
-  data = labels.map(d => chart_view.value === 'time' ? dailyMap[d].duration : dailyMap[d].miles)
+  data = labels.map((d) => (chart_view.value === 'time' ? dailyMap[d].duration : dailyMap[d].miles))
 
   return {
     labels,
@@ -177,19 +177,8 @@ const chartData = computed(() => {
     <div class="header m-2">
       <h1 class="text-3xl text-orange-salmon text-center font-bold">
         Welcome, {{ user.displayName }}!
-        <!-- Welcome! -->
       </h1>
     </div>
-
-    <!-- <div class="flex flex-row justify-evenly m-2">
-      <RouterLink :to="{ name: 'startRun' }" class="font-bold bg-off-white rounded-xl px-4 py-2">
-        <font-awesome-icon icon="fa-play" /> Start Run
-      </RouterLink>
-
-      <RouterLink :to="{ name: 'addRun' }" class="font-bold bg-off-white rounded-xl px-4 py-2">
-        <font-awesome-icon icon="fa-plus" /> Add Run
-      </RouterLink>
-    </div> -->
 
     <div class="flex flex-row flex-wrap justify-around m-2" id="stats-container">
       <div
@@ -199,12 +188,6 @@ const chartData = computed(() => {
         <p class="font-bold text-2xl">{{ userStats.totalMiles }}</p>
       </div>
 
-      <!-- <div
-        class="stat flex flex-col text-center border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-2"
-      >
-        <p class="font-bold">Avg Speed</p>
-        <p>{{ userStats.averageSpeed }} MPH</p>
-      </div> -->
       <div
         class="stat w-2/5 flex flex-col text-center bg-orange-salmon border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-2"
       >
@@ -274,37 +257,32 @@ const chartData = computed(() => {
               @deleted="refreshRuns"
               class="border-2 border-orange-salmon rounded-xl p-2"
             >
-
-     <DashboardComponent
-  :runID="run.id"
-  :description="run.description"
-  :distance="run.miles"
-  :duration="run.duration"
-  :startTime="run.startTime"
-  :endTime="run.endTime"
-  :createdAt="run.createdAt"
-  @updated="refreshData(run.id)"
-/>
+              <DashboardComponent
+                :runID="run.id"
+                :description="run.description"
+                :distance="run.miles"
+                :duration="run.duration"
+                :startTime="run.startTime"
+                :endTime="run.endTime"
+                :createdAt="run.createdAt"
+                @updated="refreshData(run.id)"
+              />
             </div>
           </div>
         </div>
       </div>
 
-      <div
-        id="chart-container"
-        class="border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-2"
-      >
-        <!--<div class="flex flex-col">
-          <select v-model="chart_view" class="bg-orange-salmon rounded-xl px-4 py-2 m-2">
-            <option value="distance">Daily Miles Ran</option>
-            <option value="time">Time per run</option>
-          </select>-->
+      <div id="chart-and-heatmap-container" class="flex flex-col">
+        <div
+          id="chart-container"
+          class="border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-2"
+        >
           <div class="flex items-center">
             <label for="chart-view">Show Miles</label>
             <select
               v-model="chart_view"
               id="chart-view"
-              class="border-2 border-orange-salmon rounded-xl px-4 py-2 m-2"
+              class="bg-orange-salmon rounded-xl px-4 py-2 m-2"
             >
               <option class="text-cinder" value="chart-general">Traveled</option>
               <option class="text-cinder" value="chart-walking">Walked</option>
@@ -314,15 +292,19 @@ const chartData = computed(() => {
             <p>Over Time</p>
           </div>
 
-        <ChartComponent
-          :labels="chartData.labels"
-          :datasets="chartData.datasets"
-          title="Daily Miles Run"
-        />
+          <ChartComponent
+            :labels="chartData.labels"
+            :datasets="chartData.datasets"
+            title="Daily Miles Run"
+          />
+        </div>
+        <div
+          class="border-6 border-orange-salmon text-off-white text-center rounded-xl px-4 py-2 m-2 h-100"
+        >
+          Heat Map of All Traced Routes
+          <!-- <HeatMapComponent :runs="runs" style="height: 400px;" /> -->
+        </div>
       </div>
-      <!--<div>
-        <HeatMapComponent :runs="runs" style="height: 400px;" />
-      </div>-->
     </div>
   </div>
 </template>
@@ -347,11 +329,14 @@ const chartData = computed(() => {
   }
 
   #sessions-container,
-  #chart-container {
+  #chart-and-heatmap-container {
     width: 40%;
   }
 
-  /* #sessions-list,*/
+  #sessions-list {
+    max-height: calc(var(--spacing) * 150);
+  }
+
   #chart {
     height: calc(var(--spacing) * 100);
   }
