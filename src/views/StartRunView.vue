@@ -34,7 +34,7 @@ const formattedTime = computed(() => {
   }
 })
 
-const toggle = () => tracking.value ? finishAndSave() : startRun()
+const toggle = () => (tracking.value ? finishAndSave() : startRun())
 
 const startRun = () => {
   startTimer()
@@ -58,7 +58,7 @@ const stopTimer = () => {
 const finishAndSave = async () => {
   stopTimer()
   stopTracking()
-  
+
   if (!user.value) {
     alert('You must be logged in to save runs! How did you get here?')
     return
@@ -77,7 +77,7 @@ const finishAndSave = async () => {
       miles: Number(miles.toFixed(2)),
       description: '',
       path: store.track,
-      userID: user.value.uid
+      userID: user.value.uid,
     })
 
     store.reset()
@@ -98,7 +98,7 @@ function cancel() {
   stopTimer()
   store.reset()
   stopTracking()
-  router.push({ name: 'splashPage' })
+  router.push({ name: 'dashboard' })
 }
 
 onMounted(async () => {
@@ -115,8 +115,7 @@ onUnmounted(() => {
 
 function loadGoogleMaps() {
   return new Promise((resolve) => {
-    if (window.google?.maps) 
-      return resolve()
+    if (window.google?.maps) return resolve()
 
     const script = document.createElement('script')
     script.src = `https://maps.googleapis.com/maps/api/js?key=${import.meta.env.VITE_MAPS_API_KEY}&libraries=geometry`
@@ -127,7 +126,9 @@ function loadGoogleMaps() {
 }
 
 function initMap(position = null) {
-  const center = position ? { lat: position.coords.latitude, lng: position.coords.longitude } : { lat: 37.77, lng: -122.41 }
+  const center = position
+    ? { lat: position.coords.latitude, lng: position.coords.longitude }
+    : { lat: 37.77, lng: -122.41 }
   map.value = new window.google.maps.Map(mapRef.value, {
     zoom: 16,
     center: center,
@@ -138,9 +139,9 @@ function initMap(position = null) {
       {
         featureType: 'poi',
         elementType: 'labels',
-        stylers: [{ visibility: 'off' }]
-      }
-    ]
+        stylers: [{ visibility: 'off' }],
+      },
+    ],
   })
 
   const polyline = new window.google.maps.Polyline({
@@ -148,30 +149,32 @@ function initMap(position = null) {
     strokeColor: '#FF3B30',
     strokeOpacity: 1.0,
     strokeWeight: 5,
-    map: map.value
+    map: map.value,
   })
 
   store.setPolyline(polyline)
 }
-
 </script>
 
 <template>
-  <div id="mobile-view" class="flex flex-col mt-32">
+  <div id="mobile-view" class="flex flex-col mt-32 text-off-white drop-shadow-xl/50">
     <div>
-      <h1 class="text-2xl text-center font-bold">Start Run View</h1>
+      <h1 class="text-2xl text-center text-orange-salmon font-bold">Track Exercise Session</h1>
     </div>
 
-    <div class="border border-black rounded-xl m-4" style="height: 400px;">
-      <div id="map" ref="mapRef" style="height: 100%;"></div>
-    </div>
+    <div
+      id="map"
+      class="border-6 border-orange-salmon rounded-xl m-4"
+      ref="mapRef"
+      style="height: 400px"
+    ></div>
 
     <div class="flex flex-row justify-between">
-      <div class="w-2/5 text-center border border-black rounded-xl px-4 py-2 mx-4 my-2">
+      <div class="w-2/5 text-center border-2 border-orange-salmon rounded-xl px-4 py-2 mx-4 my-2">
         {{ formattedTime }}
       </div>
 
-      <div class="w-2/5 text-center border border-black rounded-xl px-4 py-2 mx-4 my-2">
+      <div class="w-2/5 text-center border-2 border-orange-salmon rounded-xl px-4 py-2 mx-4 my-2">
         {{ formatDistance(distance) }}
       </div>
     </div>
@@ -179,32 +182,32 @@ function initMap(position = null) {
     <div class="flex flex-row justify-between">
       <div
         @click="toggle"
-        class="w-2/5 text-center border border-black rounded-xl px-4 py-2 mx-4 my-2 cursor-pointer"
+        class="w-2/5 text-center border-2 border-orange-salmon rounded-xl px-4 py-2 mx-4 my-2 cursor-pointer"
       >
         {{ tracking ? 'Stop' : 'Start' }}
       </div>
-    </div>
-    
-    <div
-      @click="cancel"
-      class="w-11/12 text-center border border-black rounded-xl px-4 py-2 mx-4 my-2"
-    >
-      Cancel
+
+      <div
+        @click="cancel"
+        class="w-2/5 text-center border-2 border-orange-salmon rounded-xl px-4 py-2 mx-4 my-2"
+      >
+        Cancel
+      </div>
     </div>
   </div>
 
-  <div id="desktop-view" class="hidden mt-32">
-    <div class="h-100 w-100 text-center border border-black rounded-xl px-4 py-2">
+  <div id="desktop-view" class="hidden mt-32 text-off-white drop-shadow-xl/50">
+    <div class="h-100 w-100 text-center border-6 border-orange-salmon rounded-xl px-4 py-2">
       Mobile Phone Animation
     </div>
-    <div class="flex flex-col">
-      <h1 class="text-3xl text-center font-bold m-2">Oops!</h1>
+    <div class="flex flex-col items-center">
+      <h1 class="text-3xl text-center text-orange-salmon font-bold m-2">Oops!</h1>
 
-      <h2 class="text-2xl p-2 m-2">A new run can only be tracked on a mobile device.</h2>
+      <h2 class="text-2xl p-2 m-2">A new session can only be tracked on a mobile device.</h2>
 
       <RouterLink
-        :to="{ name: 'splashPage' }"
-        class="text-center border border-black rounded-xl p-2 m-4"
+        :to="{ name: 'dashboard' }"
+        class="w-1/5 text-center text-orange-salmon bg-off-white rounded-xl p-2 m-4"
       >
         Return Home
       </RouterLink>
@@ -223,5 +226,9 @@ function initMap(position = null) {
     justify-content: space-around;
     align-items: center;
   }
+  /* #mobile-phone-animation {
+    height: calc(var(--spacing) * 100);
+    width: calc(var(--spacing) * 100);
+  } */
 }
 </style>

@@ -4,34 +4,32 @@ CSCI 5117, Fall 2025, [assignment description](https://canvas.umn.edu/courses/51
 
 ## App Info
 
-* Team Name: Devel's Advocate
-* App Name: Tr@ceRoute
-* App Link: <https://TODO.com/>
+- Team Name: Devel's Advocate
+- App Name: Tr@ceRoute
+- App Link: <https://traceroute-4b41f.web.app/>
 
 ### Students
 
-* Melody Washington, washi469@umn.edu
-* Connor Rivers, river853@umn.edu
-* Sudarsna Mukund, mukun017@umn.edu
-* Kira Balentine, balen014@umn.edu
-* Giselle Kian, ashra064@umn.edu
+- Melody Washington, washi469@umn.edu
+- Connor Rivers, river853@umn.edu
+- Sudarsna Mukund, mukun017@umn.edu
+- Kira Balentine, balen014@umn.edu
+- Giselle Kian, ashra064@umn.edu
 
 ## Key Features
 
 **Describe the most challenging features you implemented
 (one sentence per bullet, maximum 4 bullets):**
 
-* ...
+- ...
 
 Which (if any) device integration(s) does your app support?
 
-* ...
+- ...
 
 Which (if any) progressive web app feature(s) does your app support?
 
-* ...
-
-
+- ...
 
 ## Mockup Images
 
@@ -46,9 +44,7 @@ Which (if any) progressive web app feature(s) does your app support?
 
 **Is there anything special we need to know in order to effectively test your app? (optional):**
 
-* ...
-
-
+- ...
 
 ## Screenshots of Site (complete)
 
@@ -57,22 +53,19 @@ along with a very brief caption:**
 
 ![](https://media.giphy.com/media/o0vwzuFwCGAFO/giphy.gif)
 
-
-
 ## External Dependencies
 
 **Document integrations with 3rd Party code or services here.
 Please do not document required libraries (e.g., VUE, Firebase, vuefire).**
 
-* Library or service name: description of use
-* ...
+- Library or service name: description of use
+- ...
 
 **If there's anything else you would like to disclose about how your project
 relied on external code, expertise, or anything else, please disclose that
 here:**
 
 ...
-
 
 \. "$HOME/.nvm/nvm.sh"
 nvm install --lts
