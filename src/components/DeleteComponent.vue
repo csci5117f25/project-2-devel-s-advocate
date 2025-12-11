@@ -25,5 +25,5 @@ const deleteRun = async () => {
 </script>
 
 <template>
-  <button class="bg-orange-salmon rounded-xl px-4 py-2" @click="deleteRun">Delete</button>
+  <button class="bg-orange-salmon rounded-xl px-4 py-2" @click="deleteRun"><font-awesome-icon icon="fa-trash-can" /></button>
 </template>
