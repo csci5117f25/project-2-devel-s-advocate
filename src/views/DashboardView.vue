@@ -180,7 +180,7 @@ const chartData = computed(() => {
       </h1>
     </div>
 
-    <div class="flex flex-row flex-wrap justify-around m-2" id="stats-container">
+    <div class="flex flex-row flex-wrap justify-around m-2 text-shadow-lg/20" id="stats-container">
       <div
         class="stat w-2/5 flex flex-col text-center bg-orange-salmon border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-2"
       >

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, defineProps, nextTick, defineEmits } from 'vue'
+import { ref } from 'vue'
 import { db } from '@/firebaseApp'
 import { updateDoc, doc, serverTimestamp } from 'firebase/firestore'
 import DeleteComponent from './DeleteComponent.vue'
@@ -130,8 +130,6 @@ const cancelEditing = () => {
           <strong>End Time:</strong>
           <input type="time" v-model="editEnd" class="bg-orange-salmon rounded-xl p-2 w-full" />
         </div>
-
-
 
         <div class="border border-gray-400 rounded-xl p-3 text-center flex flex-col justify-center">
           <strong>Duration:</strong>
