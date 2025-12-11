@@ -265,6 +265,7 @@ const chartData = computed(() => {
                 :startTime="run.startTime"
                 :endTime="run.endTime"
                 :createdAt="run.createdAt"
+                :exerciseType="run.exerciseType"
                 @updated="refreshData(run.id)"
               />
             </div>

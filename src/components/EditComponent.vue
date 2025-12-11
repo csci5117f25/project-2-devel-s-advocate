@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { db } from '@/firebaseApp'
 import { updateDoc, doc, serverTimestamp } from 'firebase/firestore'
 import DeleteComponent from './DeleteComponent.vue'
@@ -10,7 +10,7 @@ const props = defineProps({
   description: String,
   duration: Number,
   distance: Number,
-
+  exerciseType: String,
   startTime: Object,
   endTime: Object,
   createdAt: Object,
@@ -18,6 +18,8 @@ const props = defineProps({
 
 const emit = defineEmits(['updated'])
 const docRef = doc(db, 'runs', props.runID)
+
+const exerciseTypes = ['type-run', 'type-walk', 'type-bike']
 
 const isEditing = ref(false)
 
@@ -28,15 +30,17 @@ const editDescription = ref('')
 const editDate = ref('') // YYYY-MM-DD
 const editStart = ref('') // HH:MM
 const editEnd = ref('') // HH:MM
+const editExerciseType = ref(props.exerciseType)
 
 const startEditing = () => {
   isEditing.value = true
-
+  const pad = (n) => String(n).padStart(2, '0')
   editMiles.value = props.distance
   editDescription.value = props.description
   editDate.value = props.startTime.toDate().toISOString().slice(0, 10)
-  editStart.value = props.startTime.toDate().toISOString().slice(11, 16)
-  editEnd.value = props.endTime.toDate().toISOString().slice(11, 16)
+  editStart.value = `${pad(props.startTime.toDate().getHours())}:${pad(props.startTime.toDate().getMinutes())}`
+  editEnd.value = `${pad(props.endTime.toDate().getHours())}:${pad(props.endTime.toDate().getMinutes())}`
+  editExerciseType.value = props.exerciseType
 }
 
 const finishEditing = async () => {
@@ -54,7 +58,7 @@ const finishEditing = async () => {
     miles: Number(editMiles.value),
     duration: Number(durationMinutes),
     description: editDescription.value,
-
+    exerciseType: editExerciseType.value,
     startTime: start,
     endTime: end,
     createdAt: serverTimestamp(),
@@ -71,83 +75,112 @@ const cancelEditing = () => {
 <template>
   <div>
     <template v-if="!isEditing">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-2 rounded-3xl shadow-md">
-        <div class="border border-gray-400 rounded-xl p-3 text-center flex flex-col justify-center">
-          <strong>Date:</strong>
-          <div>{{ props.startTime.toDate().toLocaleString() }}</div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-1 p-1 rounded-3xl shadow-md">
+        <div class="rounded-full p-3 text-center flex flex-col justify-center">
+          <span class="bg-rosy-finch text-xs font-medium px-1.5 py-1.5 rounded-full">{{
+            props.startTime.toDate().toLocaleDateString()
+          }}</span>
         </div>
 
-        <div class="border border-gray-400 rounded-xl p-3 text-center flex flex-col justify-center">
-          <strong>Start Time:</strong>
-          <div>{{ props.startTime.toDate().toLocaleTimeString() }}</div>
+        <div class="rounded-xl p-3 text-center flex flex-col justify-center">
+          <span class="bg-rosy-finch text-xs font-medium px-1.5 py-1.5 rounded-full"
+            >Start Time: {{ props.startTime.toDate().toLocaleTimeString() }}</span
+          >
         </div>
 
-        <div class="border border-gray-400 rounded-xl p-3 text-center flex flex-col justify-center">
-          <strong>Exercise Type:</strong>
-          <div>Run</div>
+        <div class="rounded-xl p-3 text-center flex flex-col justify-center">
+          <span class="bg-rosy-finch text-xs font-medium px-1.5 py-1.5 rounded-full"
+            >Exercise Type: {{ props.exerciseType }}
+          </span>
         </div>
 
-        <div class="border border-gray-400 rounded-xl p-3 text-center flex flex-col justify-center">
-          <strong>Distance:</strong>
-          <div>{{ props.distance }} miles</div>
+        <div class="rounded-xl p-3 text-center flex flex-col justify-center">
+          <span class="bg-rosy-finch text-xs font-medium px-1.5 py-1.5 rounded-full"
+            >Distance: {{ props.distance }} Miles</span
+          >
         </div>
 
-        <div class="border border-gray-400 rounded-xl p-3 text-center flex flex-col justify-center">
-          <strong>Duration:</strong>
-          <div>{{ props.duration }} min</div>
+        <div class="rounded-xl p-3 text-center flex flex-col justify-center">
+          <span class="bg-rosy-finch text-xs font-medium px-1.5 py-1.5 rounded-full"
+            >Duration: {{ props.duration }} min</span
+          >
         </div>
 
-        <div class="border border-gray-400 rounded-xl p-3 text-center flex flex-col justify-center">
-          <strong>Average Speed:</strong>
-          <div>{{ (props.distance / (props.duration / 60)).toFixed(2) }} mph</div>
+        <div class="rounded-xl p-3 text-center flex flex-col justify-center">
+          <span class="bg-rosy-finch text-xs font-medium px-1.5 py-1.5 rounded-full"
+            >Average Speed: {{ (props.distance / (props.duration / 60)).toFixed(2) }} mph</span
+          >
         </div>
       </div>
-      <button @click="startEditing" class="bg-orange-salmon rounded-xl px-4 py-2">Edit</button>
-      <DeleteComponent :runID="`${props.runID}`"></DeleteComponent>
-      <button class="bg-orange-salmon rounded-xl px-4 py-2">
-        <router-link :to="`/completed-run/${props.runID}`"> View </router-link>
-      </button>
+      <div class="p-3 flex flex-row justify-center">
+        <button @click="startEditing" class="bg-orange-salmon rounded-xl px-4 py-2">
+          <font-awesome-icon icon="fa-pencil" />
+        </button>
+        <DeleteComponent :runID="`${props.runID}`"></DeleteComponent>
+        <button class="bg-orange-salmon rounded-xl px-4 py-2">
+          <router-link :to="`/completed-run/${props.runID}`">
+            <font-awesome-icon icon="fa-eye" />
+          </router-link>
+        </button>
+      </div>
     </template>
 
     <template v-else>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-2 rounded-3xl shadow-md">
-        <div class="border border-gray-400 rounded-xl p-3 text-center flex flex-col justify-center">
-          <strong>Date:</strong>
-          <input type="date" v-model="editDate" class="bg-orange-salmon rounded-xl p-2 w-full" />
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-2 p-1 rounded-3xl shadow-md">
+        <div class="rounded-xl p-3 text-center flex flex-col justify-center">
+          <span class="bg-rosy-finch text-xs font-medium px-1.5 py-1.5 rounded-full">
+            <input type="date" v-model="editDate" />
+          </span>
         </div>
 
-        <div class="border border-gray-400 rounded-xl p-3 text-center flex flex-col justify-center">
-          <strong>Distance:</strong>
-          <input v-model="editMiles" class="bg-orange-salmon rounded-xl p-2 w-full" /> miles
+        <div class="rounded-xl p-1 text-center flex flex-col justify-center">
+          <input
+            class="bg-rosy-finch text-xs font-medium px-1.5 py-1.5 rounded-full"
+            v-model="editMiles"
+          />
         </div>
 
-        <div class="border border-gray-400 rounded-xl p-3 text-center flex flex-col justify-center">
-          <strong>Start Time:</strong>
-          <input type="time" v-model="editStart" class="bg-orange-salmon rounded-xl p-2 w-full" />
+        <div class="rounded-xl p-1 text-center flex flex-col justify-center">
+          <span class="bg-rosy-finch text-xs font-medium px-1.5 py-1.5 rounded-full">
+            <input type="time" v-model="editStart" /> Start Time
+          </span>
         </div>
 
-        <div class="border border-gray-400 rounded-xl p-3 text-center flex flex-col justify-center">
-          <strong>End Time:</strong>
-          <input type="time" v-model="editEnd" class="bg-orange-salmon rounded-xl p-2 w-full" />
+        <div class="rounded-xl p-1 text-center flex flex-col justify-center">
+          <span class="bg-rosy-finch text-xs font-medium px-1.5 py-1.5 rounded-full">
+            <input type="time" v-model="editEnd" /> End Time
+          </span>
         </div>
 
-        <div class="border border-gray-400 rounded-xl p-3 text-center flex flex-col justify-center">
-          <strong>Duration:</strong>
-          <div>{{ props.duration }} minutes</div>
+        <div class="rounded-xl p-1 text-center flex flex-col justify-center">
+          <select
+            id="exerciseType"
+            v-model="editExerciseType"
+            class="bg-rosy-finch text-xs font-medium px-1.5 py-1.5 rounded-full"
+          >
+            <option v-for="type in exerciseTypes" :key="type" :value="type">
+              {{ type }}
+            </option>
+          </select>
         </div>
 
-        <div class="border border-gray-400 rounded-xl p-3 text-center flex flex-col justify-center">
-          <strong>Comment:</strong>
-          <input v-model="editDescription" class="bg-orange-salmon rounded-xl p-2 w-full" />
+        <div class="rounded-xl p-1 text-center flex flex-col justify-center">
+          <input
+            class="bg-rosy-finch text-xs font-medium px-1.5 py-1.5 rounded-full"
+            type="text"
+            v-model="editDescription"
+          />
         </div>
       </div>
-
-      <button @click="finishEditing" class="bg-orange-salmon rounded-xl px-4 py-2">Save</button>
-      <button @click="cancelEditing" class="bg-orange-salmon rounded-xl px-4 py-2">Cancel</button>
-      <DeleteComponent :runID="`${props.runID}`"></DeleteComponent>
-      <button class="bg-orange-salmon rounded-xl px-4 py-2">
-        <router-link :to="`/completed-run/${props.runID}`"> View </router-link>
-      </button>
+      <div class="p-3 flex flex-row justify-center">
+        <button @click="finishEditing" class="bg-orange-salmon rounded-xl px-4 py-2">
+          <font-awesome-icon icon="fa-save" />
+        </button>
+        <button @click="cancelEditing" class="bg-orange-salmon rounded-xl px-4 py-2">
+          <font-awesome-icon icon="fa-x" />
+        </button>
+        <DeleteComponent :runID="`${props.runID}`"></DeleteComponent>
+      </div>
     </template>
   </div>
 </template>
