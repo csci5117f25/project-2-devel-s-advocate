@@ -13,17 +13,34 @@ const toggleMenu = () => {
 const router = useRouter()
 const user = useCurrentUser()
 
+function goToDashboard() {
+  router.push({ name: 'dashboard' })
+  toggleMenu()
+}
+
+function goToStartSession() {
+  router.push({ name: 'startRun' })
+  toggleMenu()
+}
+
+function goToAddSession() {
+  router.push({ name: 'addRun' })
+  toggleMenu()
+}
+
 const login = async () => {
   const auth = getAuth()
   const provider = new GoogleAuthProvider()
   await signInWithPopup(auth, provider)
   router.push({ name: 'dashboard' })
+  toggleMenu()
 }
 
 const logout = async () => {
   const auth = getAuth()
   await auth.signOut()
   router.push({ name: 'splashPage' })
+  toggleMenu()
 }
 </script>
 
@@ -50,21 +67,30 @@ const logout = async () => {
     class="bg-off-white drop-shadow-xl rounded-bl-xl px-5 py-4 fixed top-24 right-0 z-50 flex flex-col space-y-4"
   >
     <template v-if="user">
-      <RouterLink
-        :to="{ name: 'startRun' }"
-        class="px-4 py-2 cursor-pointer text-right text-2xl text-orange-salmon"
-        ><font-awesome-icon icon="fa-play" /> Start Session
-      </RouterLink>
+      <button
+        @click="goToDashboard"
+        class="px-4 py-2 cursor-pointer rounded-xl text-right text-2xl text-orange-salmon hover:bg-lightgray"
+      >
+        <font-awesome-icon icon="fa-home" /> Dashboard
+      </button>
 
-      <RouterLink
-        :to="{ name: 'addRun' }"
-        class="px-4 py-2 cursor-pointer text-right text-2xl text-orange-salmon"
-        ><font-awesome-icon icon="fa-plus" /> Add Session
-      </RouterLink>
+      <button
+        @click="goToStartSession"
+        class="px-4 py-2 cursor-pointer rounded-xl text-right text-2xl text-orange-salmon hover:bg-lightgray"
+      >
+        <font-awesome-icon icon="fa-play" /> Start Session
+      </button>
+
+      <button
+        @click="goToAddSession"
+        class="px-4 py-2 cursor-pointer rounded-xl text-right text-2xl text-orange-salmon hover:bg-lightgray"
+      >
+        <font-awesome-icon icon="fa-plus" /> Add Session
+      </button>
 
       <button
         @click="logout"
-        class="px-4 py-2 cursor-pointer text-right text-2xl text-orange-salmon"
+        class="px-4 py-2 cursor-pointer rounded-xl text-right text-2xl text-orange-salmon hover:bg-lightgray"
       >
         <font-awesome-icon icon="fa-sign-out-alt" /> Logout
       </button>
@@ -73,7 +99,7 @@ const logout = async () => {
     <template v-else>
       <button
         @click="login"
-        class="px-4 py-2 cursor-pointer text-right text-2xl text-orange-salmon"
+        class="px-4 py-2 cursor-pointer rounded-xl text-right text-2xl text-orange-salmon hover:bg-lightgray"
       >
         <font-awesome-icon icon="fa-sign-in-alt" /> Login
       </button>

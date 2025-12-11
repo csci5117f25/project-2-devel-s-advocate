@@ -1,6 +1,4 @@
 <script setup>
-import { defineEmits } from 'vue'
-
 import { db } from '@/firebaseApp'
 import { deleteDoc, doc } from 'firebase/firestore'
 
@@ -13,7 +11,6 @@ const props = defineProps({
 })
 
 const emit = defineEmits(['deleted'])
-
 
 const deleteRun = async () => {
   const ref = doc(db, 'runs', props.runID)

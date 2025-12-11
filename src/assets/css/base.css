@@ -7,10 +7,10 @@
   --color-rosy-finch: #7d4e57;
   --color-orange-salmon: #d66853;
   --color-off-white: #f4f3ef;
+  --color-lightgray: #dcdbd7;
   --color-white: #f4f3ef;
-  --color-border: #C8C8C1;
+  --color-border: #c8c8c1;
 }
-
 
 body {
   /* background-color: var(--color-ebony-clay); */

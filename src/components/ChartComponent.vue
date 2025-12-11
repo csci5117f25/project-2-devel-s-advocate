@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch, defineProps, onMounted } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { Chart, registerables } from 'chart.js'
 Chart.register(...registerables)
 Chart.defaults.color = '#f4f3ef'
