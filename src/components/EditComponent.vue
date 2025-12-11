@@ -1,5 +1,5 @@
 <script setup>
-import { ref, defineProps, defineEmits, watch} from 'vue'
+import { ref, defineProps, defineEmits, watch } from 'vue'
 import { db } from '@/firebaseApp'
 import { updateDoc, doc, serverTimestamp } from 'firebase/firestore'
 import DeleteComponent from './DeleteComponent.vue'
@@ -19,11 +19,7 @@ const props = defineProps({
 const emit = defineEmits(['updated'])
 const docRef = doc(db, 'runs', props.runID)
 
-const exerciseTypes = [
-  "type-run", 
-  "type-walk", 
-  "type-bike"
-]
+const exerciseTypes = ['type-run', 'type-walk', 'type-bike']
 
 const isEditing = ref(false)
 
@@ -38,12 +34,12 @@ const editExerciseType = ref(props.exerciseType)
 
 const startEditing = () => {
   isEditing.value = true
-const pad = (n) => String(n).padStart(2, '0')
+  const pad = (n) => String(n).padStart(2, '0')
   editMiles.value = props.distance
   editDescription.value = props.description
   editDate.value = props.startTime.toDate().toISOString().slice(0, 10)
-editStart.value = `${pad(props.startTime.toDate().getHours())}:${pad(props.startTime.toDate().getMinutes())}`
-editEnd.value = `${pad(props.endTime.toDate().getHours())}:${pad(props.endTime.toDate().getMinutes())}`
+  editStart.value = `${pad(props.startTime.toDate().getHours())}:${pad(props.startTime.toDate().getMinutes())}`
+  editEnd.value = `${pad(props.endTime.toDate().getHours())}:${pad(props.endTime.toDate().getMinutes())}`
   editExerciseType.value = props.exerciseType
 }
 
@@ -116,53 +112,75 @@ const cancelEditing = () => {
           >
         </div>
       </div>
-      <button @click="startEditing" class="bg-orange-salmon rounded-xl px-4 py-2">Edit</button>
-      <DeleteComponent :runID="`${props.runID}`"></DeleteComponent>
-      <button class="bg-orange-salmon rounded-xl px-4 py-2">
-        <router-link :to="`/completed-run/${props.runID}`"> View </router-link>
-      </button>
+      <div class="p-3 flex flex-row justify-center">
+        <button @click="startEditing" class="bg-orange-salmon rounded-xl px-4 py-2">
+          <font-awesome-icon icon="fa-pencil" />
+        </button>
+        <DeleteComponent :runID="`${props.runID}`"></DeleteComponent>
+        <button class="bg-orange-salmon rounded-xl px-4 py-2">
+          <router-link :to="`/completed-run/${props.runID}`">
+            <font-awesome-icon icon="fa-eye" />
+          </router-link>
+        </button>
+      </div>
     </template>
 
     <template v-else>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-2 p-1 rounded-3xl shadow-md">
         <div class="rounded-xl p-3 text-center flex flex-col justify-center">
           <span class="bg-rosy-finch text-xs font-medium px-1.5 py-1.5 rounded-full">
-          <input type="date" v-model="editDate" />
-</span>
+            <input type="date" v-model="editDate" />
+          </span>
         </div>
 
         <div class="rounded-xl p-1 text-center flex flex-col justify-center">
-          <input class="bg-rosy-finch text-xs font-medium px-1.5 py-1.5 rounded-full" v-model="editMiles" /> 
+          <input
+            class="bg-rosy-finch text-xs font-medium px-1.5 py-1.5 rounded-full"
+            v-model="editMiles"
+          />
         </div>
 
         <div class="rounded-xl p-1 text-center flex flex-col justify-center">
-<span class="bg-rosy-finch text-xs font-medium px-1.5 py-1.5 rounded-full">
-          <input type="time" v-model="editStart" />  Start Time </span>
+          <span class="bg-rosy-finch text-xs font-medium px-1.5 py-1.5 rounded-full">
+            <input type="time" v-model="editStart" /> Start Time
+          </span>
         </div>
 
         <div class="rounded-xl p-1 text-center flex flex-col justify-center">
-  <span class="bg-rosy-finch text-xs font-medium px-1.5 py-1.5 rounded-full">
-          <input type="time" v-model="editEnd" />  End Time </span>
+          <span class="bg-rosy-finch text-xs font-medium px-1.5 py-1.5 rounded-full">
+            <input type="time" v-model="editEnd" /> End Time
+          </span>
         </div>
 
-  <select
-    id="exerciseType"
-    v-model="editExerciseType"
-class="bg-rosy-finch text-xs font-medium px-1.5 py-1.5 rounded-full"
-  >
-    <option v-for="type in exerciseTypes" :key="type" :value="type">
-      {{ type }}
-    </option>
-  </select>
+        <div class="rounded-xl p-1 text-center flex flex-col justify-center">
+          <select
+            id="exerciseType"
+            v-model="editExerciseType"
+            class="bg-rosy-finch text-xs font-medium px-1.5 py-1.5 rounded-full"
+          >
+            <option v-for="type in exerciseTypes" :key="type" :value="type">
+              {{ type }}
+            </option>
+          </select>
+        </div>
 
         <div class="rounded-xl p-1 text-center flex flex-col justify-center">
-          <input class="bg-rosy-finch text-xs font-medium px-1.5 py-1.5 rounded-full" type="text" v-model="editDescription" />
+          <input
+            class="bg-rosy-finch text-xs font-medium px-1.5 py-1.5 rounded-full"
+            type="text"
+            v-model="editDescription"
+          />
         </div>
       </div>
-
-      <button @click="finishEditing" class="bg-orange-salmon rounded-xl px-4 py-2">Save</button>
-      <button @click="cancelEditing" class="bg-orange-salmon rounded-xl px-4 py-2">Cancel</button>
-      <DeleteComponent :runID="`${props.runID}`"></DeleteComponent>
+      <div class="p-3 flex flex-row justify-center">
+        <button @click="finishEditing" class="bg-orange-salmon rounded-xl px-4 py-2">
+          <font-awesome-icon icon="fa-save" />
+        </button>
+        <button @click="cancelEditing" class="bg-orange-salmon rounded-xl px-4 py-2">
+          <font-awesome-icon icon="fa-x" />
+        </button>
+        <DeleteComponent :runID="`${props.runID}`"></DeleteComponent>
+      </div>
     </template>
   </div>
 </template>
