@@ -7,11 +7,15 @@ const props = defineProps({
   description: String,
   duration: Number,
   distance: Number,
+  exerciseType: String,
 
   startTime: Object,
   endTime: Object,    
   createdAt: Object   
 })
+
+
+
 
 
 </script>
@@ -24,6 +28,7 @@ const props = defineProps({
   :duration="props.duration"
   :startTime="props.startTime"
   :endTime="props.endTime"
+  :exerciseType="props.exerciseType"
   :createdAt="props.createdAt"
 />
 </template>
