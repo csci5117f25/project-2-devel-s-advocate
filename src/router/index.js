@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { getAuth } from 'firebase/auth'
 import SplashPageView from '../views/SplashPageView.vue'
 import DashboardView from '../views/DashboardView.vue'
 import StartRunView from '../views/StartRunView.vue'
 import CompletedRunView from '../views/CompletedRunView.vue'
 import AddRunView from '../views/AddRunView.vue'
+import SessionInfoView from '../views/SessionInfoView.vue'
 import NotFoundView from '../views/NotFoundView.vue'
 
 const router = createRouter({
@@ -19,37 +19,43 @@ const router = createRouter({
         const user = await getCurrentUser()
         if (user) return { name: 'dashboard' }
       },
-      meta: { title: 'Splash Page' },
+      meta: { title: 'tr@ceroute' },
     },
     {
       path: '/dashboard',
       name: 'dashboard',
       component: DashboardView,
-      meta: { title: 'Dashboard', requiresAuth: true },
+      meta: { title: 'tr@ceroute | Dashboard', requiresAuth: true },
     },
     {
       path: '/start-run',
       name: 'startRun',
       component: StartRunView,
-      meta: { title: 'Start Run', requiresAuth: true },
+      meta: { title: 'tr@ceroute | Start Session', requiresAuth: true },
     },
     {
       path: '/completed-run/:runID',
       name: 'completedRun',
       component: CompletedRunView,
-      meta: { title: 'Completed Run', requiresAuth: true },
+      meta: { title: 'tr@ceroute | Completed Session', requiresAuth: true },
     },
     {
       path: '/add-run',
       name: 'addRun',
       component: AddRunView,
-      meta: { title: 'Add Run', requiresAuth: true },
+      meta: { title: 'tr@ceroute | Add Session', requiresAuth: true },
+    },
+    {
+      path: '/view-session/:runID',
+      name: 'viewSession',
+      component: SessionInfoView,
+      meta: { title: 'tr@ceroute | Session Information', requiresAuth: true },
     },
     {
       path: '/:catchAll(.*)',
       name: 'notFound',
       component: NotFoundView,
-      meta: { title: 'Page Not Found' },
+      meta: { title: 'tr@ceroute | Page Not Found' },
     },
   ],
 })

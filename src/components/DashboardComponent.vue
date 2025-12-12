@@ -10,25 +10,21 @@ const props = defineProps({
   exerciseType: String,
 
   startTime: Object,
-  endTime: Object,    
-  createdAt: Object   
+  endTime: Object,
+  createdAt: Object,
 })
-
-
-
-
-
 </script>
 
 <template>
-<EditComponent
-  :runID="props.runID"
-  :description="props.description"
-  :distance="props.distance"
-  :duration="props.duration"
-  :startTime="props.startTime"
-  :endTime="props.endTime"
-  :exerciseType="props.exerciseType"
-  :createdAt="props.createdAt"
-/>
+  <EditComponent
+    :runID="props.runID"
+    :view="'dashboard'"
+    :description="props.description"
+    :distance="props.distance"
+    :duration="props.duration"
+    :startTime="props.startTime"
+    :endTime="props.endTime"
+    :exerciseType="props.exerciseType"
+    :createdAt="props.createdAt"
+  />
 </template>

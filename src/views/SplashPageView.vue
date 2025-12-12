@@ -4,7 +4,7 @@ import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import { motion } from 'motion-v'
 import { ref } from 'vue'
 const constraintsRef = ref(null)
-import SplashpageComponent from '@/components/SplashpageComponent.vue'
+import SplashPageComponent from '@/components/SplashPageComponent.vue'
 import { TresCanvas } from '@tresjs/core'
 const router = useRouter()
 
@@ -29,12 +29,11 @@ const login = async () => {
 
       <div
         class="half-width running-animation text-center border-6 border-orange-salmon rounded-xl"
-        style="position: relative; height: 250px; width: 250px;"  >
-        <TresCanvas 
-        clearColor='#7d4e57'
-        >
-       <SplashpageComponent />
-  </TresCanvas>
+        style="position: relative; height: 250px; width: 250px"
+      >
+        <TresCanvas clearColor="#7d4e57">
+          <SplashPageComponent />
+        </TresCanvas>
       </div>
     </div>
 
