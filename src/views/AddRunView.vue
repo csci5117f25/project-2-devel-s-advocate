@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import { useCurrentUser } from 'vuefire'
 import { db } from '@/firebaseApp'
 import { collection, addDoc, serverTimestamp } from 'firebase/firestore'
+import { motion, AnimatePresence, useScroll, animate } from 'motion-v'
 
 const router = useRouter()
 const user = useCurrentUser()
