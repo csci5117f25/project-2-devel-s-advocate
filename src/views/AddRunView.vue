@@ -143,12 +143,16 @@ const submitRun = async () => {
       </div>
 
       <div class="flex flex-row justify-center">
-        <button
-          @click="submitRun"
-          class="text-center text-orange-salmon bg-off-white rounded-xl px-4 py-2 mx-4 my-2 cursor-pointer"
-        >
+          <motion.button
+                @click="submitRun"
+                  class="text-center text-orange-salmon bg-off-white rounded-xl px-4 py-2 mx-4 my-2 cursor-pointer"
+
+                :whileHover="{ scale: 1.15, rotate: 3 }"
+                :whileTap="{ scale: 0.9, rotate: -5 }"
+                :transition="{ type: 'spring', stiffness: 400, damping: 17 }"
+              >
           Submit
-        </button>
+              </motion.button>
 
         <RouterLink
           :to="{ name: 'dashboard' }"
