@@ -90,23 +90,18 @@ onMounted(async () => {
 </script>
 
 <template>
-  <!-- <div id="mobile-view" class="flex flex-col mt-32 text-off-white drop-shadow-xl/50"> -->
-  <div id="completed-run-container" class="flex flex-col mt-32 text-off-white drop-shadow-xl/50">
+  <div id="mobile-view" class="flex flex-col mt-32 text-off-white drop-shadow-xl/50">
+    <!-- <div id="completed-run-container" class="flex flex-col mt-32 text-off-white drop-shadow-xl/50"> -->
     <div id="congratulations-container" class="flex flex-col items-center">
       <div>
         <ConfettiComponent text="Congratulations!"></ConfettiComponent>
       </div>
-
-      <!-- <div class="h-75 text-center border-6 border-orange-salmon rounded-xl px-4 py-2 m-4">
-        Victory Animation
-      </div> -->
 
       <div id="tired-animation" class="my-6">
         <img src="../assets/gifs/victory_animation.gif" class="h-75" />
       </div>
     </div>
 
-    <!--<div class="h-75 text-center border-6 border-orange-salmon rounded-xl px-4 py-2 m-4" style="height: 400px;"> -->
     <div
       id="map"
       class="border-6 border-orange-salmon rounded-xl m-4"
@@ -169,11 +164,38 @@ onMounted(async () => {
       </RouterLink>
     </div>
   </div>
+
+  <div id="desktop-view" class="hidden mt-32 text-off-white drop-shadow-xl/50">
+    <div class="h-100 w-100 text-center border-6 border-orange-salmon rounded-xl px-4 py-2">
+      Mobile Phone Animation
+    </div>
+    <div class="flex flex-col items-center">
+      <h1 class="text-3xl text-center text-orange-salmon font-bold m-2">Oops!</h1>
+
+      <h2 class="text-2xl p-2 m-2">This page can only be viewed on a mobile device.</h2>
+
+      <RouterLink
+        :to="{ name: 'dashboard' }"
+        class="w-2/5 text-center text-orange-salmon bg-off-white hover:bg-lightgray rounded-xl p-2 m-4"
+      >
+        <font-awesome-icon icon="fa-home" /> Return Home
+      </RouterLink>
+    </div>
+  </div>
 </template>
 
 <style scoped>
 @media (min-width: 1024px) {
-  #completed-run-container {
+  #mobile-view {
+    display: none;
+  }
+  #desktop-view {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+  }
+  /* #completed-run-container {
     flex-direction: row;
     justify-content: space-around;
     align-items: center;
@@ -181,6 +203,6 @@ onMounted(async () => {
   }
   #map {
     width: 500px;
-  }
+  } */
 }
 </style>

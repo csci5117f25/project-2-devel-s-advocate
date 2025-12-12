@@ -17,7 +17,7 @@ const chartOptions = {
   responsive: true,
   plugins: {
     legend: { display: true, position: 'top' },
-    title: { display: true, text: props.title },
+    title: { display: false, text: props.title },
   },
   scales: {
     x: { grid: { color: '#f4f3ef' } },

@@ -2,7 +2,7 @@
 import { RouterLink, useRouter } from 'vue-router'
 import { useCurrentUser } from 'vuefire'
 import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
-import { ref } from 'vue'
+import { ref, watchEffect } from 'vue'
 
 const menuOpen = ref(false)
 
@@ -12,6 +12,12 @@ const toggleMenu = () => {
 
 const router = useRouter()
 const user = useCurrentUser()
+
+const targetRoute = ref('splashPage')
+
+watchEffect(() => {
+  targetRoute.value = user.value ? 'dashboard' : 'splashPage'
+})
 
 function goToDashboard() {
   router.push({ name: 'dashboard' })
@@ -48,7 +54,7 @@ const logout = async () => {
   <nav
     class="flex justify-between items-center bg-off-white h-24 px-5 drop-shadow-xl/25 fixed top-0 z-1000 w-full"
   >
-    <RouterLink :to="{ name: 'dashboard' }">
+    <RouterLink :to="{ name: targetRoute }">
       <img src="../assets/images/traceroute_logo.png" alt="tr@ceroute" />
     </RouterLink>
 

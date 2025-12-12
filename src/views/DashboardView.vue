@@ -219,7 +219,7 @@ const chartData = computed(() => {
             <select
               v-model="filter_option"
               id="filter-option"
-              class="bg-orange-salmon rounded-xl px-4 py-2 m-2 cursor-pointer"
+              class="bg-orange-salmon hover:bg-light-orange-salmon rounded-xl px-4 py-2 m-2 cursor-pointer"
             >
               <option value="all">All Sessions</option>
               <option value="walks-only">Walks Only</option>
@@ -233,7 +233,7 @@ const chartData = computed(() => {
             <select
               v-model="sort_option"
               id="sort-option"
-              class="bg-orange-salmon rounded-xl px-4 py-2 m-2 cursor-pointer"
+              class="bg-orange-salmon hover:bg-light-orange-salmon rounded-xl px-4 py-2 m-2 cursor-pointer"
             >
               <option value="date-desc">Date (Newest First)</option>
               <option value="date-asc">Date (Oldest First)</option>
@@ -283,12 +283,12 @@ const chartData = computed(() => {
             <select
               v-model="chart_view"
               id="chart-view"
-              class="bg-orange-salmon rounded-xl px-4 py-2 m-2 cursor-pointer"
+              class="bg-orange-salmon hover:bg-light-orange-salmon rounded-xl px-4 py-2 m-2 cursor-pointer"
             >
-              <option class="text-cinder" value="chart-general">Traveled</option>
-              <option class="text-cinder" value="chart-walking">Walked</option>
-              <option class="text-cinder" value="chart-running">Ran</option>
-              <option class="text-cinder" value="chart-biking">Biked</option>
+              <option value="chart-general">Traveled</option>
+              <option value="chart-walking">Walked</option>
+              <option value="chart-running">Ran</option>
+              <option value="chart-biking">Biked</option>
             </select>
             <p>Over Time</p>
           </div>

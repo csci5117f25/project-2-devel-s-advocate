@@ -13,11 +13,17 @@ const props = defineProps({
 const emit = defineEmits(['deleted'])
 
 const deleteRun = async () => {
-  const ref = doc(db, 'runs', props.runID)
-  await deleteDoc(ref)
-  emit('deleted', props.runID)
-  console.log('run delete!')
-  router.push('/dashboard')
+  const isConfirmed = confirm(
+    `Are you sure you want to delete this exercise session from your account?`,
+  )
+  if (isConfirmed) {
+    const ref = doc(db, 'runs', props.runID)
+    await deleteDoc(ref)
+    emit('deleted', props.runID)
+    router.push('/dashboard')
+  } else {
+    alert('Action cancelled.')
+  }
 }
 </script>
 

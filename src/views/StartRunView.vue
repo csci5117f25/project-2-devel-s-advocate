@@ -159,22 +159,22 @@ function initMap(position = null) {
 <template>
   <div id="mobile-view" class="flex flex-col mt-32 text-off-white drop-shadow-xl/50">
     <div>
-      <h1 class="text-2xl text-center text-orange-salmon font-bold">Track Exercise Session</h1>
+      <h1 class="text-3xl text-center text-orange-salmon font-bold">Track Exercise Session</h1>
     </div>
 
     <div
       id="map"
-      class="border-6 border-orange-salmon rounded-xl m-4"
+      class="border-6 border-orange-salmon rounded-xl mx-4 my-8"
       ref="mapRef"
       style="height: 400px"
     ></div>
 
     <div class="flex flex-row justify-between">
-      <div class="w-2/5 text-center border-2 border-orange-salmon rounded-xl px-4 py-2 mx-4 my-2">
+      <div class="w-2/5 text-center bg-orange-salmon rounded-xl px-4 py-2 mx-4 my-2">
         {{ formattedTime }}
       </div>
 
-      <div class="w-2/5 text-center border-2 border-orange-salmon rounded-xl px-4 py-2 mx-4 my-2">
+      <div class="w-2/5 text-center bg-orange-salmon rounded-xl px-4 py-2 mx-4 my-2">
         {{ formatDistance(distance) }}
       </div>
     </div>
@@ -182,14 +182,14 @@ function initMap(position = null) {
     <div class="flex flex-row justify-between">
       <div
         @click="toggle"
-        class="w-2/5 text-center border-2 border-orange-salmon rounded-xl px-4 py-2 mx-4 my-2 cursor-pointer"
+        class="w-2/5 text-center bg-off-white active:bg-lightgray text-orange-salmon rounded-xl px-4 py-2 mx-4 my-2 cursor-pointer"
       >
         {{ tracking ? 'Stop' : 'Start' }}
       </div>
 
       <div
         @click="cancel"
-        class="w-2/5 text-center border-2 border-orange-salmon rounded-xl px-4 py-2 mx-4 my-2"
+        class="w-2/5 text-center bg-off-white active:bg-lightgray text-orange-salmon rounded-xl px-4 py-2 mx-4 my-2 cursor-pointer"
       >
         Cancel
       </div>
@@ -207,9 +207,9 @@ function initMap(position = null) {
 
       <RouterLink
         :to="{ name: 'dashboard' }"
-        class="w-1/5 text-center text-orange-salmon bg-off-white rounded-xl p-2 m-4"
+        class="w-2/5 text-center text-orange-salmon bg-off-white hover:bg-lightgray rounded-xl p-2 m-4"
       >
-        Return Home
+        <font-awesome-icon icon="fa-home" /> Return Home
       </RouterLink>
     </div>
   </div>

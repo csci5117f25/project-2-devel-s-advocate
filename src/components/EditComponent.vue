@@ -6,7 +6,7 @@ import DeleteComponent from './DeleteComponent.vue'
 
 const props = defineProps({
   runID: { type: String, required: true },
-
+  view: { type: String, required: true },
   description: String,
   duration: Number,
   distance: Number,
@@ -96,7 +96,7 @@ const cancelEditing = () => {
 
         <div class="rounded-xl p-1 text-center flex flex-col justify-center">
           <span class="bg-rosy-finch text-xs font-medium px-1.5 py-1.5 rounded-xl"
-            >Distance: {{ props.distance }} Miles</span
+            >Distance: {{ props.distance || 0 }} Miles</span
           >
         </div>
 
@@ -114,10 +114,11 @@ const cancelEditing = () => {
       </div>
       <div class="p-3 flex flex-row justify-center">
         <button
+          v-if="props.view == 'dashboard'"
           class="bg-off-white text-orange-salmon rounded-xl px-4 py-2 mx-2 hover:bg-lightgray cursor-pointer"
           title="View session details"
         >
-          <router-link :to="`/completed-run/${props.runID}`">
+          <router-link :to="`/view-session/${props.runID}`">
             <font-awesome-icon icon="fa-eye" />
           </router-link>
         </button>
@@ -162,7 +163,7 @@ const cancelEditing = () => {
 
         <div class="rounded-xl p-1 text-center flex flex-col justify-center">
           <span class="bg-rosy-finch text-xs font-medium px-1.5 py-1.5 rounded-xl">
-            Distance:
+            Distance (in miles):
             <input
               type="number"
               v-model="editMiles"
@@ -194,10 +195,11 @@ const cancelEditing = () => {
       </div>
       <div class="p-3 flex flex-row justify-center">
         <button
+          v-if="props.view == 'dashboard'"
           class="bg-off-white text-orange-salmon rounded-xl px-4 py-2 mx-2 hover:bg-lightgray cursor-pointer"
           title="View session details"
         >
-          <router-link :to="`/completed-run/${props.runID}`">
+          <router-link :to="`/view-session/${props.runID}`">
             <font-awesome-icon icon="fa-eye" />
           </router-link>
         </button>
