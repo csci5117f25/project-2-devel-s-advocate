@@ -35,9 +35,12 @@ const editExerciseType = ref(props.exerciseType)
 const startEditing = () => {
   isEditing.value = true
   const pad = (n) => String(n).padStart(2, '0')
+  const date = props.startTime.toDate();
+
   editMiles.value = props.distance
   editDescription.value = props.description
-  editDate.value = props.startTime.toDate().toISOString().slice(0, 10)
+  editDate.value = `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`
+
   editStart.value = `${pad(props.startTime.toDate().getHours())}:${pad(props.startTime.toDate().getMinutes())}`
   editEnd.value = `${pad(props.endTime.toDate().getHours())}:${pad(props.endTime.toDate().getMinutes())}`
   editExerciseType.value = props.exerciseType
