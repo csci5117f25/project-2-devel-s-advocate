@@ -1,6 +1,7 @@
 <script setup>
 import { db } from '@/firebaseApp'
 import { deleteDoc, doc } from 'firebase/firestore'
+import { motion, AnimatePresence, useScroll, animate } from 'motion-v'
 
 import { useRouter } from 'vue-router'
 
@@ -28,11 +29,14 @@ const deleteRun = async () => {
 </script>
 
 <template>
-  <button
+  <motion.button
     class="bg-off-white text-orange-salmon rounded-xl px-4 py-2 mx-2 hover:bg-lightgray cursor-pointer"
     @click="deleteRun"
     title="Delete session"
+    :whileHover="{ scale: 1.15, rotate: 3 }"
+    :whileTap="{ scale: 0.9, rotate: -5 }"
+    :transition="{ type: 'spring', stiffness: 400, damping: 17 }"
   >
     <font-awesome-icon icon="fa-trash-can" />
-  </button>
+  </motion.button>
 </template>
