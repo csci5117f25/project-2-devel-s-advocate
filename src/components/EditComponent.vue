@@ -3,6 +3,7 @@ import { ref, watch } from 'vue'
 import { db } from '@/firebaseApp'
 import { updateDoc, doc, serverTimestamp } from 'firebase/firestore'
 import DeleteComponent from './DeleteComponent.vue'
+import { motion, AnimatePresence, useScroll, animate } from 'motion-v'
 
 const props = defineProps({
   runID: { type: String, required: true },
@@ -35,7 +36,7 @@ const editExerciseType = ref(props.exerciseType)
 const startEditing = () => {
   isEditing.value = true
   const pad = (n) => String(n).padStart(2, '0')
-  const date = props.startTime.toDate();
+  const date = props.startTime.toDate()
 
   editMiles.value = props.distance
   editDescription.value = props.description
@@ -116,22 +117,28 @@ const cancelEditing = () => {
         </div>
       </div>
       <div class="p-3 flex flex-row justify-center">
-        <button
+        <motion.button
           v-if="props.view == 'dashboard'"
           class="bg-off-white text-orange-salmon rounded-xl px-4 py-2 mx-2 hover:bg-lightgray cursor-pointer"
           title="View session details"
+          :whileHover="{ scale: 1.15, rotate: 3 }"
+          :whileTap="{ scale: 0.9, rotate: -5 }"
+          :transition="{ type: 'spring', stiffness: 400, damping: 17 }"
         >
           <router-link :to="`/view-session/${props.runID}`">
             <font-awesome-icon icon="fa-eye" />
           </router-link>
-        </button>
-        <button
+        </motion.button>
+        <motion.button
           @click="startEditing"
           class="bg-off-white text-orange-salmon rounded-xl px-4 py-2 mx-2 hover:bg-lightgray cursor-pointer"
           title="Edit session details"
+          :whileHover="{ scale: 1.15, rotate: 3 }"
+          :whileTap="{ scale: 0.9, rotate: -5 }"
+          :transition="{ type: 'spring', stiffness: 400, damping: 17 }"
         >
-          <font-awesome-icon icon="fa-pen-to-square" />
-        </button>
+<font-awesome-icon icon="fa-pen-to-square" />
+        </motion.button>
         <DeleteComponent :runID="`${props.runID}`"></DeleteComponent>
       </div>
     </template>
