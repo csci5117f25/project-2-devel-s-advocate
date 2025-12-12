@@ -22,5 +22,11 @@ const deleteRun = async () => {
 </script>
 
 <template>
-  <button class="bg-orange-salmon rounded-xl px-4 py-2" @click="deleteRun"><font-awesome-icon icon="fa-trash-can" /></button>
+  <button
+    class="bg-off-white text-orange-salmon rounded-xl px-4 py-2 mx-2 hover:bg-lightgray cursor-pointer"
+    @click="deleteRun"
+    title="Delete session"
+  >
+    <font-awesome-icon icon="fa-trash-can" />
+  </button>
 </template>

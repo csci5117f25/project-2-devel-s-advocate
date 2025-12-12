@@ -139,9 +139,9 @@ onMounted(async () => {
             required
           >
             <option disabled selected hidden value="">Select Option</option>
-            <option value="type-walk">Walk</option>
-            <option value="type-run">Run</option>
-            <option value="type-bike-ride">Bike Ride</option>
+            <option value="Walk">Walk</option>
+            <option value="Run">Run</option>
+            <option value="Bike Ride">Bike Ride</option>
           </select>
         </div>
 

@@ -29,11 +29,11 @@ const filteredRuns = computed(() => {
 
   switch (filter_option.value) {
     case 'walks-only':
-      return runs.value.filter((r) => r.exerciseType === 'type-walk')
+      return runs.value.filter((r) => r.exerciseType === 'Walk')
     case 'runs-only':
-      return runs.value.filter((r) => r.exerciseType === 'type-run')
+      return runs.value.filter((r) => r.exerciseType === 'Run')
     case 'bike-rides-only':
-      return runs.value.filter((r) => r.exerciseType === 'type-bike-ride')
+      return runs.value.filter((r) => r.exerciseType === 'Bike Ride')
     case 'all':
     default:
       return runs.value
@@ -103,9 +103,9 @@ const userStats = computed(() => {
     fastestAvgSpeed: parseFloat(maxSpeed.toFixed(1)),
     totalRunningTime: totalTime,
     longestRun,
-    totalRuns: runs.value.filter((r) => r.exerciseType === 'type-run').length,
-    totalWalks: runs.value.filter((r) => r.exerciseType === 'type-walk').length,
-    totalBikeRides: runs.value.filter((r) => r.exerciseType === 'type-bike-ride').length,
+    totalRuns: runs.value.filter((r) => r.exerciseType === 'Run').length,
+    totalWalks: runs.value.filter((r) => r.exerciseType === 'Walk').length,
+    totalBikeRides: runs.value.filter((r) => r.exerciseType === 'Bike Ride').length,
   }
 })
 
@@ -131,13 +131,13 @@ const chartData = computed(() => {
   let filteredChartRuns = runs.value
   switch (chart_view.value) {
     case 'chart-walking':
-      filteredChartRuns = runs.value.filter((r) => r.exerciseType === 'type-walk')
+      filteredChartRuns = runs.value.filter((r) => r.exerciseType === 'Walk')
       break
     case 'chart-running':
-      filteredChartRuns = runs.value.filter((r) => r.exerciseType === 'type-run')
+      filteredChartRuns = runs.value.filter((r) => r.exerciseType === 'Run')
       break
     case 'chart-biking':
-      filteredChartRuns = runs.value.filter((r) => r.exerciseType === 'type-bike-ride')
+      filteredChartRuns = runs.value.filter((r) => r.exerciseType === 'Bike Ride')
       break
     default:
       break
@@ -219,7 +219,7 @@ const chartData = computed(() => {
             <select
               v-model="filter_option"
               id="filter-option"
-              class="bg-orange-salmon rounded-xl px-4 py-2 m-2"
+              class="bg-orange-salmon rounded-xl px-4 py-2 m-2 cursor-pointer"
             >
               <option value="all">All Sessions</option>
               <option value="walks-only">Walks Only</option>
@@ -233,7 +233,7 @@ const chartData = computed(() => {
             <select
               v-model="sort_option"
               id="sort-option"
-              class="bg-orange-salmon rounded-xl px-4 py-2 m-2"
+              class="bg-orange-salmon rounded-xl px-4 py-2 m-2 cursor-pointer"
             >
               <option value="date-desc">Date (Newest First)</option>
               <option value="date-asc">Date (Oldest First)</option>
@@ -283,7 +283,7 @@ const chartData = computed(() => {
             <select
               v-model="chart_view"
               id="chart-view"
-              class="bg-orange-salmon rounded-xl px-4 py-2 m-2"
+              class="bg-orange-salmon rounded-xl px-4 py-2 m-2 cursor-pointer"
             >
               <option class="text-cinder" value="chart-general">Traveled</option>
               <option class="text-cinder" value="chart-walking">Walked</option>
@@ -335,7 +335,7 @@ const chartData = computed(() => {
   }
 
   #sessions-list {
-    max-height: calc(var(--spacing) * 150);
+    max-height: calc(var(--spacing) * 200);
   }
 
   #chart {
