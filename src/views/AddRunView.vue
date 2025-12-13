@@ -78,122 +78,74 @@ function goToDashboard() {
     >
       <div id="form-input-container">
         <div class="flex flex-row items-center">
-          <motion.label
-            for="run-date"
-            :initial="{ opacity: 0, y: -80 }"
-            :whileInView="{ opacity: 1, y: 0 }"
-            :transition="{ delay: index * 0.1, duration: 0.8 }"
-            >Date:
-          </motion.label>
-          <motion.input
+          <label for="run-date">Date: </label>
+          <input
             v-model="date"
             type="date"
             id="run-date"
-            class="bg-orange-salmon hover:bg-light-orange-salmon border-2 border-orange-salmon focus:ring-2 focus:ring-off-white focus:border-off-white rounded-xl p-1 my-2 mx-3 cursor-pointer"
-            :whileFocus="{ scale: 1.1, borderColor: 'rgb(31, 141, 214)' }"
-            :transition="{ type: 'spring', stiffness: 300 }"
+            class="bg-orange-salmon hover:bg-light-orange-salmon rounded-xl px-4 py-2 my-2 mx-4 cursor-pointer transition-transform delay-100 ease-in-out focus:scale-110 focus:ring-2 focus:ring-off-white focus:border-off-white"
             required
           />
         </div>
 
         <div class="flex flex-row items-center">
-          <motion.label
-            for="exercise-type"
-            :initial="{ opacity: 0, y: -80 }"
-            :whileInView="{ opacity: 1, y: 0 }"
-            :transition="{ delay: index * 0.1, duration: 0.8 }"
-            >Exercise Type:
-          </motion.label>
-          <motion.select
+          <label for="exercise-type">Exercise Type: </label>
+          <select
             v-model="exerciseType"
             id="exercise-type"
-            class="bg-orange-salmon hover:bg-light-orange-salmon border-2 border-orange-salmon focus:ring-off-white focus:border-off-white rounded-xl p-1 my-2 mx-3 cursor-pointer"
-            :whileFocus="{ scale: 1.1, borderColor: 'rgb(31, 141, 214)' }"
-            :transition="{ type: 'spring', stiffness: 300 }"
+            class="bg-orange-salmon hover:bg-light-orange-salmon rounded-xl px-4 py-2 my-2 mx-4 cursor-pointer transition-transform delay-100 ease-in-out focus:scale-110 focus:ring-2 focus:ring-off-white focus:border-off-white"
             required
           >
             <option disabled selected hidden value="">Select Option</option>
             <option value="Walk">Walk</option>
             <option value="Run">Run</option>
             <option value="Bike Ride">Bike Ride</option>
-          </motion.select>
+          </select>
         </div>
 
         <div class="flex flex-row items-center">
-          <motion.label
-            for="start-time"
-            :initial="{ opacity: 0, y: -80 }"
-            :whileInView="{ opacity: 1, y: 0 }"
-            :transition="{ delay: index * 0.1, duration: 0.8 }"
-            >Start Time:
-          </motion.label>
-          <motion.input
+          <label for="start-time">Start Time: </label>
+          <input
             v-model="startTime"
             type="time"
             id="start-time"
-            class="bg-orange-salmon hover:bg-light-orange-salmon border-2 border-orange-salmon focus:ring-2 focus:ring-off-white focus:border-off-white rounded-xl p-1 my-2 mx-3 cursor-pointer"
-            :whileFocus="{ scale: 1.1, borderColor: 'rgb(31, 141, 214)' }"
-            :transition="{ type: 'spring', stiffness: 300 }"
+            class="bg-orange-salmon hover:bg-light-orange-salmon rounded-xl px-4 py-2 my-2 mx-4 cursor-pointer transition-transform delay-100 ease-in-out focus:scale-110 focus:ring-2 focus:ring-off-white focus:border-off-white"
             required
           />
         </div>
 
         <div class="flex flex-row items-center">
-          <motion.label
-            for="end-time"
-            :initial="{ opacity: 0, y: -80 }"
-            :whileInView="{ opacity: 1, y: 0 }"
-            :transition="{ delay: index * 0.1, duration: 0.8 }"
-            >End Time:
-          </motion.label>
-          <motion.input
+          <label for="end-time">End Time: </label>
+          <input
             v-model="endTime"
             type="time"
             id="end-time"
-            class="bg-orange-salmon hover:bg-light-orange-salmon border-2 border-orange-salmon focus:ring-2 focus:ring-off-white focus:border-off-white rounded-xl p-1 my-2 mx-3 cursor-pointer"
-            :whileFocus="{ scale: 1.1, borderColor: 'rgb(31, 141, 214)' }"
-            :transition="{ type: 'spring', stiffness: 300 }"
+            class="bg-orange-salmon hover:bg-light-orange-salmon rounded-xl px-4 py-2 my-2 mx-4 cursor-pointer transition-transform delay-100 ease-in-out focus:scale-110 focus:ring-2 focus:ring-off-white focus:border-off-white"
             required
           />
         </div>
 
         <div class="flex flex-row items-center">
-          <motion.label
-            for="run-distance"
-            :initial="{ opacity: 0, y: -80 }"
-            :whileInView="{ opacity: 1, y: 0 }"
-            :transition="{ delay: index * 0.1, duration: 0.8 }"
-            >Distance (in miles):
-          </motion.label>
-          <motion.input
+          <label for="run-distance">Distance (in miles): </label>
+          <input
             v-model="distance"
             type="number"
             id="run-distance"
+            class="w-1/4 bg-orange-salmon hover:bg-light-orange-salmon rounded-xl px-4 py-2 my-2 mx-4 cursor-pointer transition-transform delay-100 ease-in-out focus:scale-110 focus:ring-2 focus:ring-off-white focus:border-off-white"
             placeholder="#"
-            class="w-1/4 bg-orange-salmon hover:bg-light-orange-salmon border-2 border-orange-salmon focus:ring-2 focus:ring-off-white focus:border-off-white rounded-xl p-1 my-2 mx-3 cursor-pointer"
-            :whileFocus="{ scale: 1.1, borderColor: 'rgb(31, 141, 214)' }"
-            :transition="{ type: 'spring', stiffness: 300 }"
             required
           />
         </div>
 
         <div class="flex flex-col my-2">
-          <motion.label
-            for="comment"
-            :initial="{ opacity: 0, y: -80 }"
-            :whileInView="{ opacity: 1, y: 0 }"
-            :transition="{ delay: index * 0.1, duration: 0.8 }"
-            >Comment:
-          </motion.label>
-          <motion.textarea
+          <label for="comment">Comment: </label>
+          <textarea
             v-model="comment"
             placeholder="Add an optional comment about your session!"
             id="comment"
-            class="border-2 border-orange-salmon focus:ring-2 focus:ring-off-white focus:border-off-white rounded-xl p-2 my-2 mx-1 cursor-pointer"
-            :whileFocus="{ scale: 1.01, borderColor: 'rgb(31, 141, 214)' }"
-            :transition="{ type: 'spring', stiffness: 300 }"
-            required
-          />
+            class="border-2 border-orange-salmon rounded-xl p-2 my-2 cursor-pointer transition-transform delay-100 ease-in-out focus:scale-101 focus:ring-2 focus:ring-off-white focus:border-off-white"
+            rows="3"
+          ></textarea>
         </div>
       </div>
 
