@@ -19,43 +19,43 @@ const router = createRouter({
         const user = await getCurrentUser()
         if (user) return { name: 'dashboard' }
       },
-      meta: { title: 'tr@ceroute' },
+      meta: { title: 'TraceRoute' },
     },
     {
       path: '/dashboard',
       name: 'dashboard',
       component: DashboardView,
-      meta: { title: 'tr@ceroute | Dashboard', requiresAuth: true },
+      meta: { title: 'TraceRoute | Dashboard', requiresAuth: true },
     },
     {
       path: '/start-run',
       name: 'startRun',
       component: StartRunView,
-      meta: { title: 'tr@ceroute | Start Session', requiresAuth: true },
+      meta: { title: 'TraceRoute | Start Session', requiresAuth: true },
     },
     {
       path: '/completed-run/:runID',
       name: 'completedRun',
       component: CompletedRunView,
-      meta: { title: 'tr@ceroute | Completed Session', requiresAuth: true },
+      meta: { title: 'TraceRoute | Completed Session', requiresAuth: true },
     },
     {
       path: '/add-run',
       name: 'addRun',
       component: AddRunView,
-      meta: { title: 'tr@ceroute | Add Session', requiresAuth: true },
+      meta: { title: 'TraceRoute | Add Session', requiresAuth: true },
     },
     {
       path: '/view-session/:runID',
       name: 'viewSession',
       component: SessionInfoView,
-      meta: { title: 'tr@ceroute | Session Information', requiresAuth: true },
+      meta: { title: 'TraceRoute | Session Information', requiresAuth: true },
     },
     {
       path: '/:catchAll(.*)',
       name: 'notFound',
       component: NotFoundView,
-      meta: { title: 'tr@ceroute | Page Not Found' },
+      meta: { title: 'TraceRoute | Page Not Found' },
     },
   ],
 })

@@ -5,6 +5,7 @@ import { collection, doc, updateDoc, serverTimestamp } from 'firebase/firestore'
 import { db } from '@/firebaseApp'
 import { useRoute, useRouter } from 'vue-router'
 import { useDocument } from 'vuefire'
+import { motion } from 'motion-v'
 
 const route = useRoute()
 const router = useRouter()
@@ -81,12 +82,12 @@ function initMap() {
       {
         featureType: 'road',
         elementType: 'geometry.stroke',
-        stylers: [{ color: '#4a5d7a' }], 
+        stylers: [{ color: '#4a5d7a' }],
       },
       {
         featureType: 'water',
         elementType: 'geometry',
-        stylers: [{ color: '#11151c' }], 
+        stylers: [{ color: '#11151c' }],
       },
     ],
   })
@@ -117,17 +118,24 @@ onMounted(async () => {
   await loadGoogleMaps()
   initMap()
 })
+
+function goToDashboard() {
+  router.push({ name: 'dashboard'})
+}
+
+function goToSessionInfo() {
+  router.push({ name: 'viewSession', params: { runID: runID } })
+}
 </script>
 
 <template>
   <div id="mobile-view" class="flex flex-col mt-32 text-off-white drop-shadow-xl/50">
-    <!-- <div id="completed-run-container" class="flex flex-col mt-32 text-off-white drop-shadow-xl/50"> -->
     <div id="congratulations-container" class="flex flex-col items-center">
       <div>
         <ConfettiComponent text="Congratulations!"></ConfettiComponent>
       </div>
 
-      <div id="tired-animation" class="my-6">
+      <div id="victory-animation" class="my-6">
         <img src="../assets/gifs/victory_animation.gif" class="h-75" />
       </div>
     </div>
@@ -138,7 +146,6 @@ onMounted(async () => {
       ref="mapRef"
       style="height: 400px"
     ></div>
-    <!-- </div> -->
 
     <div id="session-information-container" class="flex flex-col">
       <div class="flex flex-row justify-between">
@@ -195,21 +202,36 @@ onMounted(async () => {
     </div>
   </div>
 
-  <div id="desktop-view" class="hidden mt-32 text-off-white drop-shadow-xl/50">
-    <div class="h-100 w-100 text-center border-6 border-orange-salmon rounded-xl px-4 py-2">
-      Mobile Phone Animation
+  <div id="desktop-view" class="hidden mt-60 text-off-white drop-shadow-xl/50">
+    <div id="mobile-phone-animation">
+      <img src="../assets/gifs/phone_animation.gif" class="h-75" />
     </div>
+
     <div class="flex flex-col items-center">
-      <h1 class="text-3xl text-center text-orange-salmon font-bold m-2">Oops!</h1>
+      <h1 class="text-3xl text-center text-orange-salmon font-bold p-4">Oops!</h1>
+      <h2 class="text-2xl text-center p-4">This page can only be viewed on a mobile device.</h2>
 
-      <h2 class="text-2xl p-2 m-2">This page can only be viewed on a mobile device.</h2>
+      <div class="flex items-center">
+        <motion.button
+          @click="goToSessionInfo"
+          class="text-center text-orange-salmon bg-off-white active:bg-lightgray rounded-xl px-4 py-2 mx-4 my-2 cursor-pointer"
+          :whileHover="{ scale: 1.15, rotate: 3 }"
+          :whileTap="{ scale: 0.9, rotate: -5 }"
+          :transition="{ type: 'spring', stiffness: 400, damping: 17 }"
+        >
+          <font-awesome-icon icon="fa-circle-info" /> View Session Info
+        </motion.button>
 
-      <RouterLink
-        :to="{ name: 'dashboard' }"
-        class="w-2/5 text-center text-orange-salmon bg-off-white hover:bg-lightgray rounded-xl p-2 m-4"
-      >
-        <font-awesome-icon icon="fa-home" /> Return Home
-      </RouterLink>
+        <motion.button
+          @click="goToDashboard"
+          class="text-center text-orange-salmon bg-off-white active:bg-lightgray rounded-xl px-4 py-2 mx-4 my-2 cursor-pointer"
+          :whileHover="{ scale: 1.15, rotate: 3 }"
+          :whileTap="{ scale: 0.9, rotate: -5 }"
+          :transition="{ type: 'spring', stiffness: 400, damping: 17 }"
+        >
+          <font-awesome-icon icon="fa-home" /> See Your Stats
+        </motion.button>
+      </div>
     </div>
   </div>
 </template>
@@ -222,17 +244,12 @@ onMounted(async () => {
   #desktop-view {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
   }
-  /* #completed-run-container {
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
-    margin-top: calc(var(--spacing) * 50);
+  #mobile-phone-animation {
+    /* height: calc(var(--spacing) * 100); */
+    width: calc(var(--spacing) * 100);
   }
-  #map {
-    width: 500px;
-  } */
 }
 </style>

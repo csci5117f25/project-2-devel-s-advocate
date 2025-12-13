@@ -1,9 +1,9 @@
 <script setup>
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import { db } from '@/firebaseApp'
 import { updateDoc, doc, serverTimestamp } from 'firebase/firestore'
 import DeleteComponent from './DeleteComponent.vue'
-import { motion, AnimatePresence, useScroll, animate } from 'motion-v'
+import { motion } from 'motion-v'
 
 const props = defineProps({
   runID: { type: String, required: true },
@@ -55,7 +55,7 @@ const finishEditing = async () => {
   const end = new Date(`${editDate.value}T${editEnd.value}`)
   const durationMinutes = Math.round((end - start) / 60000)
   if (durationMinutes < 1 && !props.hasPath) {
-    alert('Your start time and end time is wrong!')
+    alert('Your start time and end time are wrong!')
     return
   }
 
@@ -94,12 +94,6 @@ const cancelEditing = () => {
           >
         </div>
 
-        <!-- <div class="rounded-xl p-2 text-center flex flex-col justify-center">
-          <span class="bg-rosy-finch text-xs font-medium px-1.5 py-1.5 rounded-full"
-            >Start Time: {{ props.startTime.toDate().toLocaleTimeString() }}</span
-          >
-        </div> -->
-
         <div class="rounded-xl p-1 text-center flex flex-col justify-center">
           <span class="bg-rosy-finch text-xs font-medium px-1.5 py-1.5 rounded-xl"
             >Type: {{ props.exerciseType || 'N/A' }}
@@ -127,7 +121,7 @@ const cancelEditing = () => {
       <div class="p-3 flex flex-row justify-center">
         <motion.button
           v-if="props.view == 'dashboard'"
-          class="bg-off-white text-orange-salmon rounded-xl px-4 py-2 mx-2 hover:bg-lightgray cursor-pointer"
+          class="bg-off-white active:bg-lightgray text-orange-salmon rounded-xl px-4 py-2 mx-2 cursor-pointer"
           title="View session details"
           :whileHover="{ scale: 1.15, rotate: 3 }"
           :whileTap="{ scale: 0.9, rotate: -5 }"
@@ -139,13 +133,13 @@ const cancelEditing = () => {
         </motion.button>
         <motion.button
           @click="startEditing"
-          class="bg-off-white text-orange-salmon rounded-xl px-4 py-2 mx-2 hover:bg-lightgray cursor-pointer"
+          class="bg-off-white active:bg-lightgray text-orange-salmon rounded-xl px-4 py-2 mx-2 cursor-pointer"
           title="Edit session details"
           :whileHover="{ scale: 1.15, rotate: 3 }"
           :whileTap="{ scale: 0.9, rotate: -5 }"
           :transition="{ type: 'spring', stiffness: 400, damping: 17 }"
         >
-<font-awesome-icon icon="fa-pen-to-square" />
+          <font-awesome-icon icon="fa-pen-to-square" />
         </motion.button>
         <DeleteComponent :runID="`${props.runID}`"></DeleteComponent>
       </div>
@@ -194,11 +188,11 @@ const cancelEditing = () => {
         <div class="rounded-xl p-1 text-center flex flex-col justify-center">
           <span class="bg-rosy-finch text-xs font-medium px-1.5 py-1.5 rounded-xl">
             Start Time: {{ props.hasPath ? '(GPS tracked - cannot edit)' : '' }}
-            <input 
-              type="time" 
-              v-model="editStart" 
+            <input
+              type="time"
+              v-model="editStart"
               :disabled="props.hasPath"
-              class="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed" 
+              class="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             />
           </span>
         </div>
@@ -206,11 +200,11 @@ const cancelEditing = () => {
         <div class="rounded-xl p-1 text-center flex flex-col justify-center">
           <span class="bg-rosy-finch text-xs font-medium px-1.5 py-1.5 rounded-xl">
             End Time: {{ props.hasPath ? '(GPS tracked - cannot edit)' : '' }}
-            <input 
-              type="time" 
-              v-model="editEnd" 
+            <input
+              type="time"
+              v-model="editEnd"
               :disabled="props.hasPath"
-              class="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed" 
+              class="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             />
           </span>
         </div>
@@ -227,7 +221,7 @@ const cancelEditing = () => {
       <div class="p-3 flex flex-row justify-center">
         <button
           v-if="props.view == 'dashboard'"
-          class="bg-off-white text-orange-salmon rounded-xl px-4 py-2 mx-2 hover:bg-lightgray cursor-pointer"
+          class="bg-off-white active:bg-lightgray text-orange-salmon rounded-xl px-4 py-2 mx-2 cursor-pointer"
           title="View session details"
         >
           <router-link :to="`/view-session/${props.runID}`">
@@ -237,14 +231,14 @@ const cancelEditing = () => {
         <button
           @click="finishEditing"
           title="Save changes"
-          class="bg-off-white text-orange-salmon rounded-xl px-4 py-2 mx-2 hover:bg-lightgray cursor-pointer"
+          class="bg-off-white active:bg-lightgray text-orange-salmon rounded-xl px-4 py-2 mx-2 cursor-pointer"
         >
           <font-awesome-icon icon="fa-save" />
         </button>
         <button
           @click="cancelEditing"
           title="Cancel changes"
-          class="bg-off-white text-orange-salmon rounded-xl px-4 py-2 mx-2 hover:bg-lightgray cursor-pointer"
+          class="bg-off-white active:bg-lightgray text-orange-salmon rounded-xl px-4 py-2 mx-2 cursor-pointer"
         >
           <font-awesome-icon icon="fa-x" />
         </button>
