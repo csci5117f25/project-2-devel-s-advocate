@@ -32,9 +32,9 @@ const initChart = () => {
   // Show only the newest 5 points
   const last7 = 7
   const labels = props.labels.slice(-last7)
-  const datasets = props.datasets.map(d => ({
+  const datasets = props.datasets.map((d) => ({
     ...d,
-    data: d.data.slice(-last7)
+    data: d.data.slice(-last7),
   }))
 
   chartInstance = new Chart(chartRef.value, {
@@ -44,12 +44,11 @@ const initChart = () => {
   })
 }
 
-
 onMounted(() => initChart())
 
 watch([() => props.labels, () => props.datasets], () => initChart(), { deep: true })
 </script>
 
 <template>
-  <canvas ref="chartRef" style="height: 200px; width: 100%"></canvas>
+  <canvas ref="chartRef" style="height: 200px; width: 100%" class="m-3"></canvas>
 </template>

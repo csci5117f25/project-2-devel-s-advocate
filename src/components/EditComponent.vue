@@ -117,6 +117,14 @@ const cancelEditing = () => {
             >Avg Speed: {{ (props.distance / (props.duration / 60)).toFixed(2) }} MPH</span
           >
         </div>
+        <div
+          v-if="props.description"
+          class="rounded-xl col-span-2 p-1 text-center flex flex-col justify-center"
+        >
+          <span class="bg-rosy-finch text-xs font-medium px-1.5 py-1.5 rounded-xl"
+            >Comment: {{ props.description }}
+          </span>
+        </div>
       </div>
       <div class="p-3 flex flex-row justify-center">
         <motion.button
@@ -210,6 +218,7 @@ const cancelEditing = () => {
         </div>
 
         <div class="rounded-xl md:col-span-2 p-1 text-center flex flex-col justify-center">
+          <p class="text-rosy-finch">Comment:</p>
           <textarea
             class="bg-rosy-finch text-xs font-medium p-2 rounded-xl cursor-pointer"
             type="text"

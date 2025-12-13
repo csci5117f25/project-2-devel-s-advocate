@@ -3,7 +3,6 @@ import { ref, computed, watch } from 'vue'
 import { useCollection, useCurrentUser } from 'vuefire'
 import { collection, query, where, doc, setDoc } from 'firebase/firestore'
 import { db } from '@/firebaseApp'
-import { motion } from 'motion-v'
 import ChartComponent from '@/components/ChartComponent.vue'
 import DashboardComponent from '@/components/DashboardComponent.vue'
 import HeatMapComponent from '@/components/HeatMapComponent.vue'
@@ -127,6 +126,7 @@ watch(
 
 // chart data
 const chartData = computed(() => {
+  console.log(chart_view.value)
   if (!runs.value || runs.value.length === 0) return { labels: [], datasets: [] }
 
   let filteredChartRuns = runs.value
@@ -215,70 +215,27 @@ const chartData = computed(() => {
         class="border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-2"
       >
         <div class="flex flex-col">
+          <h2 class="text-center text-2xl py-2">Tracked Sessions</h2>
           <div class="flex items-center px-2 py-2">
-            <motion.label
-              for="filter-option"
-              :initial="{ opacity: 0, y: -80 }"
-              :whileInView="{ opacity: 1, y: 0 }"
-              :transition="{ delay: index * 0.1, duration: 0.8 }"
-              >List:
-            </motion.label>
-            <motion.select
-              v-model="filter_option"
-              id="filter-option"
-              class="bg-orange-salmon hover:bg-light-orange-salmon border-2 border-orange-salmon focus:ring-off-white focus:border-off-white rounded-xl p-1 my-2 mx-3 cursor-pointer"
-              :whileFocus="{ scale: 1.1, borderColor: 'rgb(31, 141, 214)' }"
-              :transition="{ type: 'spring', stiffness: 300 }"
-              required
-            >
-              <option value="all">All Sessions</option>
-              <option value="walks-only">Walks Only</option>
-              <option value="runs-only">Runs Only</option>
-              <option value="bike-rides-only">Bike Rides Only</option>
-            </motion.select>
-
-            <!-- <label for="filter-option">List:</label>
+            <label for="filter-option">List:</label>
             <select
               v-model="filter_option"
               id="filter-option"
-              class="bg-orange-salmon hover:bg-light-orange-salmon rounded-xl px-4 py-2 m-2 cursor-pointer"
+              class="bg-orange-salmon hover:bg-light-orange-salmon rounded-xl px-4 py-2 my-2 mx-4 cursor-pointer transition-transform delay-100 ease-in-out focus:scale-110 focus:ring-2 focus:ring-off-white focus:border-off-white"
             >
               <option value="all">All Sessions</option>
               <option value="walks-only">Walks Only</option>
               <option value="runs-only">Runs Only</option>
               <option value="bike-rides-only">Bike Rides Only</option>
-            </select> -->
+            </select>
           </div>
 
           <div class="flex items-center px-2 py-2">
-            <motion.label
-              for="sort-option"
-              :initial="{ opacity: 0, y: -80 }"
-              :whileInView="{ opacity: 1, y: 0 }"
-              :transition="{ delay: index * 0.1, duration: 0.8 }"
-              >Sort By:
-            </motion.label>
-            <motion.select
-              v-model="sort_option"
-              id="sort-option"
-              class="bg-orange-salmon hover:bg-light-orange-salmon border-2 border-orange-salmon focus:ring-off-white focus:border-off-white rounded-xl p-1 my-2 mx-3 cursor-pointer"
-              :whileFocus="{ scale: 1.1, borderColor: 'rgb(31, 141, 214)' }"
-              :transition="{ type: 'spring', stiffness: 300 }"
-              required
-            >
-              <option value="date-desc">Date (Newest First)</option>
-              <option value="date-asc">Date (Oldest First)</option>
-              <option value="distance-desc">Distance (Longest First)</option>
-              <option value="distance-asc">Distance (Shortest First)</option>
-              <option value="duration-desc">Duration (Longest First)</option>
-              <option value="duration-asc">Duration (Shortest First)</option>
-            </motion.select>
-
-            <!-- <label for="sort-option">Sort By:</label>
+            <label for="sort-option">Sort By:</label>
             <select
               v-model="sort_option"
               id="sort-option"
-              class="bg-orange-salmon hover:bg-light-orange-salmon rounded-xl px-4 py-2 m-2 cursor-pointer"
+              class="bg-orange-salmon hover:bg-light-orange-salmon rounded-xl px-4 py-2 my-2 mx-4 cursor-pointer transition-transform delay-100 ease-in-out focus:scale-110 focus:ring-2 focus:ring-off-white focus:border-off-white"
             >
               <option value="date-desc">Date (Newest First)</option>
               <option value="date-asc">Date (Oldest First)</option>
@@ -286,7 +243,7 @@ const chartData = computed(() => {
               <option value="distance-asc">Distance (Shortest First)</option>
               <option value="duration-desc">Duration (Longest First)</option>
               <option value="duration-asc">Duration (Shortest First)</option>
-            </select> -->
+            </select>
           </div>
         </div>
 
@@ -295,7 +252,6 @@ const chartData = computed(() => {
             No sessions have been tracked yet
           </div>
           <div v-else class="flex flex-col space-y-2">
-            <p class="text-center">Tracked Sessions</p>
             <div
               v-for="run in sortedRuns"
               :key="run.id"
@@ -324,45 +280,24 @@ const chartData = computed(() => {
           id="chart-container"
           class="border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-2"
         >
-          <div class="flex items-center">
-            <motion.label
-              for="chart-view"
-              :initial="{ opacity: 0, y: -80 }"
-              :whileInView="{ opacity: 1, y: 0 }"
-              :transition="{ delay: index * 0.1, duration: 0.8 }"
-              >Show:
-            </motion.label>
-            <motion.select
-              v-model="chart_view"
-              id="chart-view"
-              class="bg-orange-salmon hover:bg-light-orange-salmon border-2 border-orange-salmon focus:ring-off-white focus:border-off-white rounded-xl p-1 my-2 mx-3 cursor-pointer"
-              :whileFocus="{ scale: 1.1, borderColor: 'rgb(31, 141, 214)' }"
-              :transition="{ type: 'spring', stiffness: 300 }"
-              required
-            >
-              <option value="chart-general">Miles Traveled</option>
-              <option value="chart-walking">Miles Walked</option>
-              <option value="chart-running">Miles Ran</option>
-              <option value="chart-biking">Miles Biked</option>
-              <option value="show-heatmap">Heat Map</option>
-            </motion.select>
-
-            <!-- <label for="chart-view">Show:</label>
+          <h2 class="text-center text-2xl py-2">Session Trends</h2>
+          <div class="flex items-center px-2 py-2">
+            <label for="chart-view">Show:</label>
             <select
               v-model="chart_view"
               id="chart-view"
-              class="bg-orange-salmon hover:bg-light-orange-salmon rounded-xl px-4 py-2 m-2 cursor-pointer"
+              class="bg-orange-salmon hover:bg-light-orange-salmon rounded-xl px-4 py-2 my-2 mx-4 cursor-pointer transition-transform delay-100 ease-in-out focus:scale-110 focus:ring-2 focus:ring-off-white focus:border-off-white"
             >
               <option value="chart-general">Miles Traveled</option>
               <option value="chart-walking">Miles Walked</option>
               <option value="chart-running">Miles Ran</option>
               <option value="chart-biking">Miles Biked</option>
               <option value="show-heatmap">Heat Map</option>
-            </select> -->
+            </select>
           </div>
 
           <div v-if="chart_view === 'show-heatmap'">
-            <HeatMapComponent :runs="runs" style="height: 350px" />
+            <HeatMapComponent :runs="runs" style="height: 523px" />
           </div>
           <div v-else>
             <ChartComponent
@@ -405,11 +340,8 @@ const chartData = computed(() => {
     max-height: calc(var(--spacing) * 200);
   }
 
-  #chart {
+  /* #chart {
     height: calc(var(--spacing) * 100);
-  }
-}
-option:hover {
-  color: --color-cinder;
+  } */
 }
 </style>

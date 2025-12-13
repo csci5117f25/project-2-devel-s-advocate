@@ -1,33 +1,19 @@
 <script setup>
-import { ref, onMounted, watch } from 'vue'
-// import ConfettiComponent from '@/components/ConfettiComponent.vue'
+import { ref, onMounted } from 'vue'
 import EditComponent from '../components/EditComponent.vue'
-import { collection, doc, updateDoc, serverTimestamp } from 'firebase/firestore'
+import { doc } from 'firebase/firestore'
 import { db } from '@/firebaseApp'
 import { useRoute, useRouter } from 'vue-router'
 import { useDocument } from 'vuefire'
+import { motion } from 'motion-v'
 
 const route = useRoute()
 const router = useRouter()
 const runID = route.params.runID
 const docRef = doc(db, 'runs', runID)
 const runData = useDocument(docRef)
-const exerciseType = ref('')
-const newComment = ref('')
 const mapRef = ref(null)
 const map = ref(null)
-
-// TODO: Melody: Update this so that the type of the run and optional comment
-// is added.
-const addCommentToRun = async () => {
-  await updateDoc(docRef, {
-    description: newComment.value,
-    exerciseType: exerciseType.value,
-  })
-
-  newComment.value = ''
-  router.push('/dashboard')
-}
 
 function loadGoogleMaps() {
   return new Promise((resolve) => {
@@ -62,32 +48,32 @@ function initMap() {
       {
         featureType: 'landscape',
         elementType: 'geometry',
-        stylers: [{ color: '#212d40' }], 
+        stylers: [{ color: '#f4f3ef' }],
       },
       {
         featureType: 'park',
         elementType: 'geometry',
-        stylers: [{ color: '#212d40' }], 
+        stylers: [{ color: '#f4f3ef' }],
       },
       {
         featureType: 'green',
         elementType: 'geometry',
-        stylers: [{ color: '#212d40' }],
+        stylers: [{ color: '#f4f3ef' }],
       },
       {
         featureType: 'road',
         elementType: 'geometry.fill',
-        stylers: [{ color: '#4a5d7a' }], 
+        stylers: [{ color: '#7d4e57' }],
       },
       {
         featureType: 'road',
         elementType: 'geometry.stroke',
-        stylers: [{ color: '#4a5d7a' }],
+        stylers: [{ color: '#d66853' }],
       },
       {
         featureType: 'water',
         elementType: 'geometry',
-        stylers: [{ color: '#11151c' }], 
+        stylers: [{ color: '#364156' }],
       },
     ],
   })
@@ -118,16 +104,26 @@ onMounted(async () => {
   await loadGoogleMaps()
   initMap()
 })
+
+function goToDashboard() {
+  router.push({ name: 'dashboard' })
+}
 </script>
 
 <template>
-  <!-- <div id="mobile-view" class="flex flex-col mt-32 text-off-white drop-shadow-xl/50"> -->
-  <div id="completed-run-container" class="flex flex-col mt-32 text-off-white drop-shadow-xl/50">
-    <div class="flex flex-col items-center">
+  <div id="session-info-container" class="flex flex-col mt-32 text-off-white drop-shadow-xl/50">
+    <!-- <div class="flex flex-col items-center"> -->
+    <motion.div
+      class="flex flex-col items-center"
+      :initial="{ opacity: 0, y: -80 }"
+      :whileInView="{ opacity: 1, y: 0 }"
+      :transition="{ delay: index * 0.1, duration: 0.8 }"
+    >
       <h1 class="text-center text-3xl text-orange-salmon font-bold">Session Information</h1>
 
       <h2 class="text-center">ID: {{ runID }}</h2>
-    </div>
+    </motion.div>
+    <!-- </div> -->
 
     <div id="map-and-info-container" class="flex flex-col items-center m-2">
       <div
@@ -156,18 +152,28 @@ onMounted(async () => {
       </div>
     </div>
 
-    <RouterLink
+    <motion.button
+      @click="goToDashboard"
+      class="text-center text-orange-salmon bg-off-white active:bg-lightgray rounded-xl px-4 py-2 mx-4 my-2 cursor-pointer"
+      :whileHover="{ scale: 1.15, rotate: 3 }"
+      :whileTap="{ scale: 0.9, rotate: -5 }"
+      :transition="{ type: 'spring', stiffness: 400, damping: 17 }"
+    >
+      <font-awesome-icon icon="fa-home" /> See Your Stats
+    </motion.button>
+
+    <!-- <RouterLink
       :to="{ name: 'dashboard' }"
       class="text-center text-orange-salmon bg-off-white hover:bg-lightgray rounded-xl px-4 py-2 m-4 cursor-pointer"
     >
       <font-awesome-icon icon="fa-home" /> See Your Stats
-    </RouterLink>
+    </RouterLink> -->
   </div>
 </template>
 
 <style scoped>
 @media (min-width: 1024px) {
-  #completed-run-container {
+  #session-info-container {
     justify-content: space-around;
     align-items: center;
   }

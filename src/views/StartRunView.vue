@@ -145,32 +145,32 @@ function initMap(position = null) {
       {
         featureType: 'landscape',
         elementType: 'geometry',
-        stylers: [{ color: '#212d40' }],
+        stylers: [{ color: '#f4f3ef' }],
       },
       {
         featureType: 'park',
         elementType: 'geometry',
-        stylers: [{ color: '#212d40' }],
+        stylers: [{ color: '#f4f3ef' }],
       },
       {
         featureType: 'green',
         elementType: 'geometry',
-        stylers: [{ color: '#212d40' }],
+        stylers: [{ color: '#f4f3ef' }],
       },
       {
         featureType: 'road',
         elementType: 'geometry.fill',
-        stylers: [{ color: '#4a5d7a' }],
+        stylers: [{ color: '#7d4e57' }],
       },
       {
         featureType: 'road',
         elementType: 'geometry.stroke',
-        stylers: [{ color: '#4a5d7a' }],
+        stylers: [{ color: '#d66853' }],
       },
       {
         featureType: 'water',
         elementType: 'geometry',
-        stylers: [{ color: '#11151c' }],
+        stylers: [{ color: '#364156' }],
       },
     ],
   })
@@ -184,6 +184,10 @@ function initMap(position = null) {
   })
 
   store.setPolyline(polyline)
+}
+
+function goToAddSession() {
+  router.push({ name: 'addRun' })
 }
 
 function goToDashboard() {
@@ -240,15 +244,27 @@ function goToDashboard() {
       <h1 class="text-3xl text-center text-orange-salmon font-bold p-4">Oops!</h1>
       <h2 class="text-2xl text-center p-4">You can only start a new session on a mobile device.</h2>
 
-      <motion.button
-        @click="goToDashboard"
-        class="text-center text-orange-salmon bg-off-white active:bg-lightgray rounded-xl px-4 py-2 mx-4 my-2 cursor-pointer"
-        :whileHover="{ scale: 1.15, rotate: 3 }"
-        :whileTap="{ scale: 0.9, rotate: -5 }"
-        :transition="{ type: 'spring', stiffness: 400, damping: 17 }"
-      >
-        <font-awesome-icon icon="fa-home" /> Return Home
-      </motion.button>
+      <div class="flex items-center">
+        <motion.button
+          @click="goToAddSession"
+          class="text-center text-orange-salmon bg-off-white active:bg-lightgray rounded-xl px-4 py-2 mx-4 my-2 cursor-pointer"
+          :whileHover="{ scale: 1.15, rotate: 3 }"
+          :whileTap="{ scale: 0.9, rotate: -5 }"
+          :transition="{ type: 'spring', stiffness: 400, damping: 17 }"
+        >
+          <font-awesome-icon icon="fa-plus" /> Add Session
+        </motion.button>
+
+        <motion.button
+          @click="goToDashboard"
+          class="text-center text-orange-salmon bg-off-white active:bg-lightgray rounded-xl px-4 py-2 mx-4 my-2 cursor-pointer"
+          :whileHover="{ scale: 1.15, rotate: 3 }"
+          :whileTap="{ scale: 0.9, rotate: -5 }"
+          :transition="{ type: 'spring', stiffness: 400, damping: 17 }"
+        >
+          <font-awesome-icon icon="fa-home" /> See Your Stats
+        </motion.button>
+      </div>
     </div>
   </div>
 </template>
