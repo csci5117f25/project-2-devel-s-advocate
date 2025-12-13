@@ -5,6 +5,7 @@ import { useRunStore } from '../assets/js/runStore.js'
 import { saveRun } from '../assets/js/dbHelper.js'
 import { useCurrentUser } from 'vuefire'
 import { useRouter } from 'vue-router'
+import { motion } from 'motion-v'
 
 const mapRef = ref(null)
 const map = ref(null)
@@ -144,7 +145,7 @@ function initMap(position = null) {
       {
         featureType: 'landscape',
         elementType: 'geometry',
-        stylers: [{ color: '#212d40' }], 
+        stylers: [{ color: '#212d40' }],
       },
       {
         featureType: 'park',
@@ -154,7 +155,7 @@ function initMap(position = null) {
       {
         featureType: 'green',
         elementType: 'geometry',
-        stylers: [{ color: '#212d40' }], 
+        stylers: [{ color: '#212d40' }],
       },
       {
         featureType: 'road',
@@ -169,7 +170,7 @@ function initMap(position = null) {
       {
         featureType: 'water',
         elementType: 'geometry',
-        stylers: [{ color: '#11151c' }], 
+        stylers: [{ color: '#11151c' }],
       },
     ],
   })
@@ -183,6 +184,10 @@ function initMap(position = null) {
   })
 
   store.setPolyline(polyline)
+}
+
+function goToDashboard() {
+  router.push({ name: 'dashboard' })
 }
 </script>
 
@@ -226,21 +231,24 @@ function initMap(position = null) {
     </div>
   </div>
 
-  <div id="desktop-view" class="hidden mt-32 text-off-white drop-shadow-xl/50">
-    <div class="h-100 w-100 text-center border-6 border-orange-salmon rounded-xl px-4 py-2">
-      Mobile Phone Animation
+  <div id="desktop-view" class="hidden mt-60 text-off-white drop-shadow-xl/50">
+    <div id="mobile-phone-animation">
+      <img src="../assets/gifs/phone_animation.gif" class="h-75" />
     </div>
+
     <div class="flex flex-col items-center">
-      <h1 class="text-3xl text-center text-orange-salmon font-bold m-2">Oops!</h1>
+      <h1 class="text-3xl text-center text-orange-salmon font-bold p-4">Oops!</h1>
+      <h2 class="text-2xl text-center p-4">You can only start a new session on a mobile device.</h2>
 
-      <h2 class="text-2xl p-2 m-2">A new session can only be tracked on a mobile device.</h2>
-
-      <RouterLink
-        :to="{ name: 'dashboard' }"
-        class="w-2/5 text-center text-orange-salmon bg-off-white hover:bg-lightgray rounded-xl p-2 m-4"
+      <motion.button
+        @click="goToDashboard"
+        class="text-center text-orange-salmon bg-off-white active:bg-lightgray rounded-xl px-4 py-2 mx-4 my-2 cursor-pointer"
+        :whileHover="{ scale: 1.15, rotate: 3 }"
+        :whileTap="{ scale: 0.9, rotate: -5 }"
+        :transition="{ type: 'spring', stiffness: 400, damping: 17 }"
       >
         <font-awesome-icon icon="fa-home" /> Return Home
-      </RouterLink>
+      </motion.button>
     </div>
   </div>
 </template>
@@ -253,12 +261,12 @@ function initMap(position = null) {
   #desktop-view {
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
   }
-  /* #mobile-phone-animation {
-    height: calc(var(--spacing) * 100);
+  #mobile-phone-animation {
+    /* height: calc(var(--spacing) * 100); */
     width: calc(var(--spacing) * 100);
-  } */
+  }
 }
 </style>

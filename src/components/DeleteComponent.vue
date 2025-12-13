@@ -30,7 +30,7 @@ const deleteRun = async () => {
 
 <template>
   <motion.button
-    class="bg-off-white text-orange-salmon rounded-xl px-4 py-2 mx-2 hover:bg-lightgray cursor-pointer"
+    class="bg-off-white active:bg-lightgray text-orange-salmon rounded-xl px-4 py-2 mx-2 cursor-pointer"
     @click="deleteRun"
     title="Delete session"
     :whileHover="{ scale: 1.15, rotate: 3 }"

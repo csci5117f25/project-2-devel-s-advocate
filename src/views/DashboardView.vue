@@ -3,6 +3,7 @@ import { ref, computed, watch } from 'vue'
 import { useCollection, useCurrentUser } from 'vuefire'
 import { collection, query, where, doc, setDoc } from 'firebase/firestore'
 import { db } from '@/firebaseApp'
+import { motion } from 'motion-v'
 import ChartComponent from '@/components/ChartComponent.vue'
 import DashboardComponent from '@/components/DashboardComponent.vue'
 import HeatMapComponent from '@/components/HeatMapComponent.vue'
@@ -215,7 +216,28 @@ const chartData = computed(() => {
       >
         <div class="flex flex-col">
           <div class="flex items-center px-2 py-2">
-            <label for="filter-option">List:</label>
+            <motion.label
+              for="filter-option"
+              :initial="{ opacity: 0, y: -80 }"
+              :whileInView="{ opacity: 1, y: 0 }"
+              :transition="{ delay: index * 0.1, duration: 0.8 }"
+              >List:
+            </motion.label>
+            <motion.select
+              v-model="filter_option"
+              id="filter-option"
+              class="bg-orange-salmon hover:bg-light-orange-salmon border-2 border-orange-salmon focus:ring-off-white focus:border-off-white rounded-xl p-1 my-2 mx-3 cursor-pointer"
+              :whileFocus="{ scale: 1.1, borderColor: 'rgb(31, 141, 214)' }"
+              :transition="{ type: 'spring', stiffness: 300 }"
+              required
+            >
+              <option value="all">All Sessions</option>
+              <option value="walks-only">Walks Only</option>
+              <option value="runs-only">Runs Only</option>
+              <option value="bike-rides-only">Bike Rides Only</option>
+            </motion.select>
+
+            <!-- <label for="filter-option">List:</label>
             <select
               v-model="filter_option"
               id="filter-option"
@@ -225,11 +247,34 @@ const chartData = computed(() => {
               <option value="walks-only">Walks Only</option>
               <option value="runs-only">Runs Only</option>
               <option value="bike-rides-only">Bike Rides Only</option>
-            </select>
+            </select> -->
           </div>
 
           <div class="flex items-center px-2 py-2">
-            <label for="sort-option">Sort By:</label>
+            <motion.label
+              for="sort-option"
+              :initial="{ opacity: 0, y: -80 }"
+              :whileInView="{ opacity: 1, y: 0 }"
+              :transition="{ delay: index * 0.1, duration: 0.8 }"
+              >Sort By:
+            </motion.label>
+            <motion.select
+              v-model="sort_option"
+              id="sort-option"
+              class="bg-orange-salmon hover:bg-light-orange-salmon border-2 border-orange-salmon focus:ring-off-white focus:border-off-white rounded-xl p-1 my-2 mx-3 cursor-pointer"
+              :whileFocus="{ scale: 1.1, borderColor: 'rgb(31, 141, 214)' }"
+              :transition="{ type: 'spring', stiffness: 300 }"
+              required
+            >
+              <option value="date-desc">Date (Newest First)</option>
+              <option value="date-asc">Date (Oldest First)</option>
+              <option value="distance-desc">Distance (Longest First)</option>
+              <option value="distance-asc">Distance (Shortest First)</option>
+              <option value="duration-desc">Duration (Longest First)</option>
+              <option value="duration-asc">Duration (Shortest First)</option>
+            </motion.select>
+
+            <!-- <label for="sort-option">Sort By:</label>
             <select
               v-model="sort_option"
               id="sort-option"
@@ -241,7 +286,7 @@ const chartData = computed(() => {
               <option value="distance-asc">Distance (Shortest First)</option>
               <option value="duration-desc">Duration (Longest First)</option>
               <option value="duration-asc">Duration (Shortest First)</option>
-            </select>
+            </select> -->
           </div>
         </div>
 
@@ -280,7 +325,29 @@ const chartData = computed(() => {
           class="border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-2"
         >
           <div class="flex items-center">
-            <label for="chart-view">Show:</label>
+            <motion.label
+              for="chart-view"
+              :initial="{ opacity: 0, y: -80 }"
+              :whileInView="{ opacity: 1, y: 0 }"
+              :transition="{ delay: index * 0.1, duration: 0.8 }"
+              >Show:
+            </motion.label>
+            <motion.select
+              v-model="chart_view"
+              id="chart-view"
+              class="bg-orange-salmon hover:bg-light-orange-salmon border-2 border-orange-salmon focus:ring-off-white focus:border-off-white rounded-xl p-1 my-2 mx-3 cursor-pointer"
+              :whileFocus="{ scale: 1.1, borderColor: 'rgb(31, 141, 214)' }"
+              :transition="{ type: 'spring', stiffness: 300 }"
+              required
+            >
+              <option value="chart-general">Miles Traveled</option>
+              <option value="chart-walking">Miles Walked</option>
+              <option value="chart-running">Miles Ran</option>
+              <option value="chart-biking">Miles Biked</option>
+              <option value="show-heatmap">Heat Map</option>
+            </motion.select>
+
+            <!-- <label for="chart-view">Show:</label>
             <select
               v-model="chart_view"
               id="chart-view"
@@ -291,11 +358,11 @@ const chartData = computed(() => {
               <option value="chart-running">Miles Ran</option>
               <option value="chart-biking">Miles Biked</option>
               <option value="show-heatmap">Heat Map</option>
-            </select>
+            </select> -->
           </div>
 
           <div v-if="chart_view === 'show-heatmap'">
-            <HeatMapComponent :runs="runs" style="height: 350px;" />
+            <HeatMapComponent :runs="runs" style="height: 350px" />
           </div>
           <div v-else>
             <ChartComponent

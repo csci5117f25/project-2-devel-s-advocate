@@ -1,5 +1,5 @@
 <script setup>
-import { RouterLink, useRouter } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import { motion } from 'motion-v'
 import { ref } from 'vue'
@@ -89,12 +89,15 @@ const login = async () => {
     >
       <h2 class="text-2xl p-4">Join today and become part of our running family!</h2>
 
-      <button
+      <motion.button
         @click="login"
-        class="px-4 py-2 cursor-pointer rounded-xl bg-off-white text-center text-orange-salmon"
+        class="text-center text-orange-salmon bg-off-white active:bg-lightgray rounded-xl px-4 py-2 mx-4 my-2 cursor-pointer"
+        :whileHover="{ scale: 1.15, rotate: 3 }"
+        :whileTap="{ scale: 0.9, rotate: -5 }"
+        :transition="{ type: 'spring', stiffness: 400, damping: 17 }"
       >
         Begin Your Journey Today!
-      </button>
+      </motion.button>
     </div>
   </div>
 </template>
