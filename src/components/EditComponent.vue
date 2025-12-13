@@ -15,6 +15,7 @@ const props = defineProps({
   startTime: Object,
   endTime: Object,
   createdAt: Object,
+  hasPath: { type: Boolean, default: false },
 })
 
 const emit = defineEmits(['updated'])
@@ -53,20 +54,27 @@ const finishEditing = async () => {
   const start = new Date(`${editDate.value}T${editStart.value}`)
   const end = new Date(`${editDate.value}T${editEnd.value}`)
   const durationMinutes = Math.round((end - start) / 60000)
-  if (durationMinutes < 1) {
+  if (durationMinutes < 1 && !props.hasPath) {
     alert('Your start time and end time is wrong!')
     return
   }
 
-  await updateDoc(docRef, {
-    miles: Number(editMiles.value),
-    duration: Number(durationMinutes),
+  // Prepare update data
+  const updateData = {
     description: editDescription.value,
     exerciseType: editExerciseType.value,
-    startTime: start,
-    endTime: end,
     createdAt: serverTimestamp(),
-  })
+  }
+
+  // Only update distance, start time, and end time if there's no GPS path
+  if (!props.hasPath) {
+    updateData.miles = Number(editMiles.value)
+    updateData.duration = Number(durationMinutes)
+    updateData.startTime = start
+    updateData.endTime = end
+  }
+
+  await updateDoc(docRef, updateData)
 
   emit('updated', props.runID)
 }
@@ -173,24 +181,37 @@ const cancelEditing = () => {
 
         <div class="rounded-xl p-1 text-center flex flex-col justify-center">
           <span class="bg-rosy-finch text-xs font-medium px-1.5 py-1.5 rounded-xl">
-            Distance (in miles):
+            Distance (in miles): {{ props.hasPath ? '(GPS tracked - cannot edit)' : '' }}
             <input
               type="number"
               v-model="editMiles"
-              class="w-1/3 border border-off-white rounded-xl px-2 cursor-pointer"
+              :disabled="props.hasPath"
+              class="w-1/3 border border-off-white rounded-xl px-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
             />
           </span>
         </div>
 
         <div class="rounded-xl p-1 text-center flex flex-col justify-center">
           <span class="bg-rosy-finch text-xs font-medium px-1.5 py-1.5 rounded-xl">
-            Start Time: <input type="time" v-model="editStart" class="cursor-pointer" />
+            Start Time: {{ props.hasPath ? '(GPS tracked - cannot edit)' : '' }}
+            <input 
+              type="time" 
+              v-model="editStart" 
+              :disabled="props.hasPath"
+              class="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed" 
+            />
           </span>
         </div>
 
         <div class="rounded-xl p-1 text-center flex flex-col justify-center">
           <span class="bg-rosy-finch text-xs font-medium px-1.5 py-1.5 rounded-xl">
-            End Time: <input type="time" v-model="editEnd" class="cursor-pointer" />
+            End Time: {{ props.hasPath ? '(GPS tracked - cannot edit)' : '' }}
+            <input 
+              type="time" 
+              v-model="editEnd" 
+              :disabled="props.hasPath"
+              class="cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed" 
+            />
           </span>
         </div>
 

@@ -12,6 +12,7 @@ const props = defineProps({
   startTime: Object,
   endTime: Object,
   createdAt: Object,
+  hasPath: { type: Boolean, default: false },
 })
 </script>
 
@@ -26,5 +27,6 @@ const props = defineProps({
     :endTime="props.endTime"
     :exerciseType="props.exerciseType"
     :createdAt="props.createdAt"
+    :hasPath="props.hasPath"
   />
 </template>

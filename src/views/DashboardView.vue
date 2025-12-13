@@ -266,6 +266,7 @@ const chartData = computed(() => {
                 :endTime="run.endTime"
                 :createdAt="run.createdAt"
                 :exerciseType="run.exerciseType"
+                :hasPath="run.path && run.path.length > 0"
                 @updated="refreshData(run.id)"
               />
             </div>
@@ -279,31 +280,30 @@ const chartData = computed(() => {
           class="border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-2"
         >
           <div class="flex items-center">
-            <label for="chart-view">Show Miles</label>
+            <label for="chart-view">Show:</label>
             <select
               v-model="chart_view"
               id="chart-view"
               class="bg-orange-salmon hover:bg-light-orange-salmon rounded-xl px-4 py-2 m-2 cursor-pointer"
             >
-              <option value="chart-general">Traveled</option>
-              <option value="chart-walking">Walked</option>
-              <option value="chart-running">Ran</option>
-              <option value="chart-biking">Biked</option>
+              <option value="chart-general">Miles Traveled</option>
+              <option value="chart-walking">Miles Walked</option>
+              <option value="chart-running">Miles Ran</option>
+              <option value="chart-biking">Miles Biked</option>
+              <option value="show-heatmap">Heat Map</option>
             </select>
-            <p>Over Time</p>
           </div>
 
-          <ChartComponent
-            :labels="chartData.labels"
-            :datasets="chartData.datasets"
-            title="Daily Miles Run"
-          />
-        </div>
-        <div
-          class="border-6 border-orange-salmon text-off-white text-center rounded-xl px-4 py-2 m-2 h-100"
-        >
-          Heat Map of All Traced Routes
-          <!-- <HeatMapComponent :runs="runs" style="height: 400px;" /> -->
+          <div v-if="chart_view === 'show-heatmap'">
+            <HeatMapComponent :runs="runs" style="height: 350px;" />
+          </div>
+          <div v-else>
+            <ChartComponent
+              :labels="chartData.labels"
+              :datasets="chartData.datasets"
+              title="Daily Miles Run"
+            />
+          </div>
         </div>
       </div>
     </div>

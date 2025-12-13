@@ -1,5 +1,5 @@
 <template>
-  <div ref="mapRef" class="w-full h-full"></div>
+  <div ref="mapRef" class="w-full h-full border-6 border-orange-salmon rounded-xl"></div>
 </template>
 
 <script setup>
@@ -18,13 +18,41 @@ const heatmap = ref(null)
 
 function loadGoogleMaps() {
   return new Promise((resolve) => {
-    if (window.google?.maps) 
+    if (window.google?.maps && window.google?.maps?.visualization) {
       return resolve()
+    }
+
+    // Check if script is already loading
+    const existingScript = document.querySelector('script[src*="maps.googleapis.com"]')
+    if (existingScript) {
+      const checkReady = () => {
+        if (window.google?.maps?.visualization) {
+          resolve()
+        } else {
+          setTimeout(checkReady, 100)
+        }
+      }
+      checkReady()
+      return
+    }
 
     const script = document.createElement('script')
     script.src = `https://maps.googleapis.com/maps/api/js?key=${import.meta.env.VITE_MAPS_API_KEY}&libraries=visualization`
     script.async = true
-    script.onload = resolve
+    script.onload = () => {
+      // Wait a bit for the visualization library to be ready
+      const checkVisualization = () => {
+        if (window.google?.maps?.visualization) {
+          resolve()
+        } else {
+          setTimeout(checkVisualization, 100)
+        }
+      }
+      checkVisualization()
+    }
+    script.onerror = () => {
+      console.error('Failed to load Google Maps script')
+    }
     document.head.appendChild(script)
   })
 }
@@ -45,15 +73,56 @@ function initMap() {
         featureType: 'poi',
         elementType: 'labels',
         stylers: [{ visibility: 'off' }]
+      },
+      {
+        featureType: 'landscape',
+        elementType: 'geometry',
+        stylers: [{ color: '#212d40' }] 
+      },
+      {
+        featureType: 'park',
+        elementType: 'geometry',
+        stylers: [{ color: '#212d40' }] 
+      },
+      {
+        featureType: 'green',
+        elementType: 'geometry',
+        stylers: [{ color: '#212d40' }] 
+      },
+      {
+        featureType: 'road',
+        elementType: 'geometry.fill',
+        stylers: [{ color: '#4a5d7a' }] 
+      },
+      {
+        featureType: 'road',
+        elementType: 'geometry.stroke',
+        stylers: [{ color: '#4a5d7a' }] 
+      },
+      {
+        featureType: 'water',
+        elementType: 'geometry',
+        stylers: [{ color: '#11151c' }] 
       }
     ]
   })
 
-  updateHeatmap()
+  // Delay updateHeatmap to ensure visualization library is ready
+  setTimeout(() => {
+    updateHeatmap()
+  }, 200)
 }
 
 function updateHeatmap() {
-  if (!map.value || !window.google?.maps?.visualization) return
+  if (!map.value) {
+    return
+  }
+  
+  if (!window.google?.maps?.visualization) {
+    // Retry in 500ms if visualization library isn't ready yet
+    setTimeout(updateHeatmap, 500)
+    return
+  }
 
   // Clear existing heatmap
   if (heatmap.value) {
@@ -62,10 +131,10 @@ function updateHeatmap() {
 
   // Extract all coordinates from all runs
   const coordinates = []
-  props.runs.forEach(run => {
+  props.runs.forEach((run, index) => {
     if (run.path && Array.isArray(run.path)) {
-      run.path.forEach(point => {
-        if (point.lat && point.lng) {
+      run.path.forEach((point, pointIndex) => {
+        if (point && typeof point.lat === 'number' && typeof point.lng === 'number') {
           coordinates.push(new window.google.maps.LatLng(point.lat, point.lng))
         }
       })
@@ -76,27 +145,19 @@ function updateHeatmap() {
     heatmap.value = new window.google.maps.visualization.HeatmapLayer({
       data: coordinates,
       map: map.value,
-      radius: 20,
-      opacity: 0.6,
+      radius: 10,
+      opacity: 0.5,
       gradient: [
-        'rgba(0, 255, 255, 0)',
-        'rgba(0, 255, 255, 1)',
-        'rgba(0, 191, 255, 1)',
-        'rgba(0, 127, 255, 1)',
-        'rgba(0, 63, 255, 1)',
-        'rgba(0, 0, 255, 1)',
-        'rgba(0, 0, 223, 1)',
-        'rgba(0, 0, 191, 1)',
-        'rgba(0, 0, 159, 1)',
-        'rgba(0, 0, 127, 1)',
-        'rgba(63, 0, 91, 1)',
-        'rgba(127, 0, 63, 1)',
-        'rgba(191, 0, 31, 1)',
-        'rgba(255, 0, 0, 1)'
+        'rgba(255, 255, 255, 0)',    // transparent white
+        'rgba(255, 235, 59, 0.4)',   // bright yellow
+        'rgba(255, 193, 7, 0.6)',    // golden yellow
+        'rgba(255, 152, 0, 0.7)',    // orange
+        'rgba(255, 87, 34, 0.8)',    // deep orange
+        'rgba(244, 67, 54, 0.9)',    // red
+        'rgba(211, 47, 47, 1)'       // dark red
       ]
     })
 
-    //Fitbounds
     const bounds = new window.google.maps.LatLngBounds()
     coordinates.forEach(coord => bounds.extend(coord))
     map.value.fitBounds(bounds)
@@ -109,7 +170,11 @@ onMounted(async () => {
 })
 
 //Changes
-watch(() => props.runs, updateHeatmap, { deep: true })
+watch(() => props.runs, (newRuns) => {
+  if (newRuns && newRuns.length > 0) {
+    updateHeatmap()
+  }
+}, { deep: true, immediate: false })
 </script>
 
 <style scoped>

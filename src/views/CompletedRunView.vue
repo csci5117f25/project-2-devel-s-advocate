@@ -58,6 +58,36 @@ function initMap() {
         elementType: 'labels',
         stylers: [{ visibility: 'off' }],
       },
+      {
+        featureType: 'landscape',
+        elementType: 'geometry',
+        stylers: [{ color: '#212d40' }],
+      },
+      {
+        featureType: 'park',
+        elementType: 'geometry',
+        stylers: [{ color: '#212d40' }],
+      },
+      {
+        featureType: 'green',
+        elementType: 'geometry',
+        stylers: [{ color: '#212d40' }],
+      },
+      {
+        featureType: 'road',
+        elementType: 'geometry.fill',
+        stylers: [{ color: '#4a5d7a' }],
+      },
+      {
+        featureType: 'road',
+        elementType: 'geometry.stroke',
+        stylers: [{ color: '#4a5d7a' }], 
+      },
+      {
+        featureType: 'water',
+        elementType: 'geometry',
+        stylers: [{ color: '#11151c' }], 
+      },
     ],
   })
 
@@ -68,7 +98,7 @@ function initMap() {
     const polyline = new window.google.maps.Polyline({
       path: runData.value.path,
       geodesic: true,
-      strokeColor: '#FF3B30',
+      strokeColor: '#d66853', // orange-salmon theme color
       strokeOpacity: 1.0,
       strokeWeight: 5,
     })

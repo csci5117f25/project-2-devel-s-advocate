@@ -128,7 +128,7 @@ function loadGoogleMaps() {
 function initMap(position = null) {
   const center = position
     ? { lat: position.coords.latitude, lng: position.coords.longitude }
-    : { lat: 37.77, lng: -122.41 }
+    : { lat: 44.9738, lng: -93.2277 } // University of Minnesota
   map.value = new window.google.maps.Map(mapRef.value, {
     zoom: 16,
     center: center,
@@ -141,12 +141,42 @@ function initMap(position = null) {
         elementType: 'labels',
         stylers: [{ visibility: 'off' }],
       },
+      {
+        featureType: 'landscape',
+        elementType: 'geometry',
+        stylers: [{ color: '#212d40' }], 
+      },
+      {
+        featureType: 'park',
+        elementType: 'geometry',
+        stylers: [{ color: '#212d40' }],
+      },
+      {
+        featureType: 'green',
+        elementType: 'geometry',
+        stylers: [{ color: '#212d40' }], 
+      },
+      {
+        featureType: 'road',
+        elementType: 'geometry.fill',
+        stylers: [{ color: '#4a5d7a' }],
+      },
+      {
+        featureType: 'road',
+        elementType: 'geometry.stroke',
+        stylers: [{ color: '#4a5d7a' }],
+      },
+      {
+        featureType: 'water',
+        elementType: 'geometry',
+        stylers: [{ color: '#11151c' }], 
+      },
     ],
   })
 
   const polyline = new window.google.maps.Polyline({
     geodesic: true,
-    strokeColor: '#FF3B30',
+    strokeColor: '#d66853', // orange-salmon theme color
     strokeOpacity: 1.0,
     strokeWeight: 5,
     map: map.value,
