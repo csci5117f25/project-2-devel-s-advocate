@@ -247,7 +247,7 @@ const chartData = computed(() => {
           </div>
         </div>
 
-        <div id="sessions-list" class="max-h-72 overflow-y-auto rounded-xl m-2">
+        <div id="sessions-list" class="h-[510px] overflow-y-auto rounded-xl m-2">
           <div v-if="sortedRuns.length === 0" class="text-center text-off-white">
             No sessions have been tracked yet
           </div>
@@ -278,7 +278,7 @@ const chartData = computed(() => {
       <div id="chart-and-heatmap-container" class="flex flex-col">
         <div
           id="chart-container"
-          class="border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-2"
+          class="h-[735px] border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-2"
         >
           <h2 class="text-center text-2xl py-2">Session Trends</h2>
           <div class="flex items-center px-2 py-2">
@@ -296,10 +296,10 @@ const chartData = computed(() => {
             </select>
           </div>
 
-          <div v-if="chart_view === 'show-heatmap'">
+          <div v-show="chart_view === 'show-heatmap'">
             <HeatMapComponent :runs="runs" style="height: 523px" />
           </div>
-          <div v-else>
+          <div v-show="chart_view !== 'show-heatmap'">
             <ChartComponent
               :labels="chartData.labels"
               :datasets="chartData.datasets"
