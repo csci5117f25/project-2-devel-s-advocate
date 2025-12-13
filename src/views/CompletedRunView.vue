@@ -17,16 +17,14 @@ const newComment = ref('')
 const mapRef = ref(null)
 const map = ref(null)
 
-// TODO: Melody: Update this so that the type of the run and optional comment
-// is added.
-const addCommentToRun = async () => {
+const saveSessionDetails = async () => {
   await updateDoc(docRef, {
     description: newComment.value,
     exerciseType: exerciseType.value,
   })
-
-  newComment.value = ''
-  router.push('/dashboard')
+  alert('Your session details have been saved.')
+  // newComment.value = ''
+  // router.push('/dashboard')
 }
 
 function loadGoogleMaps() {
@@ -62,32 +60,32 @@ function initMap() {
       {
         featureType: 'landscape',
         elementType: 'geometry',
-        stylers: [{ color: '#212d40' }],
+        stylers: [{ color: '#f4f3ef' }],
       },
       {
         featureType: 'park',
         elementType: 'geometry',
-        stylers: [{ color: '#212d40' }],
+        stylers: [{ color: '#f4f3ef' }],
       },
       {
         featureType: 'green',
         elementType: 'geometry',
-        stylers: [{ color: '#212d40' }],
+        stylers: [{ color: '#f4f3ef' }],
       },
       {
         featureType: 'road',
         elementType: 'geometry.fill',
-        stylers: [{ color: '#4a5d7a' }],
+        stylers: [{ color: '#7d4e57' }],
       },
       {
         featureType: 'road',
         elementType: 'geometry.stroke',
-        stylers: [{ color: '#4a5d7a' }],
+        stylers: [{ color: '#d66853' }],
       },
       {
         featureType: 'water',
         elementType: 'geometry',
-        stylers: [{ color: '#11151c' }],
+        stylers: [{ color: '#364156' }],
       },
     ],
   })
@@ -120,7 +118,7 @@ onMounted(async () => {
 })
 
 function goToDashboard() {
-  router.push({ name: 'dashboard'})
+  router.push({ name: 'dashboard' })
 }
 
 function goToSessionInfo() {
@@ -147,13 +145,13 @@ function goToSessionInfo() {
       style="height: 400px"
     ></div>
 
-    <div id="session-information-container" class="flex flex-col">
+    <div id="session-information-container" class="flex flex-col items-center">
       <div class="flex flex-row justify-between">
-        <div class="w-2/5 text-center bg-orange-salmon rounded-xl px-4 py-2 mx-4 my-2">
+        <div class="text-center bg-orange-salmon rounded-xl px-4 py-2 mx-4 my-2">
           {{ runData?.duration || 0 }} minutes
         </div>
 
-        <div class="w-2/5 text-center bg-orange-salmon rounded-xl px-4 py-2 mx-4 my-2">
+        <div class="text-center bg-orange-salmon rounded-xl px-4 py-2 mx-4 my-2">
           {{ runData?.miles || 0 }} miles
         </div>
       </div>
@@ -167,7 +165,7 @@ function goToSessionInfo() {
           <select
             v-model="exerciseType"
             id="exercise-type"
-            class="bg-orange-salmon border-2 border-orange-salmon rounded-xl p-1 m-2"
+            class="bg-orange-salmon hover:bg-light-orange-salmon rounded-xl px-4 py-2 my-2 mx-4 cursor-pointer transition-transform delay-100 ease-in-out focus:scale-110 focus:ring-2 focus:ring-off-white focus:border-off-white"
             required
           >
             <option disabled selected hidden value="">Select Option</option>
@@ -188,16 +186,19 @@ function goToSessionInfo() {
           ></textarea>
         </div>
 
-        <button @click="addCommentToRun()" class="p-2 bg-off-white text-orange-salmon rounded-xl">
-          Update Session Information
+        <button
+          @click="saveSessionDetails"
+          class="p-2 bg-off-white active:bg-lightgray text-orange-salmon rounded-xl cursor-pointer"
+        >
+          <font-awesome-icon icon="fa-save" /> Save Session Details
         </button>
       </div>
 
       <RouterLink
         :to="{ name: 'dashboard' }"
-        class="text-center text-orange-salmon bg-off-white rounded-xl px-4 py-2 m-4 cursor-pointer"
+        class="text-center text-orange-salmon bg-off-white active:bg-lightgray rounded-xl px-4 py-2 m-4 cursor-pointer"
       >
-        See Your Stats
+        <font-awesome-icon icon="fa-home" /> See Your Stats
       </RouterLink>
     </div>
   </div>
@@ -219,7 +220,7 @@ function goToSessionInfo() {
           :whileTap="{ scale: 0.9, rotate: -5 }"
           :transition="{ type: 'spring', stiffness: 400, damping: 17 }"
         >
-          <font-awesome-icon icon="fa-circle-info" /> View Session Info
+          <font-awesome-icon icon="fa-eye" /> View Session Info
         </motion.button>
 
         <motion.button

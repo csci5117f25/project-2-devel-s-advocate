@@ -1,5 +1,5 @@
 <template>
-  <div ref="mapRef" class="w-full h-full border-6 border-orange-salmon rounded-xl"></div>
+  <div ref="mapRef" class="w-full h-full border-6 border-orange-salmon rounded-xl my-3"></div>
 </template>
 
 <script setup>
@@ -8,8 +8,8 @@ import { ref, onMounted, watch } from 'vue'
 const props = defineProps({
   runs: {
     type: Array,
-    default: () => []
-  }
+    default: () => [],
+  },
 })
 
 const mapRef = ref(null)
@@ -72,39 +72,39 @@ function initMap() {
       {
         featureType: 'poi',
         elementType: 'labels',
-        stylers: [{ visibility: 'off' }]
+        stylers: [{ visibility: 'off' }],
       },
       {
         featureType: 'landscape',
         elementType: 'geometry',
-        stylers: [{ color: '#212d40' }] 
+        stylers: [{ color: '#f4f3ef' }],
       },
       {
         featureType: 'park',
         elementType: 'geometry',
-        stylers: [{ color: '#212d40' }] 
+        stylers: [{ color: '#f4f3ef' }],
       },
       {
         featureType: 'green',
         elementType: 'geometry',
-        stylers: [{ color: '#212d40' }] 
+        stylers: [{ color: '#f4f3ef' }],
       },
       {
         featureType: 'road',
         elementType: 'geometry.fill',
-        stylers: [{ color: '#4a5d7a' }] 
+        stylers: [{ color: '#7d4e57' }],
       },
       {
         featureType: 'road',
         elementType: 'geometry.stroke',
-        stylers: [{ color: '#4a5d7a' }] 
+        stylers: [{ color: '#d66853' }],
       },
       {
         featureType: 'water',
         elementType: 'geometry',
-        stylers: [{ color: '#11151c' }] 
-      }
-    ]
+        stylers: [{ color: '#364156' }],
+      },
+    ],
   })
 
   // Delay updateHeatmap to ensure visualization library is ready
@@ -117,7 +117,7 @@ function updateHeatmap() {
   if (!map.value) {
     return
   }
-  
+
   if (!window.google?.maps?.visualization) {
     // Retry in 500ms if visualization library isn't ready yet
     setTimeout(updateHeatmap, 500)
@@ -148,18 +148,18 @@ function updateHeatmap() {
       radius: 10,
       opacity: 0.5,
       gradient: [
-        'rgba(255, 255, 255, 0)',    // transparent white
-        'rgba(255, 235, 59, 0.4)',   // bright yellow
-        'rgba(255, 193, 7, 0.6)',    // golden yellow
-        'rgba(255, 152, 0, 0.7)',    // orange
-        'rgba(255, 87, 34, 0.8)',    // deep orange
-        'rgba(244, 67, 54, 0.9)',    // red
-        'rgba(211, 47, 47, 1)'       // dark red
-      ]
+        'rgba(255, 255, 255, 0)', // transparent white
+        'rgba(255, 235, 59, 0.4)', // bright yellow
+        'rgba(255, 193, 7, 0.6)', // golden yellow
+        'rgba(255, 152, 0, 0.7)', // orange
+        'rgba(255, 87, 34, 0.8)', // deep orange
+        'rgba(244, 67, 54, 0.9)', // red
+        'rgba(211, 47, 47, 1)', // dark red
+      ],
     })
 
     const bounds = new window.google.maps.LatLngBounds()
-    coordinates.forEach(coord => bounds.extend(coord))
+    coordinates.forEach((coord) => bounds.extend(coord))
     map.value.fitBounds(bounds)
   }
 }
@@ -170,11 +170,15 @@ onMounted(async () => {
 })
 
 //Changes
-watch(() => props.runs, (newRuns) => {
-  if (newRuns && newRuns.length > 0) {
-    updateHeatmap()
-  }
-}, { deep: true, immediate: false })
+watch(
+  () => props.runs,
+  (newRuns) => {
+    if (newRuns && newRuns.length > 0) {
+      updateHeatmap()
+    }
+  },
+  { deep: true, immediate: false },
+)
 </script>
 
 <style scoped>
