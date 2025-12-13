@@ -28,12 +28,22 @@ const chartOptions = {
 const initChart = () => {
   if (!chartRef.value) return
   if (chartInstance) chartInstance.destroy()
+
+  // Show only the newest 5 points
+  const last7 = 7
+  const labels = props.labels.slice(-last7)
+  const datasets = props.datasets.map(d => ({
+    ...d,
+    data: d.data.slice(-last7)
+  }))
+
   chartInstance = new Chart(chartRef.value, {
     type: 'line',
-    data: { labels: props.labels, datasets: props.datasets },
+    data: { labels, datasets },
     options: chartOptions,
   })
 }
+
 
 onMounted(() => initChart())
 
