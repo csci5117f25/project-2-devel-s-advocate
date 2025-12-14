@@ -82,10 +82,10 @@ const finishAndSave = async () => {
     })
 
     store.reset()
-    router.push({ name: 'completedRun', params: { runID: runId } })
+    router.push({ name: 'completedSession', params: { runID: runId } })
   } catch (error) {
     console.error('Error saving run:', error)
-    alert('Failed to save run. Please try again.')
+    alert('Failed to save your session. Please try again.')
   }
 }
 
@@ -187,7 +187,7 @@ function initMap(position = null) {
 }
 
 function goToAddSession() {
-  router.push({ name: 'addRun' })
+  router.push({ name: 'addSession' })
 }
 
 function goToDashboard() {

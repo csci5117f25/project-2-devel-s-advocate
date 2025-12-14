@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import SplashPageView from '../views/SplashPageView.vue'
 import DashboardView from '../views/DashboardView.vue'
-import StartRunView from '../views/StartRunView.vue'
-import CompletedRunView from '../views/CompletedRunView.vue'
-import AddRunView from '../views/AddRunView.vue'
-import SessionInfoView from '../views/SessionInfoView.vue'
+import StartSessionView from '../views/StartSessionView.vue'
+import CompletedSessionView from '../views/CompletedSessionView.vue'
+import AddSessionView from '../views/AddSessionView.vue'
+import SessionDetailsView from '../views/SessionDetailsView.vue'
 import NotFoundView from '../views/NotFoundView.vue'
 
 const router = createRouter({
@@ -28,27 +28,27 @@ const router = createRouter({
       meta: { title: 'TraceRoute | Dashboard', requiresAuth: true },
     },
     {
-      path: '/start-run',
-      name: 'startRun',
-      component: StartRunView,
+      path: '/start-session',
+      name: 'startSession',
+      component: StartSessionView,
       meta: { title: 'TraceRoute | Start Session', requiresAuth: true },
     },
     {
-      path: '/completed-run/:runID',
-      name: 'completedRun',
-      component: CompletedRunView,
+      path: '/completed-session/:runID',
+      name: 'completedSession',
+      component: CompletedSessionView,
       meta: { title: 'TraceRoute | Completed Session', requiresAuth: true },
     },
     {
-      path: '/add-run',
-      name: 'addRun',
-      component: AddRunView,
+      path: '/add-session',
+      name: 'addSession',
+      component: AddSessionView,
       meta: { title: 'TraceRoute | Add Session', requiresAuth: true },
     },
     {
       path: '/view-session/:runID',
       name: 'viewSession',
-      component: SessionInfoView,
+      component: SessionDetailsView,
       meta: { title: 'TraceRoute | Session Details', requiresAuth: true },
     },
     {

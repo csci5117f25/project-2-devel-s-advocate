@@ -25,12 +25,12 @@ function goToDashboard() {
 }
 
 function goToStartSession() {
-  router.push({ name: 'startRun' })
+  router.push({ name: 'startSession' })
   toggleMenu()
 }
 
 function goToAddSession() {
-  router.push({ name: 'addRun' })
+  router.push({ name: 'addSession' })
   toggleMenu()
 }
 
