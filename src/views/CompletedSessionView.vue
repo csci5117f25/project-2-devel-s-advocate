@@ -17,11 +17,15 @@ const newComment = ref('')
 const mapRef = ref(null)
 const map = ref(null)
 
-watch(runData, (new_data, old_data) => {
-  if (!new_data) {
+watch(runData, async (newData) => {
+  if (!newData) {
     router.push('/404')
   }
-})
+  if (newData?.path && newData.path.length > 0 && !map.value) {
+    await loadGoogleMaps()
+    initMap()
+  }
+}, { immediate: true })
 
 const saveSessionDetails = async () => {
   await updateDoc(docRef, {
@@ -116,11 +120,6 @@ function initMap() {
   }
 }
 
-onMounted(async () => {
-  await loadGoogleMaps()
-  initMap()
-})
-
 function goToDashboard() {
   router.push({ name: 'dashboard' })
 }
@@ -149,6 +148,7 @@ function goToSessionInfo() {
     </motion.div>
 
     <div
+      v-if="runData?.path && runData.path.length > 0"
       id="map"
       class="border-6 border-orange-salmon rounded-xl m-4"
       ref="mapRef"
