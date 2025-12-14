@@ -95,9 +95,9 @@ function initMap() {
   })
 
   // Draw route if it exists
-  console.log('Considering route on map:', runData)
+  // console.log('Considering route on map:', runData)
   if (runData.value?.path && runData.value.path.length > 0) {
-    console.log('Drawing route on map:', runData.value.path)
+    // console.log('Drawing route on map:', runData.value.path)
     const polyline = new window.google.maps.Polyline({
       path: runData.value.path,
       geodesic: true,
@@ -139,7 +139,6 @@ function goToSessionInfo() {
       :whileInView="{ opacity: 1, y: 0 }"
       :transition="{ delay: index * 0.1, duration: 0.8 }"
     >
-      <!-- <div id="congratulations-container" class="flex flex-col items-center"> -->
       <div>
         <ConfettiComponent text="Congratulations!"></ConfettiComponent>
       </div>
@@ -147,7 +146,6 @@ function goToSessionInfo() {
       <div id="victory-animation" class="my-6">
         <img src="../assets/gifs/victory_animation.gif" class="h-75" />
       </div>
-      <!-- </div> -->
     </motion.div>
 
     <div
@@ -266,7 +264,6 @@ function goToSessionInfo() {
     align-items: center;
   }
   #mobile-phone-animation {
-    /* height: calc(var(--spacing) * 100); */
     width: calc(var(--spacing) * 100);
   }
 }

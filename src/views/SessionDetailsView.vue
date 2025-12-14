@@ -85,9 +85,9 @@ function initMap() {
   })
 
   // Draw route if it exists
-  console.log('Considering route on map:', runData)
+  // console.log('Considering route on map:', runData)
   if (runData.value?.path && runData.value.path.length > 0) {
-    console.log('Drawing route on map:', runData.value.path)
+    // console.log('Drawing route on map:', runData.value.path)
     const polyline = new window.google.maps.Polyline({
       path: runData.value.path,
       geodesic: true,
@@ -166,13 +166,6 @@ function goToDashboard() {
     >
       <font-awesome-icon icon="fa-home" /> See Your Stats
     </motion.button>
-
-    <!-- <RouterLink
-      :to="{ name: 'dashboard' }"
-      class="text-center text-orange-salmon bg-off-white hover:bg-lightgray rounded-xl px-4 py-2 m-4 cursor-pointer"
-    >
-      <font-awesome-icon icon="fa-home" /> See Your Stats
-    </RouterLink> -->
   </div>
 </template>
 

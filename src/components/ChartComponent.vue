@@ -29,7 +29,7 @@ const initChart = () => {
   if (!chartRef.value) return
   if (chartInstance) chartInstance.destroy()
 
-  // Show only the newest 5 points
+  // Show only the newest 7 points
   const last7 = 7
   const labels = props.labels.slice(-last7)
   const datasets = props.datasets.map((d) => ({

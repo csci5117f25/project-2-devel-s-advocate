@@ -125,9 +125,9 @@ watch(
   { immediate: true, deep: true },
 )
 
-// chart data
+// Chart data
 const chartData = computed(() => {
-  console.log(chart_view.value)
+  // console.log(chart_view.value)
   if (!runs.value || runs.value.length === 0) return { labels: [], datasets: [] }
 
   let filteredChartRuns = runs.value
@@ -345,9 +345,5 @@ const chartData = computed(() => {
   #sessions-list {
     max-height: calc(var(--spacing) * 200);
   }
-
-  /* #chart {
-    height: calc(var(--spacing) * 100);
-  } */
 }
 </style>

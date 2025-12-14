@@ -203,9 +203,7 @@ function goToDashboard() {
       :whileInView="{ opacity: 1, y: 0 }"
       :transition="{ delay: index * 0.1, duration: 0.8 }"
     >
-      <!-- <div> -->
       <h1 class="text-3xl text-center text-orange-salmon font-bold">Track Exercise Session</h1>
-      <!-- </div> -->
     </motion.div>
 
     <div
@@ -247,7 +245,6 @@ function goToDashboard() {
       <img src="../assets/gifs/phone_animation.gif" class="h-75" />
     </div>
 
-    <!-- <div class="flex flex-col items-center"> -->
     <motion.div
       class="flex flex-col items-center"
       :initial="{ opacity: 0, y: -80 }"
@@ -294,7 +291,6 @@ function goToDashboard() {
     align-items: center;
   }
   #mobile-phone-animation {
-    /* height: calc(var(--spacing) * 100); */
     width: calc(var(--spacing) * 100);
   }
 }
