@@ -3,6 +3,7 @@ import { ref, computed, watch } from 'vue'
 import { useCollection, useCurrentUser } from 'vuefire'
 import { collection, query, where, doc, setDoc } from 'firebase/firestore'
 import { db } from '@/firebaseApp'
+import { motion } from 'motion-v'
 import ChartComponent from '@/components/ChartComponent.vue'
 import DashboardComponent from '@/components/DashboardComponent.vue'
 import HeatMapComponent from '@/components/HeatMapComponent.vue'
@@ -124,9 +125,9 @@ watch(
   { immediate: true, deep: true },
 )
 
-// chart data
+// Chart data
 const chartData = computed(() => {
-  console.log(chart_view.value)
+  // console.log(chart_view.value)
   if (!runs.value || runs.value.length === 0) return { labels: [], datasets: [] }
 
   let filteredChartRuns = runs.value
@@ -175,11 +176,16 @@ const chartData = computed(() => {
 
 <template>
   <div class="flex flex-col mt-32 drop-shadow-xl/50">
-    <div class="header m-2">
+    <motion.div
+      class="flex flex-col items-center header m-2"
+      :initial="{ opacity: 0, y: -80 }"
+      :whileInView="{ opacity: 1, y: 0 }"
+      :transition="{ delay: index * 0.1, duration: 0.8 }"
+    >
       <h1 class="text-3xl text-orange-salmon text-center font-bold">
         Welcome, {{ user.displayName }}!
       </h1>
-    </div>
+    </motion.div>
 
     <div class="flex flex-row flex-wrap justify-around m-2 text-shadow-lg/20" id="stats-container">
       <div
@@ -278,7 +284,7 @@ const chartData = computed(() => {
       <div id="chart-and-heatmap-container" class="flex flex-col">
         <div
           id="chart-container"
-          class="h-[735px] border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-2"
+          class="h-[738px] border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-2"
         >
           <h2 class="text-center text-2xl py-2">Session Trends</h2>
           <div class="flex items-center px-2 py-2">
@@ -339,9 +345,5 @@ const chartData = computed(() => {
   #sessions-list {
     max-height: calc(var(--spacing) * 200);
   }
-
-  /* #chart {
-    height: calc(var(--spacing) * 100);
-  } */
 }
 </style>

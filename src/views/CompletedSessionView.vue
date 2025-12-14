@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue'
 import ConfettiComponent from '@/components/ConfettiComponent.vue'
-import { collection, doc, updateDoc, serverTimestamp } from 'firebase/firestore'
+import { doc, updateDoc } from 'firebase/firestore'
 import { db } from '@/firebaseApp'
 import { useRoute, useRouter } from 'vue-router'
 import { useDocument } from 'vuefire'
@@ -17,14 +17,18 @@ const newComment = ref('')
 const mapRef = ref(null)
 const map = ref(null)
 
+watch(runData, (new_data, old_data) => {
+  if (!new_data) {
+    router.push('/404')
+  }
+})
+
 const saveSessionDetails = async () => {
   await updateDoc(docRef, {
     description: newComment.value,
     exerciseType: exerciseType.value,
   })
   alert('Your session details have been saved.')
-  // newComment.value = ''
-  // router.push('/dashboard')
 }
 
 function loadGoogleMaps() {
@@ -91,9 +95,9 @@ function initMap() {
   })
 
   // Draw route if it exists
-  console.log('Considering route on map:', runData)
+  // console.log('Considering route on map:', runData)
   if (runData.value?.path && runData.value.path.length > 0) {
-    console.log('Drawing route on map:', runData.value.path)
+    // console.log('Drawing route on map:', runData.value.path)
     const polyline = new window.google.maps.Polyline({
       path: runData.value.path,
       geodesic: true,
@@ -128,7 +132,13 @@ function goToSessionInfo() {
 
 <template>
   <div id="mobile-view" class="flex flex-col mt-32 text-off-white drop-shadow-xl/50">
-    <div id="congratulations-container" class="flex flex-col items-center">
+    <motion.div
+      class="flex flex-col items-center header m-2"
+      id="congratulations-container"
+      :initial="{ opacity: 0, y: -80 }"
+      :whileInView="{ opacity: 1, y: 0 }"
+      :transition="{ delay: index * 0.1, duration: 0.8 }"
+    >
       <div>
         <ConfettiComponent text="Congratulations!"></ConfettiComponent>
       </div>
@@ -136,7 +146,7 @@ function goToSessionInfo() {
       <div id="victory-animation" class="my-6">
         <img src="../assets/gifs/victory_animation.gif" class="h-75" />
       </div>
-    </div>
+    </motion.div>
 
     <div
       id="map"
@@ -148,11 +158,11 @@ function goToSessionInfo() {
     <div id="session-information-container" class="flex flex-col items-center">
       <div class="flex flex-row justify-between">
         <div class="text-center bg-orange-salmon rounded-xl px-4 py-2 mx-4 my-2">
-          {{ runData?.duration || 0 }} minutes
+          {{ runData?.duration || 0 }} Minutes
         </div>
 
         <div class="text-center bg-orange-salmon rounded-xl px-4 py-2 mx-4 my-2">
-          {{ runData?.miles || 0 }} miles
+          {{ runData?.miles || 0 }} Miles
         </div>
       </div>
 
@@ -208,7 +218,12 @@ function goToSessionInfo() {
       <img src="../assets/gifs/phone_animation.gif" class="h-75" />
     </div>
 
-    <div class="flex flex-col items-center">
+    <motion.div
+      class="flex flex-col items-center"
+      :initial="{ opacity: 0, y: -80 }"
+      :whileInView="{ opacity: 1, y: 0 }"
+      :transition="{ delay: index * 0.1, duration: 0.8 }"
+    >
       <h1 class="text-3xl text-center text-orange-salmon font-bold p-4">Oops!</h1>
       <h2 class="text-2xl text-center p-4">This page can only be viewed on a mobile device.</h2>
 
@@ -233,7 +248,7 @@ function goToSessionInfo() {
           <font-awesome-icon icon="fa-home" /> See Your Stats
         </motion.button>
       </div>
-    </div>
+    </motion.div>
   </div>
 </template>
 
@@ -249,7 +264,6 @@ function goToSessionInfo() {
     align-items: center;
   }
   #mobile-phone-animation {
-    /* height: calc(var(--spacing) * 100); */
     width: calc(var(--spacing) * 100);
   }
 }

@@ -1,5 +1,5 @@
 <template>
-  <div ref="mapRef" class="w-full h-full border-6 border-orange-salmon rounded-xl my-3"></div>
+  <div ref="mapRef" class="w-full h-full border-6 border-orange-salmon rounded-xl my-8"></div>
 </template>
 
 <script setup>

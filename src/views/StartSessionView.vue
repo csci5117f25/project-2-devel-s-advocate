@@ -82,10 +82,10 @@ const finishAndSave = async () => {
     })
 
     store.reset()
-    router.push({ name: 'completedRun', params: { runID: runId } })
+    router.push({ name: 'completedSession', params: { runID: runId } })
   } catch (error) {
     console.error('Error saving run:', error)
-    alert('Failed to save run. Please try again.')
+    alert('Failed to save your session. Please try again.')
   }
 }
 
@@ -187,7 +187,7 @@ function initMap(position = null) {
 }
 
 function goToAddSession() {
-  router.push({ name: 'addRun' })
+  router.push({ name: 'addSession' })
 }
 
 function goToDashboard() {
@@ -197,9 +197,14 @@ function goToDashboard() {
 
 <template>
   <div id="mobile-view" class="flex flex-col mt-32 text-off-white drop-shadow-xl/50">
-    <div>
+    <motion.div
+      class="flex flex-col items-center header m-2"
+      :initial="{ opacity: 0, y: -80 }"
+      :whileInView="{ opacity: 1, y: 0 }"
+      :transition="{ delay: index * 0.1, duration: 0.8 }"
+    >
       <h1 class="text-3xl text-center text-orange-salmon font-bold">Track Exercise Session</h1>
-    </div>
+    </motion.div>
 
     <div
       id="map"
@@ -240,7 +245,12 @@ function goToDashboard() {
       <img src="../assets/gifs/phone_animation.gif" class="h-75" />
     </div>
 
-    <div class="flex flex-col items-center">
+    <motion.div
+      class="flex flex-col items-center"
+      :initial="{ opacity: 0, y: -80 }"
+      :whileInView="{ opacity: 1, y: 0 }"
+      :transition="{ delay: index * 0.1, duration: 0.8 }"
+    >
       <h1 class="text-3xl text-center text-orange-salmon font-bold p-4">Oops!</h1>
       <h2 class="text-2xl text-center p-4">You can only start a new session on a mobile device.</h2>
 
@@ -265,7 +275,7 @@ function goToDashboard() {
           <font-awesome-icon icon="fa-home" /> See Your Stats
         </motion.button>
       </div>
-    </div>
+    </motion.div>
   </div>
 </template>
 
@@ -281,7 +291,6 @@ function goToDashboard() {
     align-items: center;
   }
   #mobile-phone-animation {
-    /* height: calc(var(--spacing) * 100); */
     width: calc(var(--spacing) * 100);
   }
 }

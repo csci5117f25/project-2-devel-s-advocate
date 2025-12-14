@@ -24,7 +24,12 @@ function goToDashboard() {
       <img src="../assets/gifs/tired_animation.gif" class="h-75" />
     </div>
 
-    <div class="flex flex-col items-center">
+    <motion.div
+      class="flex flex-col items-center"
+      :initial="{ opacity: 0, y: -80 }"
+      :whileInView="{ opacity: 1, y: 0 }"
+      :transition="{ delay: index * 0.1, duration: 0.8 }"
+    >
       <h1 class="text-3xl text-center text-orange-salmon font-bold p-4">Oops!</h1>
       <h2 class="text-2xl text-center p-4">This page could not be found.</h2>
 
@@ -37,7 +42,7 @@ function goToDashboard() {
       >
         <font-awesome-icon icon="fa-home" /> Return Home
       </motion.button>
-    </div>
+    </motion.div>
   </div>
 </template>
 

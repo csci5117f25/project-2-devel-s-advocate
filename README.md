@@ -44,7 +44,9 @@ Which (if any) progressive web app feature(s) does your app support?
 
 **Is there anything special we need to know in order to effectively test your app? (optional):**
 
-- ...
+- Run the following commands:
+  - `npm install`
+  - `npm run dev`
 
 ## Screenshots of Site (complete)
 
@@ -66,9 +68,3 @@ relied on external code, expertise, or anything else, please disclose that
 here:**
 
 ...
-
-\. "$HOME/.nvm/nvm.sh"
-nvm install --lts
-nvm use --lts
-npm install
-npm run dev
