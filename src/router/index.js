@@ -49,7 +49,7 @@ const router = createRouter({
       path: '/view-session/:runID',
       name: 'viewSession',
       component: SessionInfoView,
-      meta: { title: 'TraceRoute | Session Information', requiresAuth: true },
+      meta: { title: 'TraceRoute | Session Details', requiresAuth: true },
     },
     {
       path: '/:catchAll(.*)',

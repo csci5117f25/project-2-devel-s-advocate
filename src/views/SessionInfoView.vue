@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import EditComponent from '../components/EditComponent.vue'
 import { doc } from 'firebase/firestore'
 import { db } from '@/firebaseApp'
@@ -14,6 +14,12 @@ const docRef = doc(db, 'runs', runID)
 const runData = useDocument(docRef)
 const mapRef = ref(null)
 const map = ref(null)
+
+watch(runData, (new_data, old_data) => {
+  if (!new_data) {
+    router.push('/404')
+  }
+})
 
 function loadGoogleMaps() {
   return new Promise((resolve) => {
@@ -112,18 +118,16 @@ function goToDashboard() {
 
 <template>
   <div id="session-info-container" class="flex flex-col mt-32 text-off-white drop-shadow-xl/50">
-    <!-- <div class="flex flex-col items-center"> -->
     <motion.div
       class="flex flex-col items-center"
       :initial="{ opacity: 0, y: -80 }"
       :whileInView="{ opacity: 1, y: 0 }"
       :transition="{ delay: index * 0.1, duration: 0.8 }"
     >
-      <h1 class="text-center text-3xl text-orange-salmon font-bold">Session Information</h1>
+      <h1 class="text-center text-3xl text-orange-salmon font-bold">Session Details</h1>
 
       <h2 class="text-center">ID: {{ runID }}</h2>
     </motion.div>
-    <!-- </div> -->
 
     <div id="map-and-info-container" class="flex flex-col items-center m-2">
       <div
@@ -134,12 +138,13 @@ function goToDashboard() {
       ></div>
 
       <div
+        v-if="runData"
         id="session-information-container"
         class="flex flex-col border-6 border-orange-salmon rounded-xl px-4 pt-4 pb-1 w-11/12 m-2"
       >
         <EditComponent
           :runID="runID"
-          :view="sessionInfo"
+          :view="'sessionInfo'"
           :description="runData.description"
           :distance="runData.distance"
           :duration="runData.duration"

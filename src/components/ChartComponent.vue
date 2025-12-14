@@ -50,5 +50,13 @@ watch([() => props.labels, () => props.datasets], () => initChart(), { deep: tru
 </script>
 
 <template>
-  <canvas ref="chartRef" style="height: 220px; width: 100%" class="m-3"></canvas>
+  <canvas ref="chartRef" id="chart" style="height: 300px; width: 100%" class="mx-3 my-15"></canvas>
 </template>
+
+<style scoped>
+@media (min-width: 1024px) {
+  #chart {
+    margin-block: calc(var(--spacing) * 5);
+  }
+}
+</style>
