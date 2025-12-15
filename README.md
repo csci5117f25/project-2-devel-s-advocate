@@ -18,13 +18,12 @@ CSCI 5117, Fall 2025, [assignment description](https://canvas.umn.edu/courses/51
 
 ## Key Features
 
-**Describe the most challenging features you implemented
-(one sentence per bullet, maximum 4 bullets):**
+**Describe the most challenging features you implemented (one sentence per bullet, maximum 4 bullets):**
 
-- Dynamically tracks an exercise session using device geolocation and plots the user’s route in real time on an interactive map.
-- Implements a heatmap visualization that aggregates and displays all recorded sessions to show frequently traveled routes.
-- Provides an edit component that allows users to directly modify details of all previously tracked session.
-- Ensures full mobile responsiveness across all pages.
+- Dynamically tracking an exercise session using device geolocation and plots the user's route in real time on an interactive map.
+- Implementing a heatmap visualization that aggregates and displays all recorded sessions to show frequently traveled routes.
+- Providing an edit component that allows users to directly modify details of all previously tracked session.
+- Ensuring full mobile responsiveness across all pages.
 
 Which (if any) device integration(s) does your app support?
 
@@ -53,37 +52,34 @@ Which (if any) progressive web app feature(s) does your app support?
 
 ## Screenshots of Site (complete)
 
+Splash Page: Displayed to logged-out users to introduce TraceRoute and demonstrate the app's purpose and core functionality and before authentication.
 ![Splash Page](site_pictures/splash_1.png)
 ![Splash Page](site_pictures/splash_2.png)
 ![Splash Page](site_pictures/splash_3.png)
-Splash Pages: Displayed to logged-out users to introduce Tr@ceRoute and demonstrate core functionality and app purpose before authentication.
 
-![Dashboard Page](site_pictures/dashbaord.png)
 Dashboard Page: Logged-in users can view their exercise statistics, recent sessions, and performance charts at a glance.
+![Dashboard Page](site_pictures/dashboard.png)
 
-![Add Session Page](site_pictures/manually_add_session.png)
-Add Session Page: Allows users to manually add a run or exercise session by entering session details.
-
+Start Session Page: Uses device geolocation to track an exercise session in real time and plot the route on the map.
 ![Start Session Page](site_pictures/start_session.png)
-Start Session Page: Uses device geolocation to track a run session in real time and plot the route on the map.
 
+Add Session Page: Allows users to manually add an exercise session by entering the session's details.
+![Add Session Page](site_pictures/manually_add_session.png)
+
+Error / Not Found Pages: Displayed when a user navigates to a forbidden or non-existent route, including mobile-specific handling.
 ![404 Page](site_pictures/404_mobile_only.png)
 ![404 Page](site_pictures/not_Found.png)
-Error / Not Found Pages: Displayed when a user navigates to a forbidden or non-existent route, including mobile-specific handling.
 
 ## External Dependencies
 
-**Document integrations with 3rd Party code or services here.
-Please do not document required libraries (e.g., VUE, Firebase, vuefire).**
+**Document integrations with 3rd Party code or services here. Please do not document required libraries (e.g., VUE, Firebase, vuefire).**
 
 - Font Awesome: Provides icons used throughout the UI for actions, navigation, and visual clarity.
 - Tailwind CSS: Utility-first CSS framework used to implement responsive layouts and consistent styling.
 - Motion (motion-v): Adds animations and transitions to improve user experience and visual feedback.
-- Chart.js: Renders interactive charts on the dashboard and session views to visualize performance data.
+- Chart.js: Renders interactive charts on the dashboard to visualize performance data.
 - Google Maps API: Displays maps, plots routes, and generates heatmaps based on geolocation data.
 
-**If there's anything else you would like to disclose about how your project
-relied on external code, expertise, or anything else, please disclose that
-here:**
+**If there's anything else you would like to disclose about how your project relied on external code, expertise, or anything else, please disclose that here:**
 
 N/A
