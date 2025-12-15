@@ -3,7 +3,6 @@ import { ref, computed, watch } from 'vue'
 import { useCollection, useCurrentUser } from 'vuefire'
 import { collection, query, where, doc, setDoc } from 'firebase/firestore'
 import { db } from '@/firebaseApp'
-import { motion } from 'motion-v'
 import ChartComponent from '@/components/ChartComponent.vue'
 import DashboardComponent from '@/components/DashboardComponent.vue'
 import HeatMapComponent from '@/components/HeatMapComponent.vue'
@@ -125,9 +124,8 @@ watch(
   { immediate: true, deep: true },
 )
 
-// Chart data
+// chart data
 const chartData = computed(() => {
-  // console.log(chart_view.value)
   if (!runs.value || runs.value.length === 0) return { labels: [], datasets: [] }
 
   let filteredChartRuns = runs.value
@@ -176,16 +174,11 @@ const chartData = computed(() => {
 
 <template>
   <div class="flex flex-col mt-32 drop-shadow-xl/50">
-    <motion.div
-      class="flex flex-col items-center header m-2"
-      :initial="{ opacity: 0, y: -80 }"
-      :whileInView="{ opacity: 1, y: 0 }"
-      :transition="{ delay: index * 0.1, duration: 0.8 }"
-    >
+    <div class="header m-2">
       <h1 class="text-3xl text-orange-salmon text-center font-bold">
         Welcome, {{ user.displayName }}!
       </h1>
-    </motion.div>
+    </div>
 
     <div class="flex flex-row flex-wrap justify-around m-2 text-shadow-lg/20" id="stats-container">
       <div
@@ -221,13 +214,12 @@ const chartData = computed(() => {
         class="border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-2"
       >
         <div class="flex flex-col">
-          <h2 class="text-center text-2xl py-2">Tracked Sessions</h2>
           <div class="flex items-center px-2 py-2">
             <label for="filter-option">List:</label>
             <select
               v-model="filter_option"
               id="filter-option"
-              class="bg-orange-salmon hover:bg-light-orange-salmon rounded-xl px-4 py-2 my-2 mx-4 cursor-pointer transition-transform delay-100 ease-in-out focus:scale-110 focus:ring-2 focus:ring-off-white focus:border-off-white"
+              class="bg-orange-salmon hover:bg-light-orange-salmon rounded-xl px-4 py-2 m-2 cursor-pointer"
             >
               <option value="all">All Sessions</option>
               <option value="walks-only">Walks Only</option>
@@ -241,7 +233,7 @@ const chartData = computed(() => {
             <select
               v-model="sort_option"
               id="sort-option"
-              class="bg-orange-salmon hover:bg-light-orange-salmon rounded-xl px-4 py-2 my-2 mx-4 cursor-pointer transition-transform delay-100 ease-in-out focus:scale-110 focus:ring-2 focus:ring-off-white focus:border-off-white"
+              class="bg-orange-salmon hover:bg-light-orange-salmon rounded-xl px-4 py-2 m-2 cursor-pointer"
             >
               <option value="date-desc">Date (Newest First)</option>
               <option value="date-asc">Date (Oldest First)</option>
@@ -253,11 +245,12 @@ const chartData = computed(() => {
           </div>
         </div>
 
-        <div id="sessions-list" class="h-[510px] overflow-y-auto rounded-xl m-2">
+        <div id="sessions-list" class="max-h-72 overflow-y-auto rounded-xl m-2">
           <div v-if="sortedRuns.length === 0" class="text-center text-off-white">
             No sessions have been tracked yet
           </div>
           <div v-else class="flex flex-col space-y-2">
+            <p class="text-center">Tracked Sessions</p>
             <div
               v-for="run in sortedRuns"
               :key="run.id"
@@ -284,15 +277,14 @@ const chartData = computed(() => {
       <div id="chart-and-heatmap-container" class="flex flex-col">
         <div
           id="chart-container"
-          class="h-[738px] border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-2"
+          class="border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-2"
         >
-          <h2 class="text-center text-2xl py-2">Session Trends</h2>
-          <div class="flex items-center px-2 py-2">
+          <div class="flex items-center">
             <label for="chart-view">Show:</label>
             <select
               v-model="chart_view"
               id="chart-view"
-              class="bg-orange-salmon hover:bg-light-orange-salmon rounded-xl px-4 py-2 my-2 mx-4 cursor-pointer transition-transform delay-100 ease-in-out focus:scale-110 focus:ring-2 focus:ring-off-white focus:border-off-white"
+              class="bg-orange-salmon hover:bg-light-orange-salmon rounded-xl px-4 py-2 m-2 cursor-pointer"
             >
               <option value="chart-general">Miles Traveled</option>
               <option value="chart-walking">Miles Walked</option>
@@ -302,10 +294,10 @@ const chartData = computed(() => {
             </select>
           </div>
 
-          <div v-show="chart_view === 'show-heatmap'">
-            <HeatMapComponent :runs="runs" style="height: 523px" />
+          <div v-if="chart_view === 'show-heatmap'">
+            <HeatMapComponent :runs="runs" style="height: 350px;" />
           </div>
-          <div v-show="chart_view !== 'show-heatmap'">
+          <div v-else>
             <ChartComponent
               :labels="chartData.labels"
               :datasets="chartData.datasets"
@@ -345,5 +337,12 @@ const chartData = computed(() => {
   #sessions-list {
     max-height: calc(var(--spacing) * 200);
   }
+
+  #chart {
+    height: calc(var(--spacing) * 100);
+  }
+}
+option:hover {
+  color: --color-cinder;
 }
 </style>

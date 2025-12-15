@@ -18,8 +18,9 @@ const mapRef = ref(null)
 const map = ref(null)
 
 watch(runData, async (newData) => {
-  if (!newData) {
+  if (newData === undefined) {
     router.push('/404')
+    return
   }
   if (newData?.path && newData.path.length > 0 && !map.value) {
     await loadGoogleMaps()
