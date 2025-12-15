@@ -25,7 +25,9 @@ body {
   animation: gradientShift 10s ease infinite;
   min-height: 100vh;
   margin: 0;
-  font-family: 'Inter', sans-serif;
+  /* font-family: 'Inter', sans-serif; */
+  font-family: 'Racing Sans One', sans-serif;
+  font-weight: 400;
 }
 
 /* An animation/keyframing for changing the gradient on the main background. */

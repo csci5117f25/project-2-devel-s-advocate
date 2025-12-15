@@ -65,16 +65,16 @@ function goToDashboard() {
 </script>
 
 <template>
-  <div id="add-run-view" class="flex flex-col drop-shadow-xl/50">
+  <div id="add-run-view" class="flex flex-col mt-32 drop-shadow-xl/50">
     <motion.div
       class="flex flex-col items-center header m-2"
       :initial="{ opacity: 0, y: -80 }"
       :whileInView="{ opacity: 1, y: 0 }"
       :transition="{ delay: index * 0.1, duration: 0.8 }"
     >
-      <h1 class="text-3xl text-center text-orange-salmon font-bold mt-32">Manually Add Session</h1>
+      <h1 class="text-3xl text-center text-orange-salmon font-bold">Manually Add Session</h1>
 
-      <h2 class="text-center text-off-white m-4">
+      <h2 class="text-2xl text-center text-off-white m-4">
         Input the data about your exercise session below. Rough estimates are okay.
       </h2>
     </motion.div>
@@ -138,7 +138,7 @@ function goToDashboard() {
             v-model="distance"
             type="number"
             id="run-distance"
-            class="w-1/4 bg-orange-salmon hover:bg-light-orange-salmon rounded-xl px-4 py-2 my-2 mx-4 cursor-pointer transition-transform delay-100 ease-in-out focus:scale-110 focus:ring-2 focus:ring-off-white focus:border-off-white"
+            class="w-1/3 bg-orange-salmon hover:bg-light-orange-salmon rounded-xl px-4 py-2 my-2 mx-4 cursor-pointer transition-transform delay-100 ease-in-out focus:scale-110 focus:ring-2 focus:ring-off-white focus:border-off-white"
             placeholder="#"
             required
           />
@@ -192,7 +192,7 @@ function goToDashboard() {
     width: 50%;
   }
   #run-distance {
-    width: 15%;
+    width: 20%;
   }
 }
 /* Changes the icon to a light color suitable for dark backgrounds. */

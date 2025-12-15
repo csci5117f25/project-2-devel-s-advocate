@@ -52,10 +52,10 @@ const logout = async () => {
 
 <template>
   <nav
-    class="flex justify-between items-center bg-off-white h-24 px-5 drop-shadow-xl/25 fixed top-0 z-1000 w-full"
+    class="flex justify-between items-center bg-off-white h-20 px-5 drop-shadow-xl/25 fixed top-0 z-1000 w-full"
   >
     <RouterLink :to="{ name: targetRoute }">
-      <img src="../assets/images/TraceRoute_Logo.png" alt="tr@ceroute" />
+      <img src="../assets/images/TraceRoute_Logo.png" alt="TraceRoute" />
     </RouterLink>
 
     <!-- Hamburger menu -->
@@ -70,7 +70,7 @@ const logout = async () => {
   <!-- Menu div -->
   <div
     v-if="menuOpen"
-    class="bg-off-white drop-shadow-xl rounded-bl-xl px-5 py-4 fixed top-24 right-0 z-50 flex flex-col space-y-4"
+    class="bg-off-white drop-shadow-xl rounded-bl-xl px-5 py-4 fixed top-20 right-0 z-50 flex flex-col space-y-4"
   >
     <template v-if="user">
       <button
@@ -115,6 +115,6 @@ const logout = async () => {
 
 <style scoped>
 img {
-  height: 75px;
+  height: 40px;
 }
 </style>
