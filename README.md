@@ -56,11 +56,20 @@ Which (if any) progressive web app feature(s) does your app support?
 ![Splash Page](site_pictures/splash_1.png)
 ![Splash Page](site_pictures/splash_2.png)
 ![Splash Page](site_pictures/splash_3.png)
+Splash Pages: Displayed to logged-out users to introduce Tr@ceRoute and demonstrate core functionality and app purpose before authentication.
+
 ![Dashboard Page](site_pictures/dashbaord.png)
+Dashboard Page: Logged-in users can view their exercise statistics, recent sessions, and performance charts at a glance.
+
 ![Add Session Page](site_pictures/manually_add_session.png)
+Add Session Page: Allows users to manually add a run or exercise session by entering session details.
+
 ![Start Session Page](site_pictures/start_session.png)
+Start Session Page: Uses device geolocation to track a run session in real time and plot the route on the map.
+
 ![404 Page](site_pictures/404_mobile_only.png)
 ![404 Page](site_pictures/not_Found.png)
+Error / Not Found Pages: Displayed when a user navigates to a forbidden or non-existent route, including mobile-specific handling.
 
 ## External Dependencies
 
