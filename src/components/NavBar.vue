@@ -55,7 +55,7 @@ const logout = async () => {
     class="flex justify-between items-center bg-off-white h-24 px-5 drop-shadow-xl/25 fixed top-0 z-1000 w-full"
   >
     <RouterLink :to="{ name: targetRoute }">
-      <img src="../assets/images/traceroute_logo.png" alt="tr@ceroute" />
+      <img src="../assets/images/TraceRoute_Logo.png" alt="tr@ceroute" />
     </RouterLink>
 
     <!-- Hamburger menu -->
