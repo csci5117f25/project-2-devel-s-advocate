@@ -35,10 +35,10 @@ onMounted(() => {
 
 <div id="animation-set" class="flex flex-row justify-between mt-12">
   <div class="animation">
-    <img src="../assets/gifs/walking_animation.gif" class="h-60" />
+    <img src="../assets/gifs/walking_animation.gif" class="w-full max-w-[260px] md:max-w-[220px] lg:max-w-[260px] h-auto" />
   </div>
   <div class="half-width flex justify-center">
-    <div class="relative flex items-center justify-center h-60 w-full">
+    <div class="relative flex items-center justify-center h-60">
       <img
         src="../assets/gifs/running_animation.gif"
         class="absolute inset-0 mx-auto h-60 opacity-40 -z-10"
@@ -64,7 +64,7 @@ onMounted(() => {
   </div>
 
   <div class="animation">
-    <img src="../assets/gifs/biking_animation.gif" class="h-75" />
+    <img src="../assets/gifs/biking_animation.gif" class="w-full max-w-[300px] md:max-w-[220px] lg:max-w-[300px]" />
   </div>
 </div>
 
@@ -144,6 +144,7 @@ onMounted(() => {
     margin-inline: calc(var(--spacing) * 4);
   }
 }
+
 .constraints {
   width: 300px;
   height: 300px;
