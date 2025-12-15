@@ -3,17 +3,15 @@ import { ref, computed, watch } from 'vue'
 import { useCollection, useCurrentUser } from 'vuefire'
 import { collection, query, where, doc, setDoc } from 'firebase/firestore'
 import { db } from '@/firebaseApp'
+import { motion } from 'motion-v'
 import ChartComponent from '@/components/ChartComponent.vue'
-import EditComponent from '@/components/EditComponent.vue'
-import DeleteComponent from '@/components/DeleteComponent.vue'
+import DashboardComponent from '@/components/DashboardComponent.vue'
 import HeatMapComponent from '@/components/HeatMapComponent.vue'
 
 const user = useCurrentUser()
 const filter_option = ref('all') // Have this as default
 const sort_option = ref('date-desc') // Have this as default
-const chart_view = ref('distance')
-// TODO: Melody, comment the above line out and uncomment the following line.
-// const chart_view = ref('chart-general')
+const chart_view = ref('chart-general')
 
 //get runs for current user
 const runsQuery = computed(() => {
@@ -22,11 +20,31 @@ const runsQuery = computed(() => {
 
 const runs = useCollection(runsQuery)
 
+const refreshData = (runID) => {
+  return user.value ? query(collection(db, 'runs'), where('runID', '==', runID)) : null
+}
+
 //sort runs by
-const sortedRuns = computed(() => {
+const filteredRuns = computed(() => {
   if (!runs.value) return []
 
-  return [...runs.value].sort((a, b) => {
+  switch (filter_option.value) {
+    case 'walks-only':
+      return runs.value.filter((r) => r.exerciseType === 'Walk')
+    case 'runs-only':
+      return runs.value.filter((r) => r.exerciseType === 'Run')
+    case 'bike-rides-only':
+      return runs.value.filter((r) => r.exerciseType === 'Bike Ride')
+    case 'all':
+    default:
+      return runs.value
+  }
+})
+
+const sortedRuns = computed(() => {
+  if (!filteredRuns.value) return []
+
+  return [...filteredRuns.value].sort((a, b) => {
     switch (sort_option.value) {
       case 'date-asc':
         return (a.startTime?.toDate() || 0) - (b.startTime?.toDate() || 0)
@@ -56,6 +74,8 @@ const userStats = computed(() => {
       totalRunningTime: 0,
       longestRun: 0,
       totalRuns: 0,
+      totalWalks: 0,
+      totalBikeRides: 0,
     }
   }
 
@@ -72,7 +92,6 @@ const userStats = computed(() => {
     totalTime += duration
     if (duration > longestRun) longestRun = duration
 
-    //calculating average speed in mph
     if (duration > 0) {
       const avgSpeed = miles / (duration / 60)
       if (avgSpeed > maxSpeed) maxSpeed = avgSpeed
@@ -85,16 +104,17 @@ const userStats = computed(() => {
     fastestAvgSpeed: parseFloat(maxSpeed.toFixed(1)),
     totalRunningTime: totalTime,
     longestRun,
-    totalRuns: runs.value.length,
+    totalRuns: runs.value.filter((r) => r.exerciseType === 'Run').length,
+    totalWalks: runs.value.filter((r) => r.exerciseType === 'Walk').length,
+    totalBikeRides: runs.value.filter((r) => r.exerciseType === 'Bike Ride').length,
   }
 })
 
-//update user stats in Firestore whenever stats change
+// update stats in Firestore
 watch(
   userStats,
   async (newStats) => {
     if (!user.value) return
-
     const statsDocRef = doc(db, 'users', user.value.uid, 'private', 'stats')
     try {
       await setDoc(statsDocRef, newStats, { merge: true })
@@ -105,35 +125,39 @@ watch(
   { immediate: true, deep: true },
 )
 
-//chart
+// Chart data
 const chartData = computed(() => {
+  // console.log(chart_view.value)
   if (!runs.value || runs.value.length === 0) return { labels: [], datasets: [] }
 
-  //mapping the date to miles
+  let filteredChartRuns = runs.value
+  switch (chart_view.value) {
+    case 'chart-walking':
+      filteredChartRuns = runs.value.filter((r) => r.exerciseType === 'Walk')
+      break
+    case 'chart-running':
+      filteredChartRuns = runs.value.filter((r) => r.exerciseType === 'Run')
+      break
+    case 'chart-biking':
+      filteredChartRuns = runs.value.filter((r) => r.exerciseType === 'Bike Ride')
+      break
+    default:
+      break
+  }
+
   const dailyMap = {}
-  runs.value.forEach((run) => {
+  filteredChartRuns.forEach((run) => {
     const date = run.startTime?.toDate?.()?.toISOString().split('T')[0] || 'Unknown'
     if (!dailyMap[date]) dailyMap[date] = { miles: 0, duration: 0 }
     dailyMap[date].miles += run.miles || 0
     dailyMap[date].duration += run.duration || 0
   })
 
-  //sorting dates
   const labels = Object.keys(dailyMap).sort()
-  //can pick chart based on the sortinf
   let data = []
-  let label = ''
-  switch (chart_view.value) {
-    case 'distance':
-    default:
-      label = 'Miles Run'
-      data = labels.map((d) => dailyMap[d].miles)
-      break
-    case 'time':
-      label = 'Time per Run (minutes)'
-      data = labels.map((d) => dailyMap[d].duration)
-      break
-  }
+  let label = chart_view.value === 'time' ? 'Time per Run (minutes)' : 'Miles'
+
+  data = labels.map((d) => (chart_view.value === 'time' ? dailyMap[d].duration : dailyMap[d].miles))
 
   return {
     labels,
@@ -152,24 +176,18 @@ const chartData = computed(() => {
 
 <template>
   <div class="flex flex-col mt-32 drop-shadow-xl/50">
-    <div class="header m-2">
+    <motion.div
+      class="flex flex-col items-center header m-2"
+      :initial="{ opacity: 0, y: -80 }"
+      :whileInView="{ opacity: 1, y: 0 }"
+      :transition="{ delay: index * 0.1, duration: 0.8 }"
+    >
       <h1 class="text-3xl text-orange-salmon text-center font-bold">
         Welcome, {{ user.displayName }}!
-        <!-- Welcome! -->
       </h1>
-    </div>
+    </motion.div>
 
-    <!-- <div class="flex flex-row justify-evenly m-2">
-      <RouterLink :to="{ name: 'startRun' }" class="font-bold bg-off-white rounded-xl px-4 py-2">
-        <font-awesome-icon icon="fa-play" /> Start Run
-      </RouterLink>
-
-      <RouterLink :to="{ name: 'addRun' }" class="font-bold bg-off-white rounded-xl px-4 py-2">
-        <font-awesome-icon icon="fa-plus" /> Add Run
-      </RouterLink>
-    </div> -->
-
-    <div class="flex flex-row flex-wrap justify-around m-2" id="stats-container">
+    <div class="flex flex-row flex-wrap justify-around m-2 text-shadow-lg/20" id="stats-container">
       <div
         class="stat w-2/5 flex flex-col text-center bg-orange-salmon border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-2"
       >
@@ -177,12 +195,6 @@ const chartData = computed(() => {
         <p class="font-bold text-2xl">{{ userStats.totalMiles }}</p>
       </div>
 
-      <!-- <div
-        class="stat flex flex-col text-center border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-2"
-      >
-        <p class="font-bold">Avg Speed</p>
-        <p>{{ userStats.averageSpeed }} MPH</p>
-      </div> -->
       <div
         class="stat w-2/5 flex flex-col text-center bg-orange-salmon border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-2"
       >
@@ -209,12 +221,13 @@ const chartData = computed(() => {
         class="border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-2"
       >
         <div class="flex flex-col">
+          <h2 class="text-center text-2xl py-2">Tracked Sessions</h2>
           <div class="flex items-center px-2 py-2">
             <label for="filter-option">List:</label>
             <select
               v-model="filter_option"
               id="filter-option"
-              class="bg-orange-salmon rounded-xl px-4 py-2 m-2"
+              class="bg-orange-salmon hover:bg-light-orange-salmon rounded-xl px-4 py-2 my-2 mx-4 cursor-pointer transition-transform delay-100 ease-in-out focus:scale-110 focus:ring-2 focus:ring-off-white focus:border-off-white"
             >
               <option value="all">All Sessions</option>
               <option value="walks-only">Walks Only</option>
@@ -228,7 +241,7 @@ const chartData = computed(() => {
             <select
               v-model="sort_option"
               id="sort-option"
-              class="bg-orange-salmon rounded-xl px-4 py-2 m-2"
+              class="bg-orange-salmon hover:bg-light-orange-salmon rounded-xl px-4 py-2 my-2 mx-4 cursor-pointer transition-transform delay-100 ease-in-out focus:scale-110 focus:ring-2 focus:ring-off-white focus:border-off-white"
             >
               <option value="date-desc">Date (Newest First)</option>
               <option value="date-asc">Date (Oldest First)</option>
@@ -240,76 +253,67 @@ const chartData = computed(() => {
           </div>
         </div>
 
-        <div id="sessions-list" class="max-h-72 overflow-y-auto rounded-xl m-2">
+        <div id="sessions-list" class="h-[510px] overflow-y-auto rounded-xl m-2">
           <div v-if="sortedRuns.length === 0" class="text-center text-off-white">
             No sessions have been tracked yet
           </div>
           <div v-else class="flex flex-col space-y-2">
-            <p class="text-center">Tracked Sessions</p>
             <div
               v-for="run in sortedRuns"
               :key="run.id"
               @deleted="refreshRuns"
               class="border-2 border-orange-salmon rounded-xl p-2"
             >
-              <router-link
-                :to="`/completed-run/${run.id}`"
-                class="mt-2 pl-2 pr-2 bg-purple-600 text-white font-small py-2 rounded-xl shadow-sm hover:bg-indigo-700 active:bg-indigo-800 transition-all"
-              >
-                View Your Run!
-              </router-link>
-              <DeleteComponent :runID="`${run.id}`"></DeleteComponent>
-     <EditComponent
-  :runID="run.id"
-  :description="run.description"
-  :distance="run.miles"
-  :duration="run.duration"
-  :startTime="run.startTime"
-  :endTime="run.endTime"
-  :createdAt="run.createdAt"
-  @updated="refreshData"
-/>
+              <DashboardComponent
+                :runID="run.id"
+                :description="run.description"
+                :distance="run.miles"
+                :duration="run.duration"
+                :startTime="run.startTime"
+                :endTime="run.endTime"
+                :createdAt="run.createdAt"
+                :exerciseType="run.exerciseType"
+                :hasPath="run.path && run.path.length > 0"
+                @updated="refreshData(run.id)"
+              />
             </div>
           </div>
         </div>
       </div>
 
-      <div
-        id="chart-container"
-        class="border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-2"
-      >
-        <div class="flex flex-col">
-          <select v-model="chart_view" class="bg-orange-salmon rounded-xl px-4 py-2 m-2">
-            <option value="distance">Daily Miles Ran</option>
-            <option value="time">Time per run</option>
-          </select>
-          <!-- TODO: Melody, uncomment the following code and comment out
-               the above <select> element.  -->
-          <!-- <div class="flex items-center">
-            <label for="chart-view">Show Miles</label>
+      <div id="chart-and-heatmap-container" class="flex flex-col">
+        <div
+          id="chart-container"
+          class="h-[738px] border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-2"
+        >
+          <h2 class="text-center text-2xl py-2">Session Trends</h2>
+          <div class="flex items-center px-2 py-2">
+            <label for="chart-view">Show:</label>
             <select
               v-model="chart_view"
               id="chart-view"
-              class="border-2 border-orange-salmon rounded-xl px-4 py-2 m-2"
+              class="bg-orange-salmon hover:bg-light-orange-salmon rounded-xl px-4 py-2 my-2 mx-4 cursor-pointer transition-transform delay-100 ease-in-out focus:scale-110 focus:ring-2 focus:ring-off-white focus:border-off-white"
             >
-              <option class="text-cinder" value="chart-general">Traveled</option>
-              <option class="text-cinder" value="chart-walking">Walked</option>
-              <option class="text-cinder" value="chart-running">Ran</option>
-              <option class="text-cinder" value="chart-biking">Biked</option>
+              <option value="chart-general">Miles Traveled</option>
+              <option value="chart-walking">Miles Walked</option>
+              <option value="chart-running">Miles Ran</option>
+              <option value="chart-biking">Miles Biked</option>
+              <option value="show-heatmap">Heat Map</option>
             </select>
-            <p>Over Time</p>
-          </div> -->
-        </div>
+          </div>
 
-        <ChartComponent
-          :labels="chartData.labels"
-          :datasets="chartData.datasets"
-          title="Daily Miles Run"
-        />
+          <div v-show="chart_view === 'show-heatmap'">
+            <HeatMapComponent :runs="runs" style="height: 523px" />
+          </div>
+          <div v-show="chart_view !== 'show-heatmap'">
+            <ChartComponent
+              :labels="chartData.labels"
+              :datasets="chartData.datasets"
+              title="Daily Miles Run"
+            />
+          </div>
+        </div>
       </div>
-      <!-- <div>
-        <HeatMapComponent :runs="runs" style="height: 400px;" />
-      </div> -->
     </div>
   </div>
 </template>
@@ -334,16 +338,12 @@ const chartData = computed(() => {
   }
 
   #sessions-container,
-  #chart-container {
+  #chart-and-heatmap-container {
     width: 40%;
   }
 
-  /* #sessions-list,*/
-  #chart {
-    height: calc(var(--spacing) * 100);
+  #sessions-list {
+    max-height: calc(var(--spacing) * 200);
   }
-}
-option:hover {
-  color: --color-cinder;
 }
 </style>

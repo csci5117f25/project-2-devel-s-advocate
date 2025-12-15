@@ -1,7 +1,10 @@
 <script setup>
 import { ref, watchEffect } from 'vue'
 import { useCurrentUser } from 'vuefire'
-import { RouterLink } from 'vue-router'
+import { useRouter } from 'vue-router'
+import { motion } from 'motion-v'
+
+const router = useRouter()
 
 const user = useCurrentUser()
 const targetRoute = ref('splashPage')
@@ -9,6 +12,10 @@ const targetRoute = ref('splashPage')
 watchEffect(() => {
   targetRoute.value = user.value ? 'dashboard' : 'splashPage'
 })
+
+function goToDashboard() {
+  router.push({ name: 'dashboard' })
+}
 </script>
 
 <template>
@@ -17,17 +24,25 @@ watchEffect(() => {
       <img src="../assets/gifs/tired_animation.gif" class="h-75" />
     </div>
 
-    <div class="flex flex-col items-center">
+    <motion.div
+      class="flex flex-col items-center"
+      :initial="{ opacity: 0, y: -80 }"
+      :whileInView="{ opacity: 1, y: 0 }"
+      :transition="{ delay: index * 0.1, duration: 0.8 }"
+    >
       <h1 class="text-3xl text-center text-orange-salmon font-bold p-4">Oops!</h1>
       <h2 class="text-2xl text-center p-4">This page could not be found.</h2>
 
-      <RouterLink
-        :to="{ name: targetRoute }"
-        class="w-11/12 text-center text-orange-salmon bg-off-white rounded-xl px-4 py-2 mx-4 my-2"
+      <motion.button
+        @click="goToDashboard"
+        class="text-center text-orange-salmon bg-off-white active:bg-lightgray rounded-xl px-4 py-2 mx-4 my-2 cursor-pointer"
+        :whileHover="{ scale: 1.15, rotate: 3 }"
+        :whileTap="{ scale: 0.9, rotate: -5 }"
+        :transition="{ type: 'spring', stiffness: 400, damping: 17 }"
       >
-        Return Home
-      </RouterLink>
-    </div>
+        <font-awesome-icon icon="fa-home" /> Return Home
+      </motion.button>
+    </motion.div>
   </div>
 </template>
 
@@ -37,7 +52,7 @@ watchEffect(() => {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    margin-top: calc(var(--spacing) * 60)
+    margin-top: calc(var(--spacing) * 60);
   }
   #tired-animation {
     height: calc(var(--spacing) * 100);

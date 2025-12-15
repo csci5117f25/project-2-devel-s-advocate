@@ -1,5 +1,5 @@
 <script setup>
-import { ref, defineProps, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import ConfettiExplosion from 'vue-confetti-explosion'
 
 const showConfetti = ref(false)

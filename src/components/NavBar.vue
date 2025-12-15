@@ -2,28 +2,51 @@
 import { RouterLink, useRouter } from 'vue-router'
 import { useCurrentUser } from 'vuefire'
 import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
-import { ref } from 'vue'
+import { ref, watchEffect } from 'vue'
 
-const menuOpen = ref(false);
+const menuOpen = ref(false)
 
 const toggleMenu = () => {
-  menuOpen.value = !menuOpen.value;
-};
+  menuOpen.value = !menuOpen.value
+}
 
 const router = useRouter()
 const user = useCurrentUser()
+
+const targetRoute = ref('splashPage')
+
+watchEffect(() => {
+  targetRoute.value = user.value ? 'dashboard' : 'splashPage'
+})
+
+function goToDashboard() {
+  router.push({ name: 'dashboard' })
+  toggleMenu()
+}
+
+function goToStartSession() {
+  router.push({ name: 'startSession' })
+  toggleMenu()
+}
+
+function goToAddSession() {
+  router.push({ name: 'addSession' })
+  toggleMenu()
+}
 
 const login = async () => {
   const auth = getAuth()
   const provider = new GoogleAuthProvider()
   await signInWithPopup(auth, provider)
   router.push({ name: 'dashboard' })
+  toggleMenu()
 }
 
 const logout = async () => {
   const auth = getAuth()
   await auth.signOut()
   router.push({ name: 'splashPage' })
+  toggleMenu()
 }
 </script>
 
@@ -31,88 +54,62 @@ const logout = async () => {
   <nav
     class="flex justify-between items-center bg-off-white h-24 px-5 drop-shadow-xl/25 fixed top-0 z-1000 w-full"
   >
-    <RouterLink :to="{ name: 'dashboard' }">
-      <img src="../assets/images/traceroute_logo.png" alt="tr@ceroute" />
+    <RouterLink :to="{ name: targetRoute }">
+      <img src="../assets/images/TraceRoute_Logo.png" alt="tr@ceroute" />
     </RouterLink>
 
-      <div class="flex flex-row">
-        <RouterLink
-          :to="{ name: 'startRun' }"
-          class="border border-black font-bold bg-off-white rounded-xl px-4 py-2"
-        >
-          <font-awesome-icon icon="fa-play" /> Start
-        </RouterLink>
-
-        <RouterLink
-          :to="{ name: 'addRun' }"
-          class="border border-black font-bold bg-off-white rounded-xl px-4 py-2"
-        >
-          <font-awesome-icon icon="fa-plus" /> Add
-        </RouterLink>
-
-          <button
-        v-if="user"
-        @click="logout"
-        class="border border-black font-bold bg-white rounded-xl px-4 py-2 cursor-pointer"
-      >
-        <font-awesome-icon icon="fa-sign-out-alt" />
-        <span class="text-blue-950">Logout</span>
-      </button>
-
-      <button
-        v-else
-        @click="login"
-        class="border border-black font-bold bg-white rounded-xl px-4 py-2 cursor-pointer"
-      >
-        <font-awesome-icon icon="fa-sign-in-alt" />
-        <span class="text-blue-950">Login</span>
-      </button>
-    </div>
-
-      <!-- Hamburger menu-->
-    <button
-      class="md:hidden flex items-center"
-      @click="toggleMenu"
-    >
+    <!-- Hamburger menu -->
+    <button class="flex items-center" @click="toggleMenu">
       <font-awesome-icon
         :icon="menuOpen ? 'fa-times' : 'fa-bars'"
-        class="text-2xl"
+        class="text-3xl text-orange-salmon cursor-pointer"
       />
     </button>
   </nav>
 
-
-
-  <!-- menu div -->
+  <!-- Menu div -->
   <div
     v-if="menuOpen"
-    class="md:hidden bg-white w-full drop-shadow-xl px-5 py-4 fixed top-24 z-50 flex flex-col space-y-4"
+    class="bg-off-white drop-shadow-xl rounded-bl-xl px-5 py-4 fixed top-24 right-0 z-50 flex flex-col space-y-4"
   >
-    <button
-      v-if="user"
-      @click="logout"
-      class="border border-black font-bold bg-white rounded-xl px-4 py-2 cursor-pointer text-left"
-    >
-      <font-awesome-icon icon="fa-sign-out-alt" />
-      <span class="ml-2 text-blue-950">Logout</span>
-    </button>
+    <template v-if="user">
+      <button
+        @click="goToDashboard"
+        class="px-4 py-2 cursor-pointer rounded-xl text-right text-2xl text-orange-salmon hover:bg-lightgray"
+      >
+        <font-awesome-icon icon="fa-home" /> Dashboard
+      </button>
 
-    <button
-      v-else
-      @click="login"
-      class="border border-black font-bold bg-white rounded-xl px-4 py-2 cursor-pointer text-left"
-    >
-      <font-awesome-icon icon="fa-sign-in-alt" />
-      <span class="ml-2 text-blue-950">Login</span>
-    </button>
+      <button
+        @click="goToStartSession"
+        class="px-4 py-2 cursor-pointer rounded-xl text-right text-2xl text-orange-salmon hover:bg-lightgray"
+      >
+        <font-awesome-icon icon="fa-play" /> Start Session
+      </button>
 
-        <RouterLink :to="{ name: 'addRun' }">
-          Add Run
-    </RouterLink>
+      <button
+        @click="goToAddSession"
+        class="px-4 py-2 cursor-pointer rounded-xl text-right text-2xl text-orange-salmon hover:bg-lightgray"
+      >
+        <font-awesome-icon icon="fa-plus" /> Add Session
+      </button>
 
-        <RouterLink :to="{ name: 'startRun' }">
-          Start Run
-    </RouterLink>
+      <button
+        @click="logout"
+        class="px-4 py-2 cursor-pointer rounded-xl text-right text-2xl text-orange-salmon hover:bg-lightgray"
+      >
+        <font-awesome-icon icon="fa-sign-out-alt" /> Logout
+      </button>
+    </template>
+
+    <template v-else>
+      <button
+        @click="login"
+        class="px-4 py-2 cursor-pointer rounded-xl text-right text-2xl text-orange-salmon hover:bg-lightgray"
+      >
+        <font-awesome-icon icon="fa-sign-in-alt" /> Login
+      </button>
+    </template>
   </div>
 </template>
 
@@ -120,5 +117,4 @@ const logout = async () => {
 img {
   height: 75px;
 }
-
 </style>
