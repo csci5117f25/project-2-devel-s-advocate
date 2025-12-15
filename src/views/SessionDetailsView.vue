@@ -11,11 +11,18 @@ const route = useRoute()
 const router = useRouter()
 const runID = route.params.runID
 const docRef = doc(db, 'runs', runID)
-const runData = useDocument(docRef)
+const { data: runData, pending } = useDocument(docRef)
 const mapRef = ref(null)
 const map = ref(null)
 
-watch(runData, async (newData) => {
+watch([runData, pending], async ([newData, isPending]) => {
+  if (isPending) return
+
+  if (!newData) {
+    router.push('/404')
+    return
+  }
+
   if (newData?.path && newData.path.length > 0 && !map.value) {
     await loadGoogleMaps()
     initMap()
