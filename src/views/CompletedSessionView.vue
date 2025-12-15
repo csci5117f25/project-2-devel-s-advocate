@@ -11,17 +11,21 @@ const route = useRoute()
 const router = useRouter()
 const runID = route.params.runID
 const docRef = doc(db, 'runs', runID)
-const runData = useDocument(docRef)
+const { data: runData, pending } = useDocument(docRef)
 const exerciseType = ref('')
 const newComment = ref('')
 const mapRef = ref(null)
 const map = ref(null)
 
-watch(runData, async (newData) => {
-  if (newData === undefined) {
+watch([runData, pending], async ([newData, isPending]) => {
+  if (isPending) return
+
+  console.log('Fetched run data:', newData)
+  if (!newData) {
     router.push('/404')
     return
   }
+
   if (newData?.path && newData.path.length > 0 && !map.value) {
     await loadGoogleMaps()
     initMap()
@@ -33,7 +37,7 @@ const saveSessionDetails = async () => {
     description: newComment.value,
     exerciseType: exerciseType.value,
   })
-  alert('Your session details have been saved.')
+  router.push({ name: 'dashboard' })
 }
 
 function loadGoogleMaps() {
