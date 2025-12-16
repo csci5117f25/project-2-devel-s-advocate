@@ -31,7 +31,7 @@ Which (if any) device integration(s) does your app support?
 
 Which (if any) progressive web app feature(s) does your app support?
 
-- None
+- Installing app to home screen or desktop
 
 ## Mockup Images
 
@@ -49,6 +49,7 @@ Which (if any) progressive web app feature(s) does your app support?
 - Run the following commands:
   - `npm install`
   - `npm run dev`
+- Firebase rules are found in firestore.rules
 
 ## Screenshots of Site
 
@@ -91,6 +92,7 @@ Error / Not Found Pages: Displayed when a user navigates to a forbidden or non-e
 - Motion (motion-v): Adds animations and transitions to improve user experience and visual feedback.
 - Chart.js: Renders interactive charts on the dashboard to visualize performance data.
 - Google Maps API: Displays maps, plots routes, and generates heatmaps based on geolocation data.
+- Simplify.js: Optimize polylines by taking away geopoints within a specified tolerance
 
 **If there's anything else you would like to disclose about how your project relied on external code, expertise, or anything else, please disclose that here:**
 

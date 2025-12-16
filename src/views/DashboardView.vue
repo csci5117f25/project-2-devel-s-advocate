@@ -230,7 +230,7 @@ const chartData = computed(() => {
         class="stat w-2/5 flex flex-col text-center bg-orange-salmon border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-2"
       >
         <p>Total Miles <font-awesome-icon icon="fa-shoe-prints" /></p>
-        <p class="font-bold text-2xl">{{ userStats.totalMiles }}</p>
+        <p class="font-bold text-2xl">{{ userStats.totalMiles || 0 }}</p>
       </div>
 
       <div
@@ -322,7 +322,7 @@ const chartData = computed(() => {
       <div id="chart-and-heatmap-container" class="flex flex-col">
         <div
           id="chart-container"
-          class="h-[738px] border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-2"
+          class="border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-2"
         >
           <h2 class="text-center text-2xl py-2">Session Trends</h2>
           <div class="flex items-center px-2 py-2">
@@ -377,11 +377,22 @@ const chartData = computed(() => {
 
   #sessions-container,
   #chart-and-heatmap-container {
-    width: 40%;
+    width: 60%;
   }
 
   #sessions-list {
     max-height: calc(var(--spacing) * 200);
+  }
+
+  #chart-container {
+    height: 738px;
+    min-height: 520px;
+  }
+}
+
+@media (min-width: 640px) {
+  #chart-container {
+    min-height: 420px;
   }
 }
 </style>

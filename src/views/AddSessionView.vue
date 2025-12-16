@@ -26,7 +26,10 @@ const submitRun = async () => {
 
   const start = new Date(`${date.value}T${startTime.value}`)
   const end = new Date(`${date.value}T${endTime.value}`)
-  const durationMinutes = Math.round((end - start) / 60000)
+  if (end < start) {
+    end.setDate(end.getDate() + 1)
+  }
+  const durationMinutes = (end - start) / 60000
   if (durationMinutes < 1) {
     alert('Your start time and end time is wrong!')
     return

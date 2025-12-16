@@ -38,14 +38,13 @@ const formattedTime = computed(() => {
 const toggle = () => (tracking.value ? finishAndSave() : startRun())
 
 const startRun = () => {
-  startTimer()
   startTracking()
+  startTimer()
 }
 
 const startTimer = () => {
-  currentTime.value = 0
   timerInterval.value = setInterval(() => {
-    currentTime.value++
+    currentTime.value = (Date.now() - store.startTime.getTime()) / 1000
   }, 1000)
 }
 
@@ -67,7 +66,7 @@ const finishAndSave = async () => {
 
   const endTime = new Date()
   const startTime = new Date(store.startTime)
-  const durationMinutes = Math.round((endTime - startTime) / 60000)
+  const durationMinutes = (endTime - startTime) / 60000
   const miles = store.distance * 0.000621371 // Convert meters to miles
 
   try {
