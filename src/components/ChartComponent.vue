@@ -27,6 +27,17 @@ const chartOptions = {
         autoSkip: false,
         maxRotation: 0, // keep labels horizontal
         minRotation: 0,
+        callback: function(value, index) {
+          const label = this.getLabelForValue(value);
+
+          //mobile screens show mm-dd
+          if (window.innerWidth < 640 && props.labels.length >= 4) {
+            const dates = label.split('-');
+            return dates[1] + '-' + dates[2];
+          }
+
+          return label;
+        },
       },
     },
     y: { beginAtZero: true, grid: { color: '#f4f3ef' } },
@@ -78,7 +89,7 @@ watch([() => props.labels, () => props.datasets], () => initChart(), { deep: tru
 
 @media (min-width: 1024px) {
   .chart-wrapper {
-    height: 520px; /* or any desired desktop height */
+    height: 520px; /* or any desired desktop height, see if this works for everyone laptop*/
   }
 }
 </style>
