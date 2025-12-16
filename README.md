@@ -49,6 +49,7 @@ Which (if any) progressive web app feature(s) does your app support?
 - Run the following commands:
   - `npm install`
   - `npm run dev`
+- Firebase rules are found in firestore.rules
 
 ## Screenshots of Site
 
