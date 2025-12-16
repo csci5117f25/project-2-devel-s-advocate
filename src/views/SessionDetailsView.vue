@@ -150,7 +150,7 @@ function goToDashboard() {
           :runID="runID"
           :view="'sessionInfo'"
           :description="runData.description"
-          :distance="runData.distance"
+          :distance="runData.miles"
           :duration="runData.duration"
           :startTime="runData.startTime"
           :endTime="runData.endTime"
