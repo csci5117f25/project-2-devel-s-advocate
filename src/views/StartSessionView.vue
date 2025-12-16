@@ -38,14 +38,13 @@ const formattedTime = computed(() => {
 const toggle = () => (tracking.value ? finishAndSave() : startRun())
 
 const startRun = () => {
-  startTimer()
   startTracking()
+  startTimer()
 }
 
 const startTimer = () => {
-  currentTime.value = 0
   timerInterval.value = setInterval(() => {
-    currentTime.value++
+    currentTime.value = (Date.now() - store.startTime.getTime()) / 1000
   }, 1000)
 }
 
