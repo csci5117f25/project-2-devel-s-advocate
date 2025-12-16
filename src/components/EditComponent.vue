@@ -39,7 +39,7 @@ const startEditing = () => {
   const pad = (n) => String(n).padStart(2, '0')
   const date = props.startTime.toDate()
 
-  editMiles.value = props.distance
+  editMiles.value = props.distance || 0
   editDescription.value = props.description
   editDate.value = `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`
 

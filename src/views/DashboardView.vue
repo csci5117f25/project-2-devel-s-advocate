@@ -230,7 +230,7 @@ const chartData = computed(() => {
         class="stat w-2/5 flex flex-col text-center bg-orange-salmon border-6 border-orange-salmon text-off-white rounded-xl px-4 py-2 m-2"
       >
         <p>Total Miles <font-awesome-icon icon="fa-shoe-prints" /></p>
-        <p class="font-bold text-2xl">{{ userStats.totalMiles }}</p>
+        <p class="font-bold text-2xl">{{ userStats.totalMiles || 0 }}</p>
       </div>
 
       <div
