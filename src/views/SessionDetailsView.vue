@@ -15,19 +15,23 @@ const { data: runData, pending } = useDocument(docRef)
 const mapRef = ref(null)
 const map = ref(null)
 
-watch([runData, pending], async ([newData, isPending]) => {
-  if (isPending) return
+watch(
+  [runData, pending],
+  async ([newData, isPending]) => {
+    if (isPending) return
 
-  if (!newData) {
-    router.push('/404')
-    return
-  }
+    if (!newData) {
+      router.push('/404')
+      return
+    }
 
-  if (newData?.path && newData.path.length > 0 && !map.value) {
-    await loadGoogleMaps()
-    initMap()
-  }
-}, { immediate: true })
+    if (newData?.path && newData.path.length > 0 && !map.value) {
+      await loadGoogleMaps()
+      initMap()
+    }
+  },
+  { immediate: true },
+)
 
 function loadGoogleMaps() {
   return new Promise((resolve) => {
@@ -140,10 +144,28 @@ function goToDashboard() {
         ref="mapRef"
         style="height: 400px"
       ></div>
+      <div v-else>
+        <img
+          v-if="runData.exerciseType == 'Walk'"
+          src="../assets/gifs/walking_animation.gif"
+          class="h-40 m-4"
+        />
+        <img
+          v-else-if="runData.exerciseType == 'Run'"
+          src="../assets/gifs/running_animation.gif"
+          class="h-40 m-4"
+        />
+        <img
+          v-else-if="runData.exerciseType == 'Bike Ride'"
+          src="../assets/gifs/biking_animation.gif"
+          class="h-40 m-4"
+        />
+        <img v-else src="../assets/gifs/victory_animation.gif" class="h-40 m-4" />
+      </div>
 
       <div
         v-if="runData"
-        id="session-information-container"
+        id="session-info-container"
         class="flex flex-col border-6 border-orange-salmon rounded-xl px-4 pt-4 pb-1 w-11/12 m-2"
       >
         <EditComponent
@@ -178,6 +200,7 @@ function goToDashboard() {
   #session-info-container {
     justify-content: space-around;
     align-items: center;
+    width: 100%;
   }
   #map-and-info-container {
     justify-content: space-around;
