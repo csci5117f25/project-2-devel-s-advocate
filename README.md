@@ -91,6 +91,7 @@ Error / Not Found Pages: Displayed when a user navigates to a forbidden or non-e
 - Motion (motion-v): Adds animations and transitions to improve user experience and visual feedback.
 - Chart.js: Renders interactive charts on the dashboard to visualize performance data.
 - Google Maps API: Displays maps, plots routes, and generates heatmaps based on geolocation data.
+- Simplify.js: Optimize polylines by taking away geopoints within a specified tolerance
 
 **If there's anything else you would like to disclose about how your project relied on external code, expertise, or anything else, please disclose that here:**
 
