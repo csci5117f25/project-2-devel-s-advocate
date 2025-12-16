@@ -31,7 +31,7 @@ Which (if any) device integration(s) does your app support?
 
 Which (if any) progressive web app feature(s) does your app support?
 
-- None
+- Installing app to home screen or desktop
 
 ## Mockup Images
 
