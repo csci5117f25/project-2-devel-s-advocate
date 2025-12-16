@@ -11,7 +11,8 @@ const mapRef = ref(null)
 const map = ref(null)
 const loading = ref(true)
 const currentTime = ref(0)
-const timerInterval = ref(null)
+const timeRef = ref(Date.now())
+let timerInterval = null
 
 const store = useRunStore()
 const { startTracking, stopTracking, centerMapOnUser } = useRunTracking(map)
@@ -22,17 +23,17 @@ const user = useCurrentUser()
 const tracking = computed(() => store.isTracking)
 const distance = computed(() => store.distance)
 
-const formattedTime = computed(() => {
-  const totalSeconds = currentTime.value
-  const hours = Math.floor(totalSeconds / 3600)
-  const minutes = Math.floor((totalSeconds % 3600) / 60)
-  const seconds = totalSeconds % 60
+const elapsedTime = computed(() => {
+  if (!store.isTracking || !store.startTime) return 0
+  return (timeRef.value - store.startTime) / 1000
+})
 
-  if (hours > 0) {
-    return `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
-  } else {
-    return `${minutes}:${seconds.toString().padStart(2, '0')}`
-  }
+const formattedTime = computed(() => {
+  const totalSeconds = elapsedTime.value
+  const totalMinutes = Math.floor(totalSeconds / 60)
+  const seconds = Math.floor(totalSeconds % 60)
+
+  return `${totalMinutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
 })
 
 const toggle = () => (tracking.value ? finishAndSave() : startRun())
@@ -43,15 +44,16 @@ const startRun = () => {
 }
 
 const startTimer = () => {
-  timerInterval.value = setInterval(() => {
-    currentTime.value = (Date.now() - store.startTime.getTime()) / 1000
+  timeRef.value = Date.now()
+  timerInterval = setInterval(() => {
+    timeRef.value = Date.now()
   }, 1000)
 }
 
 const stopTimer = () => {
-  if (timerInterval.value) {
-    clearInterval(timerInterval.value)
-    timerInterval.value = null
+  if (timerInterval) {
+    clearInterval(timerInterval)
+    timerInterval = null
   }
 }
 
