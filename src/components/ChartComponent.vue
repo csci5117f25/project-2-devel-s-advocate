@@ -15,12 +15,20 @@ let chartInstance = null
 
 const chartOptions = {
   responsive: true,
+  maintainAspectRatio: false, // fill container like heat map
   plugins: {
     legend: { display: true, position: 'top' },
     title: { display: false, text: props.title },
   },
   scales: {
-    x: { grid: { color: '#f4f3ef' } },
+    x: {
+      grid: { color: '#f4f3ef' },
+      ticks: {
+        autoSkip: false,
+        maxRotation: 0, // keep labels horizontal
+        minRotation: 0,
+      },
+    },
     y: { beginAtZero: true, grid: { color: '#f4f3ef' } },
   },
 }
@@ -50,13 +58,27 @@ watch([() => props.labels, () => props.datasets], () => initChart(), { deep: tru
 </script>
 
 <template>
-  <canvas ref="chartRef" id="chart" style="height: 220px; width: 100%" class="mx-3 my-15"></canvas>
+  <div class="chart-wrapper w-full h-full">
+    <canvas ref="chartRef" class="w-full h-full"></canvas>
+  </div>
 </template>
 
 <style scoped>
+.chart-wrapper {
+  width: 100%;
+  height: 100%;
+  min-height: 340px;
+}
+
+@media (min-width: 640px) {
+  .chart-wrapper {
+    min-height: 420px;
+  }
+}
+
 @media (min-width: 1024px) {
-  #chart {
-    margin-block: calc(var(--spacing) * 5);
+  .chart-wrapper {
+    height: 520px; /* or any desired desktop height */
   }
 }
 </style>
