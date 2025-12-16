@@ -5,7 +5,7 @@ CSCI 5117, Fall 2025, [assignment description](https://canvas.umn.edu/courses/51
 ## App Info
 
 - Team Name: Devel's Advocate
-- App Name: Tr@ceRoute
+- App Name: TraceRoute
 - App Link: <https://traceroute-4b41f.web.app/>
 
 ### Students
@@ -50,25 +50,37 @@ Which (if any) progressive web app feature(s) does your app support?
   - `npm install`
   - `npm run dev`
 
-## Screenshots of Site (complete)
+## Screenshots of Site
 
-Splash Page: Displayed to logged-out users to introduce TraceRoute and demonstrate the app's purpose and core functionality and before authentication.
-![Splash Page](site_pictures/splash_1.png)
-![Splash Page](site_pictures/splash_2.png)
-![Splash Page](site_pictures/splash_3.png)
+Splash Page: Displayed to logged-out users to introduce TraceRoute and demonstrate the app's purpose and core functionality before authentication.
+
+![Splash Page](site_pictures/splash_page_desktop_1.png)
+![Splash Page](site_pictures/splash_page_desktop_2.png)
 
 Dashboard Page: Logged-in users can view their exercise statistics, recent sessions, and performance charts at a glance.
-![Dashboard Page](site_pictures/dashboard.png)
+
+![Dashboard Page](site_pictures/dashboard_desktop.png)
+
+<div style="display: flex;">
+  <img src="site_pictures/dashboard_mobile_1.jpeg" style="width: 49%; margin-right:1%;">
+
+  <img src="site_pictures/dashboard_mobile_2.jpeg" style="width: 49%;">
+</div>
 
 Start Session Page: Uses device geolocation to track an exercise session in real time and plot the route on the map.
-![Start Session Page](site_pictures/start_session.png)
+
+<img src="site_pictures/start_session_mobile.jpeg" style="width: 49%;">
 
 Add Session Page: Allows users to manually add an exercise session by entering the session's details.
-![Add Session Page](site_pictures/manually_add_session.png)
+
+![Add Session Page](site_pictures/add_session_desktop.png)
+
+<img src="site_pictures/add_session_mobile.jpeg" style="width: 49%;">
 
 Error / Not Found Pages: Displayed when a user navigates to a forbidden or non-existent route, including mobile-specific handling.
-![404 Page](site_pictures/404_mobile_only.png)
-![404 Page](site_pictures/not_Found.png)
+
+![404 Page](site_pictures/start_session_desktop.png)
+![404 Page](site_pictures/not_found.png)
 
 ## External Dependencies
 
