@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { useCollection, useCurrentUser } from 'vuefire'
 import { collection, query, where, doc, setDoc } from 'firebase/firestore'
 import { db } from '@/firebaseApp'
@@ -12,6 +12,33 @@ const user = useCurrentUser()
 const filter_option = ref('all') // Have this as default
 const sort_option = ref('date-desc') // Have this as default
 const chart_view = ref('chart-general')
+
+// PWA install
+const installPrompt = ref(null)
+const showInstallButton = ref(false)
+
+onMounted(() => {
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault()
+    installPrompt.value = e
+    showInstallButton.value = true
+  })
+})
+
+const installPWA = () => {
+  if (installPrompt.value) {
+    installPrompt.value.prompt()
+    installPrompt.value.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        console.log('User accepted the install prompt')
+      } else {
+        console.log('User dismissed the install prompt')
+      }
+      installPrompt.value = null
+      showInstallButton.value = false
+    })
+  }
+}
 
 //get runs for current user
 const runsQuery = computed(() => {
@@ -185,6 +212,17 @@ const chartData = computed(() => {
       <h1 class="text-3xl text-orange-salmon text-center font-bold">
         Welcome, {{ user.displayName }}!
       </h1>
+
+      <motion.button
+        v-if="showInstallButton"
+        @click="installPWA"
+        class="text-center text-off-white bg-orange-salmon active:bg-light-orange-salmon rounded-xl px-4 py-2 mt-4 cursor-pointer"
+        :whileHover="{ scale: 1.15, rotate: 3 }"
+        :whileTap="{ scale: 0.9, rotate: -5 }"
+        :transition="{ type: 'spring', stiffness: 400, damping: 17 }"
+      >
+        <font-awesome-icon icon="fa-download" /> Install App
+      </motion.button>
     </motion.div>
 
     <div class="flex flex-row flex-wrap justify-around m-2 text-shadow-lg/20" id="stats-container">
