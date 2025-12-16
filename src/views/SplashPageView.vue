@@ -3,9 +3,6 @@ import { useRouter } from 'vue-router'
 import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import { motion } from 'motion-v'
 import { ref, onMounted } from 'vue'
-const constraintsRef = ref(null)
-import SplashPageComponent from '@/components/SplashPageComponent.vue'
-import { TresCanvas } from '@tresjs/core'
 const router = useRouter()
 
 const login = async () => {
@@ -71,36 +68,47 @@ onMounted(() => {
       </div>
     </div>
 
-    <div class="flex flex-col items-center m-8" id="row-2">
-      <div class="half-width">
+    <div id="flyby-container" class="flex flex-col mt-8">
+      <div class="flex flex-col items-center mt-4 mx-2" id="row-2">
         <h2 class="text-2xl text-center p-4 racing-sans-one-regular">
-          Advanced Tracking so you can hit your goals!
+          View your stats, recent sessions, and performance charts at a glance
         </h2>
+
+        <img
+          src="../assets/images/dashboard_mobile_1.jpeg"
+          class="half-width screenshot rounded-xl m-4 border-2 border-off-white"
+        />
       </div>
 
-      <div class="half-width screenshot text-center border-6 border-orange-salmon rounded-xl">
-        <img src="../assets/images/image1.png" class="rounded-xl" />
-      </div>
-    </div>
-
-    <div class="flex flex-col items-center m-8" id="row-3">
-      <div class="half-width">
+      <div class="flex flex-col items-center mt-4 mx-2" id="row-3">
         <h2 class="text-2xl text-center racing-sans-one-regular p-4">
-          Add comments to keep track of your feelings!
+          Dynamically track an exercise session in real time
         </h2>
+
+        <img
+          src="../assets/images/start_session_mobile.jpeg"
+          class="half-width screenshot rounded-xl m-4 border-2 border-off-white"
+        />
       </div>
 
-      <div class="half-width screenshot text-center border-6 border-orange-salmon rounded-xl">
-        <img src="../assets/images/image2.png" class="rounded-xl" />
+      <div class="flex flex-col items-center mt-4 mx-2" id="row-4">
+        <h2 class="text-2xl text-center p-4 racing-sans-one-regular">
+          Manually add an exercise session to not miss any milestone
+        </h2>
+
+        <img
+          src="../assets/images/add_session_mobile.jpeg"
+          class="half-width screenshot rounded-xl m-4 border-2 border-off-white"
+        />
       </div>
     </div>
 
     <div
       id="row-5"
-      class="flex flex-col text-center items-center justify-center p-4 mt-10 bottom-0 z-1000 w-full"
+      class="flex flex-col text-center items-center justify-center mt-8 bottom-0 z-1000 w-full"
     >
       <h2 class="text-2xl racing-sans-one-regular p-4">
-        Join today and become part of our running family!
+        Join today and become part of our tracking family!
       </h2>
 
       <motion.button
@@ -125,18 +133,20 @@ onMounted(() => {
     justify-content: space-evenly;
     align-items: center;
   }
-  #row-2 {
-    flex-direction: row-reverse;
-    justify-content: space-evenly;
-    align-items: center;
-  }
-  #row-3 {
+  #flyby-container {
     flex-direction: row;
     justify-content: space-evenly;
     align-items: center;
   }
+  #row-2 {
+    justify-content: space-evenly;
+    align-items: center;
+  }
+  #row-3 {
+    justify-content: space-evenly;
+    align-items: center;
+  }
   #row-4 {
-    flex-direction: row-reverse;
     justify-content: space-evenly;
     align-items: center;
   }
@@ -144,30 +154,11 @@ onMounted(() => {
     align-items: center;
   }
   .half-width {
-    width: 50%;
-    margin: calc(var(--spacing) * 8);
+    width: 80%;
   }
   .animation {
     margin-inline: calc(var(--spacing) * 4);
   }
-}
-
-.constraints {
-  width: 300px;
-  height: 300px;
-  background-color: var(--hue-1-transparent);
-  border-radius: 10px;
-}
-
-.box {
-  width: 100px;
-  height: 100px;
-  border-radius: 10px;
-
-  background-image: url('../assets/images/P2-Logo\ 3\ tr.png');
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
 }
 
 .racing-sans-one-regular {
