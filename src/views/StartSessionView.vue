@@ -67,7 +67,7 @@ const finishAndSave = async () => {
 
   const endTime = new Date()
   const startTime = new Date(store.startTime)
-  const durationMinutes = Math.round((endTime - startTime) / 60000)
+  const durationMinutes = (endTime - startTime) / 60000
   const miles = store.distance * 0.000621371 // Convert meters to miles
 
   try {

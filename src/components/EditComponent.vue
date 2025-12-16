@@ -4,6 +4,7 @@ import { db } from '@/firebaseApp'
 import { updateDoc, doc, serverTimestamp } from 'firebase/firestore'
 import DeleteComponent from './DeleteComponent.vue'
 import { motion } from 'motion-v'
+import { formatDuration } from '@/assets/js/timeHelper.js'
 
 const props = defineProps({
   runID: { type: String, required: true },
@@ -53,7 +54,7 @@ const finishEditing = async () => {
 
   const start = new Date(`${editDate.value}T${editStart.value}`)
   const end = new Date(`${editDate.value}T${editEnd.value}`)
-  const durationMinutes = Math.round((end - start) / 60000)
+  const durationMinutes = (end - start) / 60000
   if (durationMinutes < 1 && !props.hasPath) {
     alert('Your start time and end time are wrong!')
     return
@@ -108,7 +109,7 @@ const cancelEditing = () => {
 
         <div class="rounded-xl p-1 text-center flex flex-col justify-center">
           <span class="bg-rosy-finch text-xs font-medium px-1.5 py-1.5 rounded-xl"
-            >Duration: {{ props.duration }} Min.</span
+            >Duration: {{ formatDuration(props.duration) }}</span
           >
         </div>
 

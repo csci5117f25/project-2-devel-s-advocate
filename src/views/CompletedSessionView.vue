@@ -6,6 +6,7 @@ import { db } from '@/firebaseApp'
 import { useRoute, useRouter } from 'vue-router'
 import { useDocument } from 'vuefire'
 import { motion } from 'motion-v'
+import { formatDuration } from '@/assets/js/timeHelper.js'
 
 const route = useRoute()
 const router = useRouter()
@@ -163,7 +164,7 @@ function goToSessionInfo() {
     <div id="session-information-container" class="flex flex-col items-center">
       <div class="flex flex-row justify-between">
         <div class="text-center bg-orange-salmon rounded-xl px-4 py-2 mx-4 my-2">
-          {{ runData?.duration || 0 }} Minutes
+          {{ formatDuration(runData?.duration) }}
         </div>
 
         <div class="text-center bg-orange-salmon rounded-xl px-4 py-2 mx-4 my-2">
