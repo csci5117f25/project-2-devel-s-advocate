@@ -20,7 +20,7 @@ CSCI 5117, Fall 2025, [assignment description](https://canvas.umn.edu/courses/51
 
 **Describe the most challenging features you implemented (one sentence per bullet, maximum 4 bullets):**
 
-- Dynamically track an exercise session using device geolocation and plotting the user's route in real time on an interactive map.
+- Dynamically track an exercise session using device geolocation and plot the user's route in real-time on an interactive map.
 - Implementing a heatmap visualization that aggregates and displays all recorded sessions to show frequently traveled routes.
 - Providing an edit component that allows users to directly modify details of all previously tracked session.
 - Ensuring full mobile responsiveness across all pages.
