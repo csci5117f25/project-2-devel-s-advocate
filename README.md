@@ -10,17 +10,17 @@ CSCI 5117, Fall 2025, [assignment description](https://canvas.umn.edu/courses/51
 
 ### Students
 
+- Kira Balentine, balen014@umn.edu
 - Melody Washington, washi469@umn.edu
 - Connor Rivers, river853@umn.edu
 - Sudarsna Mukund, mukun017@umn.edu
-- Kira Balentine, balen014@umn.edu
 - Giselle Kian, ashra064@umn.edu
 
 ## Key Features
 
 **Describe the most challenging features you implemented (one sentence per bullet, maximum 4 bullets):**
 
-- Dynamically tracking an exercise session using device geolocation and plots the user's route in real time on an interactive map.
+- Dynamically track an exercise session using device geolocation and plotting the user's route in real time on an interactive map.
 - Implementing a heatmap visualization that aggregates and displays all recorded sessions to show frequently traveled routes.
 - Providing an edit component that allows users to directly modify details of all previously tracked session.
 - Ensuring full mobile responsiveness across all pages.
@@ -31,7 +31,7 @@ Which (if any) device integration(s) does your app support?
 
 Which (if any) progressive web app feature(s) does your app support?
 
-- Installing app to home screen or desktop
+- Installing the web app on the home screen of your mobile device or desktop.
 
 ## Mockup Images
 
@@ -46,10 +46,10 @@ Which (if any) progressive web app feature(s) does your app support?
 
 **Is there anything special we need to know in order to effectively test your app? (optional):**
 
-- Run the following commands:
+- Run the following commands to test the web app locally:
   - `npm install`
   - `npm run dev`
-- Firebase rules are found in firestore.rules
+- A copy of our Firebase security rules is provided in `firestore.rules`.
 
 ## Screenshots of Site
 
@@ -68,7 +68,7 @@ Dashboard Page: Logged-in users can view their exercise statistics, recent sessi
   <img src="site_pictures/dashboard_mobile_2.jpeg" style="width: 49%;">
 </div>
 
-Start Session Page: Uses device geolocation to track an exercise session in real time and plot the route on the map.
+Start Session Page: Uses device geolocation to track an exercise session in real-time and plot the route on the map.
 
 <img src="site_pictures/start_session_mobile.jpeg" style="width: 49%;">
 
@@ -92,7 +92,7 @@ Error / Not Found Pages: Displayed when a user navigates to a forbidden or non-e
 - Motion (motion-v): Adds animations and transitions to improve user experience and visual feedback.
 - Chart.js: Renders interactive charts on the dashboard to visualize performance data.
 - Google Maps API: Displays maps, plots routes, and generates heatmaps based on geolocation data.
-- Simplify.js: Optimize polylines by taking away geopoints within a specified tolerance
+- Simplify.js: Optimizes polylines by taking away geopoints within a specified tolerance.
 
 **If there's anything else you would like to disclose about how your project relied on external code, expertise, or anything else, please disclose that here:**
 
